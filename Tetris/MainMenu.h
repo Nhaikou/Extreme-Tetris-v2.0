@@ -6,16 +6,18 @@
 class MainMenu : public State
 {
 public:
-	MainMenu(StateMachine* sm){ stateMachine = sm; }
-	~MainMenu(){}
+	MainMenu(StateMachine* sm);
+	~MainMenu();
 
-	void handleInput(){}
-	void update(const float dt){}
-	void draw(const float dt){}
+	void handleInput();
+	void update(const float dt);
+	void draw(const float dt);
 
 protected:
-	void onInitialize(){}
+	void onInitialize();
 private:
+	sf::Font font;
+	sf::Text text;
 
 };
 #endif;

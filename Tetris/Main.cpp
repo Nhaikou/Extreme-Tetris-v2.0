@@ -6,7 +6,7 @@ int main()
 {
 	srand(time(NULL));
 	StateMachine sm;
-	sm.pushState(new Standard(&sm));
+	sm.pushState(new MainMenu(&sm));
 	sm.gameLoop();
 
 	return 0;
