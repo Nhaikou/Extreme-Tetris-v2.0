@@ -1,5 +1,6 @@
 #include "MainMenu.h"
 #include "Standard.h"
+#include "Factory.h"
 
 MainMenu::MainMenu(StateMachine* sm)
 {
@@ -28,6 +29,10 @@ void MainMenu::handleInput()
 	if (key.isKeyPressed(key.Space))
 	{
 		stateMachine->pushState(new Standard(stateMachine));
+	}
+	if (key.isKeyPressed(key.Return))
+	{
+		stateMachine->pushState(new Factory(stateMachine));
 	}
 
 	text.setString("Main Menu soon...");

@@ -16,12 +16,15 @@ public:
 	virtual bool spawn();
 	virtual void rotate(int direction);
 
+	sf::Color getColor();
+
 	unsigned const tetra = 4;
+
+	std::vector<sf::Vector2i> positions;
 
 protected:
 	Board* board;
 	int rotation = 0;
-	std::vector<sf::Vector2i> positions;
 	sf::Color color;
 };
 

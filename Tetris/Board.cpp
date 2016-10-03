@@ -25,6 +25,8 @@ Board::Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn)
 			board[i][j].setPosition(boardPosition.x + block.getGlobalBounds().width * i, boardPosition.y + block.getGlobalBounds().height * j);
 		}
 	}
+
+	updatedBoard = board;
 }
 
 Board::~Board()

@@ -124,3 +124,8 @@ void Block::rotate(int direction)
 {
 	direction;
 }
+
+sf::Color Block::getColor()
+{
+	return color;
+}
