@@ -10,7 +10,7 @@ public:
 	~BlockI();
 
 	void spawn();
-	void rotate(int rotation);
+	void rotate(int direction);
 };
 
 #endif

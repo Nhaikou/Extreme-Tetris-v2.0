@@ -1,19 +1,23 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include "Board.h"
+
 class Block
 {
 public:
 	Block();
 	~Block();
 
-	void moveLeft();
-	void moveRight();
-	void moveDown();
+	void moveLeft(Board *board);
+	void moveRight(Board *board);
+	void moveDown(Board *board);
 
-private:
+	virtual void spawn();
+	virtual void rotate(int direction);
+
 	unsigned const tetra = 4;
-	unsigned rotation = 0;
+	int rotation = 0;
 };
 
 #endif
