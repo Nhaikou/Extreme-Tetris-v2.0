@@ -16,12 +16,16 @@ public:
 	void update(const float dt);
 	void draw(const float dt);
 
+	void spawnBlock();
+
 protected:
 	void onInitialize();
 
 private:
-	Board *board;
-	Block *currentBlock;
+	sf::Vector2f dropTime = { 0, 0 };
+
+	Board *board = nullptr;
+	Block *currentBlock = nullptr;
 };
 
 #endif

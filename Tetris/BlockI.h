@@ -6,10 +6,10 @@
 class BlockI : public Block
 {
 public:
-	BlockI();
+	BlockI(Board *b);
 	~BlockI();
 
-	void spawn();
+	bool spawn();
 	void rotate(int direction);
 };
 

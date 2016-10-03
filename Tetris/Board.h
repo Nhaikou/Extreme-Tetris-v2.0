@@ -8,18 +8,20 @@
 class Board
 {
 public:
-	Board(sf::Vector2u size, sf::Vector2u boardPos);
+	Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn);
 	~Board();
 
 	sf::Vector2u getBoardSize();
-	sf::Vector2u getBoardPosition();
+	sf::Vector2i getBoardPosition();
+	sf::Vector2u getSpawnPoint();
 
 	std::vector<std::vector<sf::Sprite>> board;
+	sf::Texture blockTex, emptyTex;
 
 private:
 	sf::Sprite block;
-	sf::Texture blockTex, emptyTex;
-	sf::Vector2u boardSize, boardPosition;
+	sf::Vector2u boardSize, spawnPoint;
+	sf::Vector2i boardPosition;
 };
 
 #endif

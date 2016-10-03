@@ -6,18 +6,23 @@
 class Block
 {
 public:
-	Block();
+	Block(Board *b);
 	~Block();
 
-	void moveLeft(Board *board);
-	void moveRight(Board *board);
-	void moveDown(Board *board);
+	void moveLeft();
+	void moveRight();
+	bool moveDown();
 
-	virtual void spawn();
+	virtual bool spawn();
 	virtual void rotate(int direction);
 
 	unsigned const tetra = 4;
+
+protected:
+	Board* board;
 	int rotation = 0;
+	std::vector<sf::Vector2i> positions;
+	sf::Color color;
 };
 
 #endif

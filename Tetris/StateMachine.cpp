@@ -54,7 +54,7 @@ void StateMachine::gameLoop()
 	while (window.isOpen())
 	{
 		sf::Time elapsed = clock.restart();
-		float dt = elapsed.asSeconds();
+		float dt = elapsed.asMilliseconds();
 
 		if (peekState() == nullptr)
 		{
