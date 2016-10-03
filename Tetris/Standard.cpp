@@ -69,12 +69,12 @@ void Standard::draw(const float dt)
 		{
 			stateMachine->window.draw(board->board[i][j]);
 		}
-	}
+	} 
 }
 
 void Standard::spawnBlock()
 {
-	unsigned randomBlock = rand() % 1;
+	unsigned randomBlock = rand() % 2;
 	if (currentBlock != nullptr)
 	{
 		delete currentBlock;
@@ -82,6 +82,10 @@ void Standard::spawnBlock()
 	if (randomBlock == 0)
 	{
 		currentBlock = new BlockI(board);
+	}
+	if (randomBlock == 1)
+	{
+		currentBlock = new BlockO(board);
 	}
 	if (!currentBlock->spawn())
 	{

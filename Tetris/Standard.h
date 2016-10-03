@@ -5,6 +5,7 @@
 #include "Board.h"
 #include "Block.h"
 #include "BlockI.h"
+#include "BlockO.h"
 
 class Standard : public State
 {
