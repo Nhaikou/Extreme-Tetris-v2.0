@@ -9,9 +9,9 @@ public:
 	MainMenu(StateMachine* sm){ stateMachine = sm; }
 	~MainMenu(){}
 
-	void draw(const float dt){}
-	void update(const float dt){}
 	void handleInput(){}
+	void update(const float dt){}
+	void draw(const float dt){}
 
 protected:
 	void onInitialize(){}
