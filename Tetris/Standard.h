@@ -6,6 +6,7 @@
 #include "Block.h"
 #include "BlockI.h"
 #include "BlockO.h"
+#include "BlockZ.h"
 
 class Standard : public State
 {
