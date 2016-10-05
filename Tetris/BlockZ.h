@@ -10,7 +10,7 @@ public:
 	~BlockZ();
 
 	bool spawn();
-	//void rotate(int direction);
+	void rotate(int direction);
 };
 #endif;
 
