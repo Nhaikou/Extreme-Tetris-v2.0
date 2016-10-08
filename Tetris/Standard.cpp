@@ -63,11 +63,11 @@ void Standard::update(const float dt)
 
 void Standard::draw(const float dt)
 {
-	for (int j = 0; j < board->getBoardSize().y; j++)
+	for (int j = 0; j < board->getSize().y; ++j)
 	{
-		for (int i = 0; i < board->getBoardSize().x; i++)
+		for (int i = 0; i < board->getSize().x; ++i)
 		{
-			stateMachine->window.draw(board->board[i][j]);
+			stateMachine->window.draw(board->grid[i][j]);
 		}
 	} 
 }

@@ -14,11 +14,11 @@ public:
 	void moveLineLeft();
 	void moveLineRight();
 
-	sf::Vector2u getBoardSize();
+	sf::Vector2u getSize();
 	sf::Vector2i getBoardPosition();
 	sf::Vector2u getSpawnPoint();
 
-	std::vector<std::vector<sf::Sprite>> board, updatedBoard;
+	std::vector<std::vector<sf::Sprite>> grid, updatedGrid;
 	sf::Texture blockTex, emptyTex;
 
 private:

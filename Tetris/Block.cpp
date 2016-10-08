@@ -13,22 +13,27 @@ Block::~Block()
 
 void Block::moveLeft()
 {
-	for (int i = 0; i < tetra; i++)
+	// Go through all the smaller blocks in our current block type
+	for (int i = 0; i < tetra; ++i)
 	{
+		// Make sure that we can't move out of the grid
 		if (positions[i].x - 1 < 0)
 		{
 			return;
 		}
-		if (board->board[positions[i].x - 1][positions[i].y].getTexture() != &board->emptyTex)
+		// Check if there's an empty space next to (left) the current block
+		if (board->grid[positions[i].x - 1][positions[i].y].getTexture() != &board->emptyTex)
 		{
+			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
-			for (int j = 0; j < tetra; j++)
+			for (int j = 0; j < tetra; ++j)
 			{
 				if (positions[j].x == positions[i].x - 1 && positions[j].y == positions[i].y)
 				{
 					ok = true;
 				}
 			}
+			// If the textured space is not one of the blocks you're moving, you can't move left
 			if (ok == false)
 			{
 				return;
@@ -36,33 +41,40 @@ void Block::moveLeft()
 		}
 	}
 
-	for (int i = 0; i < tetra; i++)
+	// There are no obstacles so we can move our block
+	for (int i = 0; i < tetra; ++i)
 	{
-		board->board[positions[i].x][positions[i].y].setTexture(board->emptyTex);
+		// Clear the current blocks, change the x-positions by -1 and set the texture and color
+		board->grid[positions[i].x][positions[i].y].setTexture(board->emptyTex);
 		positions[i].x--;
-		board->board[positions[i].x][positions[i].y].setTexture(board->blockTex);
-		board->board[positions[i].x][positions[i].y].setColor(color);
+		board->grid[positions[i].x][positions[i].y].setTexture(board->blockTex);
+		board->grid[positions[i].x][positions[i].y].setColor(color);
 	}
 }
 
 void Block::moveRight()
 {
-	for (int i = 0; i < tetra; i++)
+	// Go through all the smaller blocks in our current block type
+	for (int i = 0; i < tetra; ++i)
 	{
-		if (positions[i].x + 1 >= board->getBoardSize().x)
+		// Make sure that we can't move out of the grid
+		if (positions[i].x + 1 >= board->getSize().x)
 		{
 			return;
 		}
-		if (board->board[positions[i].x + 1][positions[i].y].getTexture() != &board->emptyTex)
+		// Check if there's an empty space next to (right) the current block
+		if (board->grid[positions[i].x + 1][positions[i].y].getTexture() != &board->emptyTex)
 		{
+			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
-			for (int j = 0; j < tetra; j++)
+			for (int j = 0; j < tetra; ++j)
 			{
 				if (positions[j].x == positions[i].x + 1 && positions[j].y == positions[i].y)
 				{
 					ok = true;
 				}
 			}
+			// If the textured space is not one of the blocks you're moving, you can't move right
 			if (ok == false)
 			{
 				return;
@@ -70,33 +82,40 @@ void Block::moveRight()
 		}
 	}
 
-	for (int i = tetra - 1; i >= 0; i--)
+	// There are no obstacles so we can move our block
+	for (int i = tetra - 1; i >= 0; --i)
 	{
-		board->board[positions[i].x][positions[i].y].setTexture(board->emptyTex);
+		// Clear the current blocks, change the x-positions by +1 and set the texture and color
+		board->grid[positions[i].x][positions[i].y].setTexture(board->emptyTex);
 		positions[i].x++;
-		board->board[positions[i].x][positions[i].y].setTexture(board->blockTex);
-		board->board[positions[i].x][positions[i].y].setColor(color);
+		board->grid[positions[i].x][positions[i].y].setTexture(board->blockTex);
+		board->grid[positions[i].x][positions[i].y].setColor(color);
 	}
 }
 
 bool Block::moveDown()
 {
-	for (int i = 0; i < tetra; i++)
+	// Go through all the smaller blocks in our current block type
+	for (int i = 0; i < tetra; ++i)
 	{
-		if (positions[i].y + 1 >= board->getBoardSize().y)
+		// Make sure that we can't move out of the grid
+		if (positions[i].y + 1 >= board->getSize().y)
 		{
 			return false;
 		}
-		if (board->board[positions[i].x][positions[i].y + 1].getTexture() != &board->emptyTex)
+		// Check if there's an empty space next to (down) the current block
+		if (board->grid[positions[i].x][positions[i].y + 1].getTexture() != &board->emptyTex)
 		{
+			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
-			for (int j = 0; j < tetra; j++)
+			for (int j = 0; j < tetra; ++j)
 			{
 				if (positions[j].y == positions[i].y + 1 && positions[j].x == positions[i].x)
 				{
 					ok = true;
 				}
 			}
+			// If the textured space is not one of the blocks you're moving, you can't move down
 			if (ok == false)
 			{
 				return false;
@@ -104,12 +123,14 @@ bool Block::moveDown()
 		}
 	}
 
-	for (int i = 0; i < tetra; i++)
+	// There are no obstacles so we can move our block
+	for (int i = 0; i < tetra; ++i)
 	{
-		board->board[positions[i].x][positions[i].y].setTexture(board->emptyTex);
+		// Clear the current blocks, change the x-positions by +1 and set the texture and color
+		board->grid[positions[i].x][positions[i].y].setTexture(board->emptyTex);
 		positions[i].y++;
-		board->board[positions[i].x][positions[i].y].setTexture(board->blockTex);
-		board->board[positions[i].x][positions[i].y].setColor(color);
+		board->grid[positions[i].x][positions[i].y].setTexture(board->blockTex);
+		board->grid[positions[i].x][positions[i].y].setColor(color);
 	}
 
 	return true;

@@ -11,22 +11,22 @@ Board::Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn)
 	boardPosition = boardPos;
 	spawnPoint = spawn;
 
-	board.resize(boardSize.x);
+	grid.resize(boardSize.x);
 	for (int i = 0; i < boardSize.x; ++i)
 	{
-		board[i].resize(boardSize.y);
+		grid[i].resize(boardSize.y);
 	}
 
 	for (int j = 0; j < boardSize.y; j++)
 	{
 		for (int i = 0; i < boardSize.x; i++)
 		{
-			board[i][j] = block;
-			board[i][j].setPosition(boardPosition.x + block.getGlobalBounds().width * i, boardPosition.y + block.getGlobalBounds().height * j);
+			grid[i][j] = block;
+			grid[i][j].setPosition(boardPosition.x + block.getGlobalBounds().width * i, boardPosition.y + block.getGlobalBounds().height * j);
 		}
 	}
 
-	updatedBoard = board;
+	updatedGrid = grid;
 }
 
 Board::~Board()
@@ -34,7 +34,7 @@ Board::~Board()
 
 }
 
-sf::Vector2u Board::getBoardSize()
+sf::Vector2u Board::getSize()
 {
 	return boardSize;
 }

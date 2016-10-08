@@ -21,11 +21,11 @@ bool BlockO::spawn()
 	{
 		for (int j = 1; j >= 0; --j)
 		{
-			if (board->board[board->getSpawnPoint().x + i][board->getSpawnPoint().y + j].getTexture() == &board->emptyTex)
+			if (board->grid[board->getSpawnPoint().x + i][board->getSpawnPoint().y + j].getTexture() == &board->emptyTex)
 			{ 
 				positions[counter] = sf::Vector2i(board->getSpawnPoint().x + i, board->getSpawnPoint().y + j);
-				board->board[positions[counter].x][positions[counter].y].setTexture(board->blockTex);
-				board->board[positions[counter].x][positions[counter].y].setColor(color);
+				board->grid[positions[counter].x][positions[counter].y].setTexture(board->blockTex);
+				board->grid[positions[counter].x][positions[counter].y].setColor(color);
 				counter++;
 			}
 			else
