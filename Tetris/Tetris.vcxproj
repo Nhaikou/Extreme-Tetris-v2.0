@@ -14,8 +14,11 @@
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockI.cpp" />
+    <ClCompile Include="BlockJ.cpp" />
+    <ClCompile Include="BlockL.cpp" />
     <ClCompile Include="BlockO.cpp" />
     <ClCompile Include="BlockS.cpp" />
+    <ClCompile Include="BlockT.cpp" />
     <ClCompile Include="BlockZ.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Factory.cpp" />
@@ -29,8 +32,11 @@
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockI.h" />
+    <ClInclude Include="BlockJ.h" />
+    <ClInclude Include="BlockL.h" />
     <ClInclude Include="BlockO.h" />
     <ClInclude Include="BlockS.h" />
+    <ClInclude Include="BlockT.h" />
     <ClInclude Include="BlockZ.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Factory.h" />

@@ -58,6 +58,15 @@
       <Filter>Source Files\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="BlockS.cpp">
+      <Filter>Source Files\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockL.cpp">
+      <Filter>Source Files\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockJ.cpp">
+      <Filter>Source Files\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,6 +108,15 @@
       <Filter>Header Files\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="BlockS.h">
+      <Filter>Header Files\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockL.h">
+      <Filter>Header Files\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockJ.h">
+      <Filter>Header Files\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

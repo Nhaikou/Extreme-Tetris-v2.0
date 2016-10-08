@@ -8,6 +8,9 @@
 #include "BlockO.h"
 #include "BlockZ.h"
 #include "BlockS.h"
+#include "BlockL.h"
+#include "BlockJ.h"
+#include "BlockT.h"
 
 class Standard : public State
 {
