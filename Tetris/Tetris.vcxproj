@@ -15,6 +15,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockI.cpp" />
     <ClCompile Include="BlockO.cpp" />
+    <ClCompile Include="BlockS.cpp" />
     <ClCompile Include="BlockZ.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Factory.cpp" />
@@ -29,6 +30,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockI.h" />
     <ClInclude Include="BlockO.h" />
+    <ClInclude Include="BlockS.h" />
     <ClInclude Include="BlockZ.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Factory.h" />

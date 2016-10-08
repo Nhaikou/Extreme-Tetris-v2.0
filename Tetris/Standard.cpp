@@ -74,7 +74,7 @@ void Standard::draw(const float dt)
 
 void Standard::spawnBlock()
 {
-	unsigned randomBlock = 2;//rand() % 3;
+	unsigned randomBlock = 3;//rand() % 3;
 	if (currentBlock != nullptr)
 	{
 		delete currentBlock;
@@ -90,6 +90,10 @@ void Standard::spawnBlock()
 	if (randomBlock == 2)
 	{
 		currentBlock = new BlockZ(board);
+	}
+	if (randomBlock == 3)
+	{
+		currentBlock = new BlockS(board);
 	}
 	if (!currentBlock->spawn())
 	{
