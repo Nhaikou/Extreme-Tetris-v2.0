@@ -15,7 +15,7 @@ void Factory::onInitialize()
 {
 	board = new Board(sf::Vector2u(10, 19), sf::Vector2i(0, -16), sf::Vector2u(3, 2));
 	dropTime.y = 1000;
-	lineTime.y = 800;
+	lineTime.y = 1;
 	spawnBlock();
 }
 
@@ -156,6 +156,11 @@ void Factory::moveLineLeft()
 				{
 					if (i == 0)
 					{
+						if (currentBlock->positions[0] == sf::Vector2i(board->getSize().x - 1, j) || currentBlock->positions[1] == sf::Vector2i(board->getSize().x - 1, j) ||
+							currentBlock->positions[2] == sf::Vector2i(board->getSize().x - 1, j) || currentBlock->positions[3] == sf::Vector2i(board->getSize().x - 1, j))
+						{
+							hitCurrentBlock = true;
+						}
 						board->updatedGrid[board->getSize().x - 1][j].setTexture(board->blockTex);
 						board->updatedGrid[board->getSize().x - 1][j].setColor(board->grid[i][j].getColor());
 					}
@@ -235,6 +240,11 @@ void Factory::moveLineRight()
 				{
 					if (i == board->getSize().x - 1)
 					{
+						if (currentBlock->positions[0] == sf::Vector2i(0, j) || currentBlock->positions[1] == sf::Vector2i(0, j) ||
+							currentBlock->positions[2] == sf::Vector2i(0, j) || currentBlock->positions[3] == sf::Vector2i(0, j))
+						{
+							hitCurrentBlock = true;
+						}
 						board->updatedGrid[0][j].setTexture(board->blockTex);
 						board->updatedGrid[0][j].setColor(board->grid[i][j].getColor());
 					}
