@@ -22,6 +22,11 @@ void Standard::handleInput()
 {
 	if (stateMachine->event.type == sf::Event::KeyPressed)
 	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			stateMachine->popState();
+			return;
+		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			currentBlock->moveLeft();
@@ -74,7 +79,7 @@ void Standard::draw(const float dt)
 
 void Standard::spawnBlock()
 {
-	unsigned randomBlock = rand() % 6;
+	unsigned randomBlock = 5;//rand() % 6;
 	if (currentBlock != nullptr)
 	{
 		delete currentBlock;

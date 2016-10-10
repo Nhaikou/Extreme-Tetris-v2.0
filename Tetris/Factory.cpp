@@ -23,6 +23,11 @@ void Factory::handleInput()
 {
 	if (stateMachine->event.type == sf::Event::KeyPressed)
 	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			stateMachine->popState();
+			return;
+		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			currentBlock->moveLeft();
@@ -89,7 +94,7 @@ void Factory::draw(const float dt)
 
 void Factory::spawnBlock()
 {
-	unsigned randomBlock = rand() % 2;
+	unsigned randomBlock = rand() % 7;
 	if (currentBlock != nullptr)
 	{
 		delete currentBlock;
@@ -101,6 +106,26 @@ void Factory::spawnBlock()
 	if (randomBlock == 1)
 	{
 		currentBlock = new BlockO(board);
+	}
+	if (randomBlock == 2)
+	{
+		currentBlock = new BlockZ(board);
+	}
+	if (randomBlock == 3)
+	{
+		currentBlock = new BlockS(board);
+	}
+	if (randomBlock == 4)
+	{
+		currentBlock = new BlockL(board);
+	}
+	if (randomBlock == 5)
+	{
+		currentBlock = new BlockJ(board);
+	}
+	if (randomBlock == 6)
+	{
+		currentBlock = new BlockT(board);
 	}
 	if (!currentBlock->spawn())
 	{

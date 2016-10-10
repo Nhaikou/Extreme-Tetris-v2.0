@@ -3,8 +3,14 @@
 
 #include "State.h"
 #include "Board.h"
+#include "Block.h"
 #include "BlockI.h"
 #include "BlockO.h"
+#include "BlockZ.h"
+#include "BlockS.h"
+#include "BlockL.h"
+#include "BlockJ.h"
+#include "BlockT.h"
 
 class Factory : public State
 {
