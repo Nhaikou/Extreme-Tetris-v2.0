@@ -2,6 +2,7 @@
 #define MAINMENU_H
 
 #include "State.h"
+#include "Network.h"
 
 class MainMenu : public State
 {
@@ -18,6 +19,6 @@ protected:
 private:
 	sf::Font font;
 	sf::Text text;
-
+	Network *network = nullptr;
 };
 #endif;

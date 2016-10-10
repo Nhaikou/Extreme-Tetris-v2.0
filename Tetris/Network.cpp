@@ -48,6 +48,11 @@ void Network::sendScore()
 
 void Network::receiveBoard(Board *leftBoard, Board *rightBoard)
 {
+	if (packet.getDataSize() == 0)
+	{
+		return;
+	}
+
 	unsigned packetData;
 	Board *adjacentBoard;
 

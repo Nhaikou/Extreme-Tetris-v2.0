@@ -32,7 +32,7 @@ void MainMenu::handleInput()
 	}
 	if (key.isKeyPressed(key.Return))
 	{
-		stateMachine->pushState(new Factory(stateMachine));
+		stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 19), network));
 	}
 
 	text.setString("Main Menu soon...");

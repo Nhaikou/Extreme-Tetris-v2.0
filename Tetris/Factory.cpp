@@ -1,8 +1,10 @@
 #include "Factory.h"
 
-Factory::Factory(StateMachine* sm)
+Factory::Factory(StateMachine* sm, sf::Vector2u size, Network *net)
 {
 	stateMachine = sm;
+	boardSize = size;
+	network = net;
 }
 
 Factory::~Factory()
@@ -13,9 +15,18 @@ Factory::~Factory()
 
 void Factory::onInitialize()
 {
-	board = new Board(sf::Vector2u(10, 19), sf::Vector2i(0, -16), sf::Vector2u(3, 2));
+	if (network == nullptr)
+	{
+		board = new Board(boardSize, sf::Vector2i(0, -1), sf::Vector2u(3, 2));
+	}
+	else
+	{
+		leftBoard = new Board(boardSize, sf::Vector2i(0, -1), sf::Vector2u(3, 2));
+		board = new Board(boardSize, sf::Vector2i(boardSize.x, -1), sf::Vector2u(3, 2));
+		rightBoard = new Board(boardSize, sf::Vector2i(boardSize.x * 2, -1), sf::Vector2u(3, 2));
+	}
 	dropTime.y = 1000;
-	lineTime.y = 1;
+	lineTime.y = 800;
 	spawnBlock();
 }
 
@@ -51,11 +62,17 @@ void Factory::handleInput()
 		{
 			currentBlock->rotate(1);
 		}
+		if (network != nullptr)
+		{
+			network->sendBoard(board);
+		}
 	}
 }
 
 void Factory::update(const float dt)
 {
+	//network->receiveBoard(leftBoard, rightBoard);
+
 	dropTime.x += dt;
 	if (dropTime.x >= dropTime.y)
 	{
@@ -78,6 +95,10 @@ void Factory::update(const float dt)
 		{
 			moveLineRight();
 		}
+		if (network != nullptr)
+		{
+			network->sendBoard(board);
+		}
 	}
 }
 
@@ -88,6 +109,11 @@ void Factory::draw(const float dt)
 		for (int i = 0; i < board->getSize().x; ++i)
 		{
 			stateMachine->window.draw(board->grid[i][j]);
+			if (network != nullptr)
+			{
+				stateMachine->window.draw(leftBoard->grid[i][j]);
+				stateMachine->window.draw(rightBoard->grid[i][j]);
+			}
 		}
 	}
 }

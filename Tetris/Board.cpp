@@ -8,7 +8,7 @@ Board::Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn)
 	block.setTexture(emptyTex);
 
 	boardSize = size;
-	boardPosition = boardPos;
+	boardPosition = sf::Vector2i(boardPos.x * block.getGlobalBounds().width, boardPos.y * block.getGlobalBounds().height);
 	spawnPoint = spawn;
 
 	grid.resize(boardSize.x);

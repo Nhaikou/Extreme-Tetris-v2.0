@@ -1,6 +1,7 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
+#include "Network.h"
 #include "State.h"
 #include "Board.h"
 #include "Block.h"
@@ -15,7 +16,7 @@
 class Factory : public State
 {
 public:
-	Factory(StateMachine* sm);
+	Factory(StateMachine* sm, sf::Vector2u size, Network *net);
 	~Factory();
 
 	void handleInput();
@@ -30,9 +31,11 @@ protected:
 	void onInitialize();
 
 private:
+	Network *network = nullptr;
 	int lineDirection = 1;
+	sf::Vector2u boardSize;
 	sf::Vector2f dropTime = { 0, 0 }, lineTime = { 0, 0 };
-	Board *board = nullptr;
+	Board *board = nullptr, *leftBoard = nullptr, *rightBoard = nullptr;
 	Block *currentBlock = nullptr;
 };
 

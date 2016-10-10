@@ -13,7 +13,7 @@ Standard::~Standard()
 
 void Standard::onInitialize()
 {
-	board = new Board(sf::Vector2u(10, 19), sf::Vector2i(0, -16), sf::Vector2u(3, 2));
+	board = new Board(sf::Vector2u(10, 19), sf::Vector2i(0, -1), sf::Vector2u(3, 2));
 	dropTime.y = 1000;
 	spawnBlock();
 }
