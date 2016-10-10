@@ -5,6 +5,7 @@
 #include <SFML/Network.hpp>
 
 #include "Board.h"
+#include <iostream>
 
 class Network
 {
@@ -19,6 +20,8 @@ public:
 	void receiveScore(); // Receive an updated score from another player and update scores accordingly
 
 private:
+	sf::IpAddress ip;
+	sf::TcpSocket socket;
 	sf::Packet packet; // Contains the variables that are sent between client and server
 	unsigned playerNumber; // Client's number that the server keeps track of
 };

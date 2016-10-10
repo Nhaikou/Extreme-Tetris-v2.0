@@ -3,6 +3,9 @@
 
 Network::Network()
 {
+	ip = sf::IpAddress::getLocalAddress();
+	socket.connect(ip, 2000);
+	socket.setBlocking(false);
 }
 
 
@@ -12,8 +15,6 @@ Network::~Network()
 
 void Network::sendBoard(Board *board)
 {
-	packet << playerNumber;
-
 	for (int j = 0; j < board->getSize().y; ++j)
 	{
 		for (int i = 0; i < board->getSize().x; ++i)
@@ -36,9 +37,26 @@ void Network::sendBoard(Board *board)
 				{
 					packet << 3;
 				}
+				else if (board->grid[i][j].getColor() == sf::Color::Green)
+				{
+					packet << 4;
+				}
+				else if (board->grid[i][j].getColor() == sf::Color(255, 130, 0))
+				{
+					packet << 5;
+				}
+				else if (board->grid[i][j].getColor() == sf::Color::Blue)
+				{
+					packet << 6;
+				}
+				else if (board->grid[i][j].getColor() == sf::Color::Magenta)
+				{
+					packet << 7;
+				}
 			}
 		}
 	}
+	socket.send(packet);
 }
 
 void Network::sendScore()
@@ -48,6 +66,7 @@ void Network::sendScore()
 
 void Network::receiveBoard(Board *leftBoard, Board *rightBoard)
 {
+	socket.receive(packet);
 	if (packet.getDataSize() == 0)
 	{
 		return;
@@ -65,6 +84,7 @@ void Network::receiveBoard(Board *leftBoard, Board *rightBoard)
 	{
 		adjacentBoard = rightBoard;
 	}
+	std::cout << adjacentBoard << std::endl;
 
 	for (int j = 0; j < adjacentBoard->getSize().y; ++j)
 	{
@@ -89,6 +109,22 @@ void Network::receiveBoard(Board *leftBoard, Board *rightBoard)
 				else if (packetData == 3)
 				{
 					adjacentBoard->grid[i][j].setColor(sf::Color::Red);
+				}
+				else if (packetData == 4)
+				{
+					adjacentBoard->grid[i][j].setColor(sf::Color::Green);
+				}
+				else if (packetData == 5)
+				{
+					adjacentBoard->grid[i][j].setColor(sf::Color(255, 130, 0));
+				}
+				else if (packetData == 6)
+				{
+					adjacentBoard->grid[i][j].setColor(sf::Color::Blue);
+				}
+				else if (packetData == 7)
+				{
+					adjacentBoard->grid[i][j].setColor(sf::Color::Magenta);
 				}
 			}
 		}

@@ -34,6 +34,11 @@ void MainMenu::handleInput()
 	{
 		stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 19), network));
 	}
+	if (key.isKeyPressed(key.N))
+	{
+		network = new Network;
+		stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 19), network));
+	}
 
 	text.setString("Main Menu soon...");
 	text.setCharacterSize(48);

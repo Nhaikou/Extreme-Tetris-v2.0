@@ -2,21 +2,24 @@
 
 Board::Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn)
 {
+	// Resource loading
 	blockTex.loadFromFile("../Assets/Block.png");
 	block.setTexture(blockTex);
-	emptyTex.create(blockTex.getSize().x, blockTex.getSize().y);
+	emptyTex.create(blockTex.getSize().x, blockTex.getSize().y); // Create an empty texture that is the same size as Block.png
 	block.setTexture(emptyTex);
 
 	boardSize = size;
-	boardPosition = sf::Vector2i(boardPos.x * block.getGlobalBounds().width, boardPos.y * block.getGlobalBounds().height);
+	boardPosition = sf::Vector2i(boardPos.x * block.getGlobalBounds().width, boardPos.y * block.getGlobalBounds().height); // The position varies according to the texture's size
 	spawnPoint = spawn;
 
+	// Resizing the grid to fit all the blocks
 	grid.resize(boardSize.x);
 	for (int i = 0; i < boardSize.x; ++i)
 	{
 		grid[i].resize(boardSize.y);
 	}
 
+	// Putting the blocks to their places with an empty texture
 	for (int j = 0; j < boardSize.y; j++)
 	{
 		for (int i = 0; i < boardSize.x; i++)
@@ -26,7 +29,10 @@ Board::Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn)
 		}
 	}
 
+	// UpdatedGrid is the same as grid until it's needed somewhere else
 	updatedGrid = grid;
+
+	// Our grid is now ready and all we need to do now is to change textures and colors to make it look like the blocks are moving
 }
 
 Board::~Board()

@@ -11,9 +11,6 @@ public:
 	Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn);
 	~Board();
 
-	void moveLineLeft();
-	void moveLineRight();
-
 	sf::Vector2u getSize();
 	sf::Vector2i getBoardPosition();
 	sf::Vector2u getSpawnPoint();
