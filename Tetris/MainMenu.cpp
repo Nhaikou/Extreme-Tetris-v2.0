@@ -26,6 +26,11 @@ void MainMenu::handleInput()
 {
 	sf::Keyboard key;
 
+	// Close program
+	if (key.isKeyPressed(key.BackSpace))
+	{
+		stateMachine->window.close();
+	}
 	if (key.isKeyPressed(key.Space))
 	{
 		stateMachine->pushState(new Standard(stateMachine));

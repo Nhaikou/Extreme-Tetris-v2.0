@@ -80,7 +80,7 @@ void BlockJ::rotate(int direction)
 
 			rotation = 2;
 		}
-		else if (rotation == 2 && board->grid[positions[0].x + 1][positions[0].y + 1].getTexture() == &board->emptyTex &&
+		else if (rotation == 2 && positions[1].y + 1 < board->getSize().y && board->grid[positions[0].x + 1][positions[0].y + 1].getTexture() == &board->emptyTex &&
 			board->grid[positions[1].x][positions[1].y].getTexture() == &board->emptyTex &&
 			board->grid[positions[2].x - 1][positions[2].y - 1].getTexture() == &board->emptyTex &&
 			board->grid[positions[3].x + 2][positions[3].y].getTexture() == &board->emptyTex)
@@ -133,7 +133,7 @@ void BlockJ::rotate(int direction)
 
 			rotation = 0;
 		}
-		else if (rotation == 2 && board->grid[positions[0].x][positions[0].y + 1].getTexture() == &board->emptyTex &&
+		else if (rotation == 2 && positions[1].y + 1 < board->getSize().y && board->grid[positions[0].x][positions[0].y + 1].getTexture() == &board->emptyTex &&
 			board->grid[positions[1].x][positions[1].y + 1].getTexture() == &board->emptyTex &&
 			board->grid[positions[2].x - 1][positions[2].y].getTexture() == &board->emptyTex &&
 			board->grid[positions[3].x + 1][positions[3].y].getTexture() == &board->emptyTex)

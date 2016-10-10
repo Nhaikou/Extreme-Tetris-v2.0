@@ -67,7 +67,7 @@
       <Filter>Source Files\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="BlockT.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Blocks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +117,7 @@
       <Filter>Header Files\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="BlockT.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Blocks</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

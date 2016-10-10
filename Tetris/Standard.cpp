@@ -79,7 +79,7 @@ void Standard::draw(const float dt)
 
 void Standard::spawnBlock()
 {
-	unsigned randomBlock = 5;//rand() % 6;
+	unsigned randomBlock = rand() % 7;
 	if (currentBlock != nullptr)
 	{
 		delete currentBlock;
