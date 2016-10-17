@@ -22,8 +22,8 @@ void Factory::onInitialize()
 	else
 	{
 		leftBoard = new Board(boardSize, sf::Vector2i(0, -1), sf::Vector2u(3, 2));
-		board = new Board(boardSize, sf::Vector2i(boardSize.x + 1, -1), sf::Vector2u(3, 2));
-		rightBoard = new Board(boardSize, sf::Vector2i(boardSize.x * 2 + 2, -1), sf::Vector2u(3, 2));
+		board = new Board(boardSize, sf::Vector2i(boardSize.x, -1), sf::Vector2u(3, 2));
+		rightBoard = new Board(boardSize, sf::Vector2i(boardSize.x * 2, -1), sf::Vector2u(3, 2));
 	}
 	dropTime.y = 1000;
 	lineTime.y = 800;
@@ -78,6 +78,10 @@ void Factory::update(const float dt)
 		if (!currentBlock->moveDown())
 		{
 			spawnBlock();
+		}
+		if (network != nullptr)
+		{
+			network->sendBoard(board);
 		}
 	}
 

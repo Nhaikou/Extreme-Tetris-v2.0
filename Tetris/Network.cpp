@@ -4,7 +4,13 @@
 Network::Network()
 {
 	ip = sf::IpAddress::getLocalAddress();
+
 	socket.connect(ip, 2000);
+
+	std::cout << "Waiting for an answer from server...";
+	socket.receive(packet);
+
+	std::cout << "Continue";
 	socket.setBlocking(false);
 }
 
