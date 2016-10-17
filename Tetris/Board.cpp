@@ -20,9 +20,9 @@ Board::Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn)
 	}
 
 	// Putting the blocks to their places with an empty texture
-	for (int j = 0; j < boardSize.y; j++)
+	for (int j = 0; j < boardSize.y; ++j)
 	{
-		for (int i = 0; i < boardSize.x; i++)
+		for (int i = 0; i < boardSize.x; ++i)
 		{
 			grid[i][j] = block;
 			grid[i][j].setPosition(boardPosition.x + block.getGlobalBounds().width * i, boardPosition.y + block.getGlobalBounds().height * j);
@@ -53,4 +53,43 @@ sf::Vector2i Board::getBoardPosition()
 sf::Vector2u Board::getSpawnPoint()
 {
 	return spawnPoint;
+}
+
+unsigned Board::clearRow()
+{
+	unsigned counter = 0;
+	unsigned clearedRows = 0;
+
+	for (int j = 0; j < boardSize.y; ++j)
+	{
+		for (int i = 0; i < boardSize.x; ++i)
+		{
+			if (grid[i][j].getTexture() == &blockTex)
+			{
+				++counter;
+				if (counter == boardSize.x)
+				{
+					for (int k = 0; k < boardSize.x; ++k)
+					{
+						grid[k][j].setTexture(emptyTex);
+					}
+					dropRow(j);
+					clearedRows++;
+				}
+			}
+		}
+		counter = 0;
+	}
+	return clearedRows;
+}
+
+void Board::dropRow(int y)
+{
+	for (int j = y; j > 0; --j)
+	{
+		for (int i = 0; i < boardSize.x; ++i)
+		{
+			grid[i][j].setTexture(*grid[i][j - 1].getTexture());
+		}
+	}
 }

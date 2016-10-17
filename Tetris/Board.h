@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
+#include <iostream>
 
 class Board
 {
@@ -14,6 +15,9 @@ public:
 	sf::Vector2u getSize();
 	sf::Vector2i getBoardPosition();
 	sf::Vector2u getSpawnPoint();
+
+	unsigned clearRow();
+	void dropRow(int y);
 
 	std::vector<std::vector<sf::Sprite>> grid, updatedGrid;
 	sf::Texture blockTex, emptyTex;

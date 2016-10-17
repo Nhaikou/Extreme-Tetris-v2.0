@@ -79,6 +79,7 @@ void Standard::draw(const float dt)
 
 void Standard::spawnBlock()
 {
+	board->clearRow();
 	unsigned randomBlock = rand() % 7;
 	if (currentBlock != nullptr)
 	{
