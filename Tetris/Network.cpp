@@ -72,7 +72,7 @@ void Network::receiveBoard(Board *leftBoard, Board *rightBoard)
 		return;
 	}
 
-	unsigned packetData;
+	int packetData;
 	Board *adjacentBoard;
 
 	packet >> packetData;
@@ -84,7 +84,8 @@ void Network::receiveBoard(Board *leftBoard, Board *rightBoard)
 	{
 		adjacentBoard = rightBoard;
 	}
-	std::cout << adjacentBoard << std::endl;
+
+	socket.receive(packet);
 
 	for (int j = 0; j < adjacentBoard->getSize().y; ++j)
 	{

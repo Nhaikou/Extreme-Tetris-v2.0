@@ -71,12 +71,6 @@ void Factory::handleInput()
 
 void Factory::update(const float dt)
 {
-	if (network != nullptr)
-	{
-		network->receiveBoard(leftBoard, rightBoard);
-		network->receiveScore();
-	}
-
 	dropTime.x += dt;
 	if (dropTime.x >= dropTime.y)
 	{
@@ -103,6 +97,12 @@ void Factory::update(const float dt)
 		{
 			network->sendBoard(board);
 		}
+	}
+
+	if (network != nullptr)
+	{
+		network->receiveBoard(leftBoard, rightBoard);
+		network->receiveScore();
 	}
 }
 
