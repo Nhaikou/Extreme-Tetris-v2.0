@@ -90,6 +90,7 @@ void Board::dropRow(int y)
 		for (int i = 0; i < boardSize.x; ++i)
 		{
 			grid[i][j].setTexture(*grid[i][j - 1].getTexture());
+			grid[i][j].setColor(grid[i][j - 1].getColor());
 		}
 	}
 }
