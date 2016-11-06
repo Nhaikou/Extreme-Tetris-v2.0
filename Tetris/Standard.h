@@ -29,7 +29,7 @@ protected:
 
 private:
 	sf::Vector2f dropTime = { 0, 0 };
-
+	unsigned int counter = 0;
 	Board *board = nullptr;
 	Block *currentBlock = nullptr;
 };

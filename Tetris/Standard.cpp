@@ -15,6 +15,7 @@ void Standard::onInitialize()
 {
 	board = new Board(sf::Vector2u(10, 19), sf::Vector2i(0, -1), sf::Vector2u(3, 2));
 	dropTime.y = 1000;
+	counter = 0;
 	spawnBlock();
 }
 
@@ -61,6 +62,12 @@ void Standard::update(const float dt)
 		dropTime.x = 0;
 		if (!currentBlock->moveDown())
 		{
+			counter += board->clearRow();
+			if (counter == 1)
+			{
+				dropTime.y -= 500;
+				counter = 0;
+			}
 			spawnBlock();
 		}
 	}

@@ -93,7 +93,7 @@ void BlockL::rotate(int direction)
 
 			rotation = 3;
 		}
-		else if (rotation == 3 && positions[1].x > 0 && board->grid[positions[0].x - 1][positions[0].y].getTexture() == &board->emptyTex &&
+		else if (rotation == 3 && positions[2].x > 0 && board->grid[positions[0].x - 1][positions[0].y].getTexture() == &board->emptyTex &&
 			board->grid[positions[1].x - 2][positions[1].y - 1].getTexture() == &board->emptyTex &&
 			board->grid[positions[2].x][positions[2].y].getTexture() == &board->emptyTex &&
 			board->grid[positions[3].x + 1][positions[3].y + 1].getTexture() == &board->emptyTex)
