@@ -14,10 +14,10 @@ Standard::~Standard()
 void Standard::onInitialize()
 {
 	board = new Board(sf::Vector2u(10, 19), sf::Vector2i(0, -1), sf::Vector2u(3, 2));
-	dropTime.y = 1000;
-	counter = 0;
-	overCounter = 20;
-	dropTimeReduction = 100;
+	board->dropTime.y = 1000;
+	board->counter = 0;
+	board->maxRows;
+	board->dropTimeReduction;
 	spawnBlock();
 }
 
@@ -58,10 +58,10 @@ void Standard::handleInput()
 
 void Standard::update(const float dt)
 {
-	dropTime.x += dt;
-	if (dropTime.x >= dropTime.y)
+	board->dropTime.x += dt;
+	if (board->dropTime.x >= board->dropTime.y)
 	{
-		dropTime.x = 0;
+		board->dropTime.x = 0;
 		if (!currentBlock->moveDown())
 		{
 			spawnBlock();
@@ -82,12 +82,12 @@ void Standard::draw(const float dt)
 
 void Standard::spawnBlock()
 {
-	counter += board->clearRow();
-	if (counter >= overCounter)
+	board->counter += board->clearRow();
+	if (board->counter >= board->maxRows)
 	{
-		dropTime.y -= dropTimeReduction;
-		counter -= overCounter;
-		std::cout << "Current drop speed: " << dropTime.y << std::endl;
+		board->dropTime.y -= board->dropTimeReduction;
+		board->counter -= board->maxRows;
+		std::cout << "Current drop speed: " << board->dropTime.y << std::endl;
 	}
 
 	unsigned randomBlock = bag.getNextBlock();

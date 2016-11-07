@@ -29,10 +29,6 @@ protected:
 	void onInitialize();
 
 private:
-	sf::Vector2f dropTime = { 0, 0 };
-	unsigned int counter = 0;
-	unsigned int overCounter = 0;
-	unsigned int dropTimeReduction = 0;
 	Board *board = nullptr;
 	Block *currentBlock = nullptr;
 	Bag bag;
