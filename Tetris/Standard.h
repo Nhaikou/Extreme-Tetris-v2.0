@@ -13,6 +13,8 @@
 #include "BlockT.h"
 #include "Bag.h"
 
+#include <sstream>
+
 class Standard : public State
 {
 public:
@@ -32,6 +34,9 @@ private:
 	Board *board = nullptr;
 	Block *currentBlock = nullptr;
 	Bag bag;
+	sf::Font font;
+	sf::Text scoreText;
+	std::stringstream ss;
 };
 
 #endif

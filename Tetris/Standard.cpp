@@ -13,12 +13,21 @@ Standard::~Standard()
 
 void Standard::onInitialize()
 {
-	board = new Board(sf::Vector2u(10, 19), sf::Vector2i(0, -1), sf::Vector2u(3, 2));
+	board = new Board(sf::Vector2u(10, 20), sf::Vector2i(0, -1), sf::Vector2u(3, 3));
 	board->dropTime.y = 1000;
 	board->counter = 0;
 	board->maxRows;
 	board->dropTimeReduction;
 	spawnBlock();
+
+	if (!font.loadFromFile("../Assets/8bitOperatorPlus8-Bold.ttf"))
+	{
+		std::cout << "Error loading font" << std::endl;
+	}
+	scoreText.setFont(font);
+	scoreText.setColor(sf::Color::White);
+	scoreText.setCharacterSize(12);
+	scoreText.setPosition(300, 10);
 }
 
 void Standard::handleInput()
@@ -58,6 +67,9 @@ void Standard::handleInput()
 
 void Standard::update(const float dt)
 {
+	ss.str("");
+	ss << board->getScore();
+	scoreText.setString(ss.str());
 	board->dropTime.x += dt;
 	if (board->dropTime.x >= board->dropTime.y)
 	{
@@ -77,7 +89,8 @@ void Standard::draw(const float dt)
 		{
 			stateMachine->window.draw(board->grid[i][j]);
 		}
-	} 
+	}
+	stateMachine->window.draw(scoreText);
 }
 
 void Standard::spawnBlock()

@@ -17,13 +17,13 @@ void Factory::onInitialize()
 {
 	if (network == nullptr)
 	{
-		board = new Board(boardSize, sf::Vector2i(0, -1), sf::Vector2u(3, 2));
+		board = new Board(boardSize, sf::Vector2i(0, -2), sf::Vector2u(3, 3));
 	}
 	else
 	{
-		leftBoard = new Board(boardSize, sf::Vector2i(0, -1), sf::Vector2u(3, 2));
-		board = new Board(boardSize, sf::Vector2i(boardSize.x, -1), sf::Vector2u(3, 2));
-		rightBoard = new Board(boardSize, sf::Vector2i(boardSize.x * 2, -1), sf::Vector2u(3, 2));
+		leftBoard = new Board(boardSize, sf::Vector2i(0, -1), sf::Vector2u(3, 3));
+		board = new Board(boardSize, sf::Vector2i(boardSize.x, -1), sf::Vector2u(3, 3));
+		rightBoard = new Board(boardSize, sf::Vector2i(boardSize.x * 2, -1), sf::Vector2u(3, 3));
 	}
 	dropTime.y = 1000;
 	lineTime.y = 800;

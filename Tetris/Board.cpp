@@ -33,6 +33,12 @@ Board::Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn)
 	updatedGrid = grid;
 
 	// Our grid is now ready and all we need to do now is to change textures and colors to make it look like the blocks are moving
+
+	// Initializing points gained by clearing rows
+	pointsPerRow.push_back(40);		// One row cleared
+	pointsPerRow.push_back(100);	// Two rows cleared
+	pointsPerRow.push_back(300);	// Three rows cleared
+	pointsPerRow.push_back(1200);	// Four rows cleared
 }
 
 Board::~Board()
@@ -53,6 +59,26 @@ sf::Vector2i Board::getBoardPosition()
 sf::Vector2u Board::getSpawnPoint()
 {
 	return spawnPoint;
+}
+
+unsigned Board::getScore()
+{
+	return score;
+}
+
+unsigned Board::getLevel()
+{
+	return level;
+}
+
+void Board::setScore(unsigned scr)
+{
+	score = scr;
+}
+
+void Board::setLevel(unsigned lvl)
+{
+	level = lvl;
 }
 
 unsigned Board::clearRow()
@@ -80,6 +106,12 @@ unsigned Board::clearRow()
 		}
 		counter = 0;
 	}
+
+	if (clearedRows > 0)
+	{
+		score += pointsPerRow[clearedRows - 1] * (level + 1);
+	}
+
 	return clearedRows;
 }
 

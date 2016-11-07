@@ -15,9 +15,13 @@ public:
 	sf::Vector2u getSize();
 	sf::Vector2i getBoardPosition();
 	sf::Vector2u getSpawnPoint();
+	unsigned getScore();
+	unsigned getLevel();
 
 	unsigned clearRow();
 	void dropRow(int y);
+	void setScore(unsigned scr);
+	void setLevel(unsigned lvl);
 
 	std::vector<std::vector<sf::Sprite>> grid, updatedGrid;
 	sf::Texture blockTex, emptyTex;
@@ -31,6 +35,8 @@ private:
 	sf::Sprite block;
 	sf::Vector2u boardSize, spawnPoint;
 	sf::Vector2i boardPosition;
+	unsigned level = 0, score = 0;
+	std::vector<unsigned> pointsPerRow;
 };
 
 #endif
