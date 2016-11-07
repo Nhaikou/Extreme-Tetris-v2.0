@@ -64,12 +64,6 @@ void Standard::update(const float dt)
 		dropTime.x = 0;
 		if (!currentBlock->moveDown())
 		{
-			counter += board->clearRow();
-			if (counter >= overCounter)
-			{
-				dropTime.y -= dropTimeReduction;
-				counter -= overCounter;
-			}
 			spawnBlock();
 		}
 	}
@@ -88,7 +82,14 @@ void Standard::draw(const float dt)
 
 void Standard::spawnBlock()
 {
-	board->clearRow();
+	counter += board->clearRow();
+	if (counter >= overCounter)
+	{
+		dropTime.y -= dropTimeReduction;
+		counter -= overCounter;
+		std::cout << "Current drop speed: " << dropTime.y << std::endl;
+	}
+
 	unsigned randomBlock = bag.getNextBlock();
 	if (currentBlock != nullptr)
 	{
