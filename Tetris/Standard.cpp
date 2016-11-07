@@ -16,6 +16,8 @@ void Standard::onInitialize()
 	board = new Board(sf::Vector2u(10, 19), sf::Vector2i(0, -1), sf::Vector2u(3, 2));
 	dropTime.y = 1000;
 	counter = 0;
+	overCounter = 20;
+	dropTimeReduction = 100;
 	spawnBlock();
 }
 
@@ -63,10 +65,10 @@ void Standard::update(const float dt)
 		if (!currentBlock->moveDown())
 		{
 			counter += board->clearRow();
-			if (counter == 1)
+			if (counter >= overCounter)
 			{
-				dropTime.y -= 500;
-				counter = 0;
+				dropTime.y -= dropTimeReduction;
+				counter -= overCounter;
 			}
 			spawnBlock();
 		}
