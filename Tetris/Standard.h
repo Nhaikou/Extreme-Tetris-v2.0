@@ -11,6 +11,7 @@
 #include "BlockL.h"
 #include "BlockJ.h"
 #include "BlockT.h"
+#include "Bag.h"
 
 class Standard : public State
 {
@@ -34,6 +35,7 @@ private:
 	unsigned int dropTimeReduction = 0;
 	Board *board = nullptr;
 	Block *currentBlock = nullptr;
+	Bag bag;
 };
 
 #endif

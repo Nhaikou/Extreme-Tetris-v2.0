@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="Bag.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockI.cpp" />
     <ClCompile Include="BlockJ.cpp" />
@@ -31,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="Bag.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockI.h" />
     <ClInclude Include="BlockJ.h" />

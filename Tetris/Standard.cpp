@@ -89,7 +89,7 @@ void Standard::draw(const float dt)
 void Standard::spawnBlock()
 {
 	board->clearRow();
-	unsigned randomBlock = rand() % 7;
+	unsigned randomBlock = bag.getNextBlock();
 	if (currentBlock != nullptr)
 	{
 		delete currentBlock;
