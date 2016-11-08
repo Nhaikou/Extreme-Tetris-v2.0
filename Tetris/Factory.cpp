@@ -133,7 +133,16 @@ void Factory::spawnBlock()
 		network->sendScore();
 	}
 
-	unsigned randomBlock = rand() % 7;
+	board->counter += board->clearRow();
+	if (board->counter >= board->maxRows)
+	{
+		board->dropTime.y -= board->dropTimeReduction;
+		board->counter -= board->maxRows;
+		std::cout << "Current drop speed: " << board->dropTime.y << std::endl;
+	}
+
+
+	unsigned randomBlock = bag.getNextBlock();
 	if (currentBlock != nullptr)
 	{
 		delete currentBlock;

@@ -1,6 +1,7 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
+#include "Bag.h"
 #include "Network.h"
 #include "State.h"
 #include "Board.h"
@@ -31,6 +32,7 @@ protected:
 	void onInitialize();
 
 private:
+	Bag bag;
 	Network *network = nullptr;
 	int lineDirection = 1;
 	sf::Vector2u boardSize;
