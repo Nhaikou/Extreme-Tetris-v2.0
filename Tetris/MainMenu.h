@@ -3,6 +3,7 @@
 
 #include "State.h"
 #include "Network.h"
+#include "Server.h"
 
 class MainMenu : public State
 {
@@ -17,8 +18,14 @@ public:
 protected:
 	void onInitialize();
 private:
+	Server server;
 	sf::Font font;
 	sf::Text text;
 	Network *network = nullptr;
+	unsigned clientKey = 0;
+	sf::Image image;
+	sf::Texture tex;
+	sf::Sprite spr;
+	float timer = 0;
 };
 #endif;
