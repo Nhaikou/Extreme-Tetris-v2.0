@@ -1,10 +1,10 @@
 #include "Factory.h"
 
-Factory::Factory(StateMachine* sm, sf::Vector2u size, Network *net)
+Factory::Factory(StateMachine* sm, sf::Vector2u size, Server *srvr)
 {
 	stateMachine = sm;
 	boardSize = size;
-	network = net;
+	server = srvr;
 }
 
 Factory::~Factory()
@@ -15,7 +15,7 @@ Factory::~Factory()
 
 void Factory::onInitialize()
 {
-	if (network == nullptr)
+	if (server == nullptr)
 	{
 		board = new Board(boardSize, sf::Vector2i(0, -2), sf::Vector2u(3, 3));
 	}
@@ -62,15 +62,13 @@ void Factory::handleInput()
 		{
 			currentBlock->rotate(1);
 		}
-		if (network != nullptr)
-		{
-			network->sendBoard(board);
-		}
 	}
 }
 
 void Factory::update(const float dt)
 {
+	server->sendRenderTexture(sf::Vector2f(0, 0), stateMachine->window.getSize());
+
 	dropTime.x += dt;
 	if (dropTime.x >= dropTime.y)
 	{
@@ -78,10 +76,6 @@ void Factory::update(const float dt)
 		if (!currentBlock->moveDown())
 		{
 			spawnBlock();
-		}
-		if (network != nullptr)
-		{
-			network->sendBoard(board);
 		}
 	}
 
@@ -97,16 +91,6 @@ void Factory::update(const float dt)
 		{
 			moveLineRight();
 		}
-		if (network != nullptr)
-		{
-			network->sendBoard(board);
-		}
-	}
-
-	if (network != nullptr)
-	{
-		network->receiveBoard(leftBoard, rightBoard);
-		network->receiveScore();
 	}
 }
 
@@ -117,22 +101,13 @@ void Factory::draw(const float dt)
 		for (int i = 0; i < board->getSize().x; ++i)
 		{
 			stateMachine->window.draw(board->grid[i][j]);
-			if (network != nullptr)
-			{
-				stateMachine->window.draw(leftBoard->grid[i][j]);
-				stateMachine->window.draw(rightBoard->grid[i][j]);
-			}
+			server->renderTexture.draw(board->grid[i][j]);
 		}
 	}
 }
 
 void Factory::spawnBlock()
 {
-	if (network != nullptr)
-	{
-		network->sendScore();
-	}
-
 	board->counter += board->clearRow();
 	if (board->counter >= board->maxRows)
 	{

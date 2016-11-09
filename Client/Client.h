@@ -27,7 +27,8 @@ private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 	sf::Image image;
-	sf::Vector2u windowSize;
+	sf::Vector2f texturePosition;
+	sf::Vector2u textureSize;
 	sf::Color color;
 };
 #endif;

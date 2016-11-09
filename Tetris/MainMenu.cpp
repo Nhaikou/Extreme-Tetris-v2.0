@@ -5,6 +5,7 @@
 MainMenu::MainMenu(StateMachine* sm)
 {
 	stateMachine = sm;
+	server = new Server();
 }
 
 MainMenu::~MainMenu()
@@ -27,7 +28,6 @@ void MainMenu::onInitialize()
 
 	tex.loadFromFile("../Assets/Block.png");
 	spr.setTexture(tex);
-	spr.move(-1, -1);
 
 	sf::Texture tex2;
 	sf::RenderTexture renderTexture;
@@ -51,14 +51,9 @@ void MainMenu::handleInput()
 	{
 		stateMachine->pushState(new Standard(stateMachine));
 	}
-	if (key.isKeyPressed(key.Return))
+	if (key.isKeyPressed(key.F))
 	{
-		//stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 20), network));
-	}
-	if (key.isKeyPressed(key.N))
-	{
-		//network = new Network;
-		//stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 20), network));
+		stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 20), server));
 	}
 }
 
@@ -67,38 +62,28 @@ void MainMenu::update(const float dt)
 	timer += dt;
 	if (timer >= 1000)
 	{
-		server.packet.clear();
-		server.packet << stateMachine->window.getSize().x << stateMachine->window.getSize().y;
-		server.texture = server.renderTexture.getTexture();
-		image = server.texture.copyToImage();
+		server->sendRenderTexture(text.getPosition(), sf::Vector2u(500, 100));
+	}
 
-		for (int j = 0; j < image.getSize().y; ++j)
+	for (int i = 0; i < server->clients.size(); ++i)
+	{
+		clientKey = server->receiveButtonPress(i);
+		if (clientKey != -1)
 		{
-			for (int i = 0; i < image.getSize().x; ++i)
+			if (clientKey == sf::Keyboard::Escape)
 			{
-				server.packet << image.getPixel(i, j).r << image.getPixel(i, j).g << image.getPixel(i, j).b << image.getPixel(i, j).a;
+				stateMachine->window.close();
 			}
+			if (clientKey == sf::Keyboard::F)
+			{
+				stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 20), server));
+			}
+			else
+			{
+				std::cout << "Client " << i << " pressed button " << clientKey << std::endl;
+			}
+			clientKey = -1;
 		}
-		server.clients[0]->send(server.packet);
-	}
-
-	server.clients[0]->receive(server.packet);
-	if (server.packet.getDataSize() == 0)
-	{
-		return;
-	}
-	server.packet >> clientKey;
-
-	if (clientKey != 0)
-	{
-		std::cout << clientKey << std::endl;
-
-		if (clientKey == sf::Keyboard::Escape)
-		{
-			stateMachine->window.close();
-		}
-
-		clientKey = 0;
 	}
 }
 
@@ -106,9 +91,9 @@ void MainMenu::draw(const float dt)
 {
 	stateMachine->window.draw(text);
 	stateMachine->window.draw(spr);
-	server.renderTexture.create(stateMachine->window.getSize().x, stateMachine->window.getSize().y);
-	server.renderTexture.clear(sf::Color::Black);
-	server.renderTexture.draw(text);
-	server.renderTexture.draw(spr);
-	server.renderTexture.display();
+	server->renderTexture.create(stateMachine->window.getSize().x, stateMachine->window.getSize().y);
+	server->renderTexture.clear(sf::Color::Black);
+	server->renderTexture.draw(text);
+	server->renderTexture.draw(spr);
+	server->renderTexture.display();
 }

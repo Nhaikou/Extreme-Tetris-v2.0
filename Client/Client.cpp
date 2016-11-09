@@ -35,16 +35,13 @@ void Client::update(const float dt)
 		return;
 	}
 
-	packet >> windowSize.x >> windowSize.y;
-	if (windowSize != stateMachine->window.getSize())
-	{
-		stateMachine->window.setSize(windowSize);
-	}
-	image.create(windowSize.x, windowSize.y);
+	packet >> texturePosition.x >> texturePosition.y;
+	packet >> textureSize.x >> textureSize.y;
+	image.create(textureSize.x, textureSize.y);
 
-	for (int j = 0; j < windowSize.y; ++j)
+	for (int j = 0; j < textureSize.y; ++j)
 	{
-		for (int i = 0; i < windowSize.x; ++i)
+		for (int i = 0; i < textureSize.x; ++i)
 		{
 			packet >> color.r >> color.g >> color.b >> color.a;
 			image.setPixel(i, j, color);
@@ -54,6 +51,7 @@ void Client::update(const float dt)
 	texture.loadFromImage(image);
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y));
+	sprite.setPosition(texturePosition);
 }
 
 void Client::draw(const float dt)

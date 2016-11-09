@@ -52,3 +52,36 @@ void Server::findPlayers()
 		}
 	}
 }
+
+void Server::sendRenderTexture(sf::Vector2f position, sf::Vector2u size)
+{
+	packet.clear();
+	packet << position.x << position.y;
+	packet << size.x << size.y;
+	texture = renderTexture.getTexture();
+	image = texture.copyToImage();
+
+	for (int j = 0; j < size.y; ++j)
+	{
+		for (int i = 0; i < size.x; ++i)
+		{
+			packet << image.getPixel(position.x + i, position.y + j).r << image.getPixel(position.x + i, position.y + j).g << image.getPixel(position.x + i, position.y + j).b << image.getPixel(position.x + i, position.y + j).a;
+		}
+	}
+	for (int i = 0; i < clients.size(); i++)
+	{
+		clients[i]->send(packet);
+	}
+}
+
+int Server::receiveButtonPress(unsigned id)
+{
+	int key;
+	clients[id]->receive(packet);
+	if (packet.getDataSize() == 0)
+	{
+		return -1;
+	}
+	packet >> key;
+	return key;
+}

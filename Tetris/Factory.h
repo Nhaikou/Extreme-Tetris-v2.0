@@ -2,7 +2,7 @@
 #define FACTORY_H
 
 #include "Bag.h"
-#include "Network.h"
+#include "Server.h"
 #include "State.h"
 #include "Board.h"
 #include "Block.h"
@@ -17,7 +17,7 @@
 class Factory : public State
 {
 public:
-	Factory(StateMachine* sm, sf::Vector2u size, Network *net);
+	Factory(StateMachine* sm, sf::Vector2u size, Server *srvr);
 	~Factory();
 
 	void handleInput();
@@ -33,7 +33,7 @@ protected:
 
 private:
 	Bag bag;
-	Network *network = nullptr;
+	Server *server = nullptr;
 	int lineDirection = 1;
 	sf::Vector2u boardSize;
 	sf::Vector2f dropTime = { 0, 0 }, lineTime = { 0, 0 };

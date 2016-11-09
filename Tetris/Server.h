@@ -18,12 +18,16 @@ public:
 	sf::Packet packet;
 
 	void findPlayers();
-	
+	void sendRenderTexture(sf::Vector2f position, sf::Vector2u size);
+	int receiveButtonPress(unsigned id);
+
 	std::vector<sf::TcpSocket*> clients;
 	bool searchPlayers = true;
 	char answer;
 
 	sf::RenderTexture renderTexture;
+
+private:
 	sf::Texture texture;
 	sf::Image image;
 };
