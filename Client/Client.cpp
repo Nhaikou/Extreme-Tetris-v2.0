@@ -18,12 +18,17 @@ void Client::onInitialize()
 
 void Client::handleInput()
 {
-	packet << stateMachine->event.key.code;
-	server.send(packet);
+	if (stateMachine->event.type == sf::Event::KeyPressed)
+	{
+		packet.clear();
+		packet << stateMachine->event.key.code;
+		server.send(packet);
+	}
 }
 
 void Client::update(const float dt)
 {
+	packet.clear();
 	server.receive(packet);
 	if (packet.getDataSize() == 0)
 	{
@@ -60,11 +65,11 @@ void Client::connectToServer()
 {
 	ip = sf::IpAddress::getLocalAddress();
 
-	server.connect(ip, 2000);
+	server.connect(ip, 55001);
 
 	std::cout << "Waiting for an answer from server...";
 	server.receive(packet);
 
 	std::cout << "Continue";
-	//server.setBlocking(false);
+	server.setBlocking(false);
 }

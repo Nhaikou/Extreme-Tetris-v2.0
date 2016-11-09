@@ -3,9 +3,10 @@
 
 int main()
 {
+	/*
 	StateMachine* stateMachine = new StateMachine;
 
-	sf::IpAddress ip = "172.13.16.142";
+	sf::IpAddress ip;// = "172.31.16.142";
 	sf::TcpSocket server;
 	sf::Packet packet;
 	sf::Sprite sprite;
@@ -14,9 +15,9 @@ int main()
 	sf::Vector2u windowSize;
 	sf::Color color;
 
-	//ip = sf::IpAddress::getLocalAddress();
+	ip = sf::IpAddress::getLocalAddress();
 
-	server.connect(ip, 2000);
+	server.connect(ip, 55001);
 
 	std::cout << "Waiting for an answer from server...";
 	server.receive(packet);
@@ -67,13 +68,12 @@ int main()
 			stateMachine->window.display();
 		}
 	}
+	*/
 
-	/*
 	srand(time(NULL));
 	StateMachine sm;
 	sm.pushState(new Client(&sm));
 	sm.gameLoop();
-	*/
 
 	return 0;
 }

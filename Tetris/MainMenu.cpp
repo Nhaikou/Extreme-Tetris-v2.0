@@ -21,6 +21,10 @@ void MainMenu::onInitialize()
 	
 	text.setFont(font);
 
+	text.setString("Main Menu soon...");
+	text.setCharacterSize(48);
+	text.setColor(sf::Color::White);
+
 	tex.loadFromFile("../Assets/Block.png");
 	spr.setTexture(tex);
 	spr.move(-1, -1);
@@ -37,11 +41,6 @@ void MainMenu::onInitialize()
 void MainMenu::handleInput()
 {
 	sf::Keyboard key;
-
-	if (clientKey != 0)
-	{
-		std::cout << "Hauskaa! Se toimii!" << std::endl;
-	}
 
 	// Close program
 	if (key.isKeyPressed(key.BackSpace))
@@ -61,10 +60,6 @@ void MainMenu::handleInput()
 		//network = new Network;
 		//stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 20), network));
 	}
-
-	text.setString("Main Menu soon...");
-	text.setCharacterSize(48);
-	text.setColor(sf::Color::White);
 }
 
 void MainMenu::update(const float dt)
@@ -93,6 +88,18 @@ void MainMenu::update(const float dt)
 		return;
 	}
 	server.packet >> clientKey;
+
+	if (clientKey != 0)
+	{
+		std::cout << clientKey << std::endl;
+
+		if (clientKey == sf::Keyboard::Escape)
+		{
+			stateMachine->window.close();
+		}
+
+		clientKey = 0;
+	}
 }
 
 void MainMenu::draw(const float dt)

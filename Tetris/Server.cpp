@@ -16,7 +16,7 @@ Server::~Server()
 
 void Server::findPlayers()
 {
-	tcpListener.listen(2000);
+	tcpListener.listen(55001);
 	socketSelector.add(tcpListener);
 
 	while (searchPlayers)
