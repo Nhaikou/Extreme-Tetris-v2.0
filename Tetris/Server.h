@@ -6,10 +6,16 @@
 #include <iostream>
 #include <vector>
 
+enum Networking
+{
+	SINGLEPLAYER = false,
+	MULTIPLAYER = true,
+};
+
 class Server
 {
 public:
-	Server();
+	Server(bool multiplayer);
 	~Server();
 
 	sf::SocketSelector socketSelector;
@@ -22,14 +28,14 @@ public:
 	int receiveButtonPress(unsigned id);
 
 	std::vector<sf::TcpSocket*> clients;
-	bool searchPlayers = true;
-	char answer;
-
 	sf::RenderTexture renderTexture;
+	bool networking;
 
 private:
 	sf::Texture texture;
 	sf::Image image;
+	bool searchPlayers = true;
+	char answer;
 };
 #endif;
 

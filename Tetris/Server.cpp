@@ -1,9 +1,14 @@
 #include "Server.h"
 
 
-Server::Server()
+Server::Server(bool multiplayer)
 {
-	findPlayers();
+	networking = false;
+	if (multiplayer)
+	{
+		findPlayers();
+		networking = true;
+	}
 }
 
 Server::~Server()
@@ -55,6 +60,11 @@ void Server::findPlayers()
 
 void Server::sendRenderTexture(sf::Vector2f position, sf::Vector2u size)
 {
+	if (!networking)
+	{
+		return;
+	}
+
 	packet.clear();
 	packet << position.x << position.y;
 	packet << size.x << size.y;
@@ -76,6 +86,11 @@ void Server::sendRenderTexture(sf::Vector2f position, sf::Vector2u size)
 
 int Server::receiveButtonPress(unsigned id)
 {
+	if (!networking)
+	{
+		return -1;
+	}
+
 	int key;
 	clients[id]->receive(packet);
 	if (packet.getDataSize() == 0)

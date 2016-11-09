@@ -150,3 +150,34 @@ sf::Color Block::getColor()
 {
 	return color;
 }
+
+MinMaxPositions Block::calculateMinAndMaxPositions()
+{
+	minMaxPositions.minX = positions[0].x, minMaxPositions.maxX = positions[0].x, minMaxPositions.minY = positions[0].y, minMaxPositions.maxY = positions[0].y;
+	for (int i = 1; i < positions.size(); ++i)
+	{
+		if (positions[i].x < minMaxPositions.minX)
+		{
+			minMaxPositions.minX = positions[i].x;
+		}
+		if (positions[i].x > minMaxPositions.maxX)
+		{
+			minMaxPositions.maxX = positions[i].x;
+		}
+		if (positions[i].y < minMaxPositions.minY)
+		{
+			minMaxPositions.minY = positions[i].y;
+		}
+		if (positions[i].y > minMaxPositions.maxY)
+		{
+			minMaxPositions.maxY = positions[i].y;
+		}
+	}
+
+	minMaxPositions.minX = board->getBoardPosition().x + (minMaxPositions.minX * board->blockTex.getSize().x);
+	minMaxPositions.maxX = board->getBoardPosition().x + ((minMaxPositions.maxX + 1) * board->blockTex.getSize().x);
+	minMaxPositions.minY = board->getBoardPosition().y + (minMaxPositions.minY * board->blockTex.getSize().y);
+	minMaxPositions.maxY = board->getBoardPosition().y + ((minMaxPositions.maxY + 1) * board->blockTex.getSize().y);
+
+	return minMaxPositions;
+}

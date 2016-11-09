@@ -15,19 +15,14 @@ Factory::~Factory()
 
 void Factory::onInitialize()
 {
-	if (server == nullptr)
-	{
-		board = new Board(boardSize, sf::Vector2i(0, -2), sf::Vector2u(3, 3));
-	}
-	else
-	{
-		leftBoard = new Board(boardSize, sf::Vector2i(0, -1), sf::Vector2u(3, 3));
-		board = new Board(boardSize, sf::Vector2i(boardSize.x, -1), sf::Vector2u(3, 3));
-		rightBoard = new Board(boardSize, sf::Vector2i(boardSize.x * 2, -1), sf::Vector2u(3, 3));
-	}
-	dropTime.y = 1000;
-	lineTime.y = 800;
+	board = new Board(boardSize, sf::Vector2i(0, -2), sf::Vector2u(3, 3));
+	lineTime.y = 500;
+	board->dropTime.y = 1000;
+	board->counter = 0;
+	board->maxRows;
+	board->dropTimeReduction;
 	spawnBlock();
+	server->renderTexture.create(stateMachine->window.getSize().x, stateMachine->window.getSize().y);
 }
 
 void Factory::handleInput()
@@ -67,16 +62,57 @@ void Factory::handleInput()
 
 void Factory::update(const float dt)
 {
-	server->sendRenderTexture(sf::Vector2f(0, 0), stateMachine->window.getSize());
+	bool updateClient = false;
 
-	dropTime.x += dt;
-	if (dropTime.x >= dropTime.y)
+	for (int i = 0; i < server->clients.size(); ++i)
 	{
-		dropTime.x = 0;
+		clientKey = server->receiveButtonPress(0);
+	}
+	
+	if (clientKey == sf::Keyboard::Escape || sf::Keyboard::Left || sf::Keyboard::Right || sf::Keyboard::Down || sf::Keyboard::Z || sf::Keyboard::X)
+	{
+		updateClient = true;
+	}
+
+	if (clientKey == sf::Keyboard::Escape)
+	{
+		updateClient = true;
+		stateMachine->popState();
+		return;
+	}
+	if (clientKey == sf::Keyboard::Left)
+	{
+		currentBlock->moveLeft();
+	}
+	if (clientKey == sf::Keyboard::Right)
+	{
+		currentBlock->moveRight();
+	}
+	if (clientKey == sf::Keyboard::Down)
+	{
 		if (!currentBlock->moveDown())
 		{
 			spawnBlock();
 		}
+	}
+	if (clientKey == sf::Keyboard::Z)
+	{
+		currentBlock->rotate(-1);
+	}
+	if (clientKey == sf::Keyboard::X)
+	{
+		currentBlock->rotate(1);
+	}
+
+	board->dropTime.x += dt;
+	if (board->dropTime.x >= board->dropTime.y)
+	{
+		board->dropTime.x = 0;
+		if (!currentBlock->moveDown())
+		{
+			spawnBlock();
+		}
+		updateClient = true;
 	}
 
 	lineTime.x += dt;
@@ -86,24 +122,41 @@ void Factory::update(const float dt)
 		if (lineDirection == -1)
 		{
 			moveLineLeft();
+			//server->sendRenderTexture(sf::Vector2f(0, 0), stateMachine->window.getSize());
 		}
 		else
 		{
 			moveLineRight();
+			//server->sendRenderTexture(sf::Vector2f(0, 0), stateMachine->window.getSize());
 		}
+	}
+
+	if (updateClient)
+	{
+		MinMaxPositions minMax = currentBlock->calculateMinAndMaxPositions();
+		server->sendRenderTexture(sf::Vector2f(minMax.minX, minMax.minY), sf::Vector2u(minMax.maxX, minMax.maxY));
+		clientKey = -1;
 	}
 }
 
 void Factory::draw(const float dt)
 {
+	server->renderTexture.clear(sf::Color::Black);
 	for (int j = 0; j < board->getSize().y; ++j)
 	{
 		for (int i = 0; i < board->getSize().x; ++i)
 		{
-			stateMachine->window.draw(board->grid[i][j]);
-			server->renderTexture.draw(board->grid[i][j]);
+			if (server->networking)
+			{
+				server->renderTexture.draw(board->grid[i][j]);
+			}
+			else
+			{
+				stateMachine->window.draw(board->grid[i][j]);
+			}
 		}
 	}
+	server->renderTexture.display();
 }
 
 void Factory::spawnBlock()

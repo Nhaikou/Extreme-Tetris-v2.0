@@ -5,7 +5,6 @@
 MainMenu::MainMenu(StateMachine* sm)
 {
 	stateMachine = sm;
-	server = new Server();
 }
 
 MainMenu::~MainMenu()
@@ -15,6 +14,9 @@ MainMenu::~MainMenu()
 
 void MainMenu::onInitialize()
 {
+	server = new Server(Networking::SINGLEPLAYER);
+	//server = new Server(Networking::MULTIPLAYER);
+
 	if (!font.loadFromFile("../Assets/8bitOperatorPlus8-Bold.ttf"))
 	{
 		std::cout << "Error loading font" << std::endl;
@@ -26,16 +28,9 @@ void MainMenu::onInitialize()
 	text.setCharacterSize(48);
 	text.setColor(sf::Color::White);
 
-	tex.loadFromFile("../Assets/Block.png");
-	spr.setTexture(tex);
-
-	sf::Texture tex2;
-	sf::RenderTexture renderTexture;
-	renderTexture.create(500, 500);
-	renderTexture.draw(spr);
-	renderTexture.display();
-	tex2 = renderTexture.getTexture();
-	image = tex2.copyToImage();
+	server->renderTexture.create(stateMachine->window.getSize().x, stateMachine->window.getSize().y);
+	draw(0);
+	server->sendRenderTexture(text.getPosition(), sf::Vector2u(500, 100));
 }
 
 void MainMenu::handleInput()
@@ -59,12 +54,6 @@ void MainMenu::handleInput()
 
 void MainMenu::update(const float dt)
 {
-	timer += dt;
-	if (timer >= 1000)
-	{
-		server->sendRenderTexture(text.getPosition(), sf::Vector2u(500, 100));
-	}
-
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
 		clientKey = server->receiveButtonPress(i);
@@ -89,11 +78,14 @@ void MainMenu::update(const float dt)
 
 void MainMenu::draw(const float dt)
 {
-	stateMachine->window.draw(text);
-	stateMachine->window.draw(spr);
-	server->renderTexture.create(stateMachine->window.getSize().x, stateMachine->window.getSize().y);
-	server->renderTexture.clear(sf::Color::Black);
-	server->renderTexture.draw(text);
-	server->renderTexture.draw(spr);
-	server->renderTexture.display();
+	if (server->networking)
+	{
+		server->renderTexture.clear(sf::Color::Black);
+		server->renderTexture.draw(text);
+		server->renderTexture.display();
+	}
+	else
+	{
+		stateMachine->window.draw(text);
+	}
 }

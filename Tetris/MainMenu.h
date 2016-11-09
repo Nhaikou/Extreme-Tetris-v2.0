@@ -23,9 +23,5 @@ private:
 	sf::Text text;
 	Network *network = nullptr;
 	int clientKey = -1;
-	sf::Image image;
-	sf::Texture tex;
-	sf::Sprite spr;
-	float timer = 0;
 };
 #endif;
