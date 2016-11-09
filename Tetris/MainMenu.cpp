@@ -23,7 +23,15 @@ void MainMenu::onInitialize()
 
 	tex.loadFromFile("../Assets/Block.png");
 	spr.setTexture(tex);
+	spr.move(-1, -1);
 
+	sf::Texture tex2;
+	sf::RenderTexture renderTexture;
+	renderTexture.create(500, 500);
+	renderTexture.draw(spr);
+	renderTexture.display();
+	tex2 = renderTexture.getTexture();
+	image = tex2.copyToImage();
 }
 
 void MainMenu::handleInput()
@@ -64,8 +72,10 @@ void MainMenu::update(const float dt)
 	timer += dt;
 	if (timer >= 1000)
 	{
+		server.packet.clear();
 		server.packet << stateMachine->window.getSize().x << stateMachine->window.getSize().y;
-		image = stateMachine->window.capture();
+		server.texture = server.renderTexture.getTexture();
+		image = server.texture.copyToImage();
 
 		for (int j = 0; j < image.getSize().y; ++j)
 		{
@@ -89,4 +99,9 @@ void MainMenu::draw(const float dt)
 {
 	stateMachine->window.draw(text);
 	stateMachine->window.draw(spr);
+	server.renderTexture.create(stateMachine->window.getSize().x, stateMachine->window.getSize().y);
+	server.renderTexture.clear(sf::Color::Black);
+	server.renderTexture.draw(text);
+	server.renderTexture.draw(spr);
+	server.renderTexture.display();
 }

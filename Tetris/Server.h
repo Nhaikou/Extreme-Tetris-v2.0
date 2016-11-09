@@ -2,6 +2,7 @@
 #define SERVER_H
 
 #include <SFML/Network.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
 
@@ -21,6 +22,10 @@ public:
 	std::vector<sf::TcpSocket*> clients;
 	bool searchPlayers = true;
 	char answer;
+
+	sf::RenderTexture renderTexture;
+	sf::Texture texture;
+	sf::Image image;
 };
 #endif;
 

@@ -22,7 +22,7 @@ private:
 	sf::Font font;
 	sf::Text text;
 	Network *network = nullptr;
-	unsigned clientKey = 0;
+	int clientKey = 0;
 	sf::Image image;
 	sf::Texture tex;
 	sf::Sprite spr;

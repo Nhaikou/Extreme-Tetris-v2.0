@@ -5,7 +5,7 @@ int main()
 {
 	StateMachine* stateMachine = new StateMachine;
 
-	sf::IpAddress ip;
+	sf::IpAddress ip = "172.13.16.142";
 	sf::TcpSocket server;
 	sf::Packet packet;
 	sf::Sprite sprite;
@@ -14,7 +14,7 @@ int main()
 	sf::Vector2u windowSize;
 	sf::Color color;
 
-	ip = sf::IpAddress::getLocalAddress();
+	//ip = sf::IpAddress::getLocalAddress();
 
 	server.connect(ip, 2000);
 
@@ -28,9 +28,14 @@ int main()
 	{
 		while (true)
 		{
-			packet << stateMachine->event.key.code;
-			server.send(packet);
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			{
+				packet.clear();
+				packet << stateMachine->event.key.code;
+				server.send(packet);
+			}
 
+			packet.clear();
 			server.receive(packet);
 			if (packet.getDataSize() == 0)
 			{
@@ -38,7 +43,6 @@ int main()
 			}
 
 			packet >> windowSize.x >> windowSize.y;
-			packet >> windowSize.x;
 			if (windowSize != stateMachine->window.getSize())
 			{
 				stateMachine->window.setSize(windowSize);
@@ -58,7 +62,9 @@ int main()
 			sprite.setTexture(texture);
 			sprite.setTextureRect(sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y));
 
+			stateMachine->window.clear(sf::Color::Black);
 			stateMachine->window.draw(sprite);
+			stateMachine->window.display();
 		}
 	}
 
