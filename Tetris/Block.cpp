@@ -174,10 +174,10 @@ MinMaxPositions Block::calculateMinAndMaxPositions()
 		}
 	}
 
-	minMaxPositions.minX = board->getBoardPosition().x + (minMaxPositions.minX * board->blockTex.getSize().x);
-	minMaxPositions.maxX = board->getBoardPosition().x + ((minMaxPositions.maxX + 1) * board->blockTex.getSize().x) - minMaxPositions.minX;
-	minMaxPositions.minY = board->getBoardPosition().y + (minMaxPositions.minY * board->blockTex.getSize().y);
-	minMaxPositions.maxY = board->getBoardPosition().y + ((minMaxPositions.maxY + 1) * board->blockTex.getSize().y) - minMaxPositions.minY;
+	minMaxPositions.minX = board->getBoardPosition().x + (minMaxPositions.minX * board->blockTex.getSize().x) - board->blockTex.getSize().x;
+	minMaxPositions.maxX = board->getBoardPosition().x + ((minMaxPositions.maxX + 1) * board->blockTex.getSize().x) - minMaxPositions.minX + board->blockTex.getSize().x;
+	minMaxPositions.minY = board->getBoardPosition().y + (minMaxPositions.minY * board->blockTex.getSize().y) - board->blockTex.getSize().y;
+	minMaxPositions.maxY = board->getBoardPosition().y + ((minMaxPositions.maxY + 1) * board->blockTex.getSize().y) - minMaxPositions.minY + board->blockTex.getSize().y;
 
 	return minMaxPositions;
 }

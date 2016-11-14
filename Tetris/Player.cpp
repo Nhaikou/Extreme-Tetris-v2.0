@@ -3,7 +3,7 @@
 
 Player::Player()
 {
-	board = new Board(sf::Vector2u(10, 20), sf::Vector2i(0, -1), sf::Vector2u(3, 3));
+	board = new Board(sf::Vector2u(10, 20), sf::Vector2i(0, -2), sf::Vector2u(3, 3));
 	board->dropTime.y = 1000;
 	board->counter = 0;
 	board->maxRows;
