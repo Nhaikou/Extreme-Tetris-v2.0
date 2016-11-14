@@ -26,21 +26,13 @@ public:
 	void update(const float dt);
 	void draw(const float dt);
 
-	void spawnBlock();
-
 protected:
 	void onInitialize();
 
 private:
-	Board *board = nullptr;
 	Server *server = nullptr;
-	Block *currentBlock = nullptr;
-	Bag bag;
 	sf::Font font;
 	sf::Text scoreText;
 	std::stringstream ss;
-
-	int clientKey = -1;	// Clients keys for gameplay. Must be -1 (unknown), that the server doesn't register any keys pressed from the start.
 };
-
 #endif

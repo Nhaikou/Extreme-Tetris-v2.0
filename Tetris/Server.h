@@ -3,6 +3,7 @@
 
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 #include <iostream>
 #include <vector>
 
@@ -23,6 +24,7 @@ public:
 	sf::TcpListener tcpListener;
 	sf::Packet packet;
 
+	std::vector<Player*> players;
 	void findPlayers();
 	void sendRenderTexture(sf::Vector2f position, sf::Vector2u size);
 	int receiveButtonPress(unsigned id);

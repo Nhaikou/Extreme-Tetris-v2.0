@@ -67,6 +67,10 @@ void MainMenu::update(const float dt)
 			{
 				stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 20), server));
 			}
+			if (clientKey == sf::Keyboard::Space)
+			{
+				stateMachine->pushState(new Standard(stateMachine, server));
+			}
 			else
 			{
 				std::cout << "Client " << i << " pressed button " << clientKey << std::endl;
