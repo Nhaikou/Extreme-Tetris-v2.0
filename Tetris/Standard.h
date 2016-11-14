@@ -2,6 +2,7 @@
 #define STANDARD_H
 
 #include "State.h"
+#include "Server.h"
 #include "Board.h"
 #include "Block.h"
 #include "BlockI.h"
@@ -18,7 +19,7 @@
 class Standard : public State
 {
 public:
-	Standard(StateMachine* sm);
+	Standard(StateMachine* sm, Server *srvr);
 	~Standard();
 
 	void handleInput();
@@ -32,11 +33,14 @@ protected:
 
 private:
 	Board *board = nullptr;
+	Server *server = nullptr;
 	Block *currentBlock = nullptr;
 	Bag bag;
 	sf::Font font;
 	sf::Text scoreText;
 	std::stringstream ss;
+
+	int clientKey = -1;	// Clients keys for gameplay. Must be -1 (unknown), that the server doesn't register any keys pressed from the start.
 };
 
 #endif

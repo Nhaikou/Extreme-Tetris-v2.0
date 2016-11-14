@@ -14,8 +14,8 @@ MainMenu::~MainMenu()
 
 void MainMenu::onInitialize()
 {
-	server = new Server(Networking::SINGLEPLAYER);
-	//server = new Server(Networking::MULTIPLAYER);
+	//server = new Server(Networking::SINGLEPLAYER);
+	server = new Server(Networking::MULTIPLAYER);
 
 	if (!font.loadFromFile("../Assets/8bitOperatorPlus8-Bold.ttf"))
 	{
@@ -44,7 +44,7 @@ void MainMenu::handleInput()
 	}
 	if (key.isKeyPressed(key.Space))
 	{
-		stateMachine->pushState(new Standard(stateMachine));
+		stateMachine->pushState(new Standard(stateMachine, server));
 	}
 	if (key.isKeyPressed(key.F))
 	{

@@ -25,7 +25,7 @@
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="Network.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Standard.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -44,7 +44,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="Network.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Standard.h" />
     <ClInclude Include="State.h" />

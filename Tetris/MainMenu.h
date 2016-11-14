@@ -2,7 +2,6 @@
 #define MAINMENU_H
 
 #include "State.h"
-#include "Network.h"
 #include "Server.h"
 
 class MainMenu : public State
@@ -21,7 +20,6 @@ private:
 	Server *server = nullptr;
 	sf::Font font;
 	sf::Text text;
-	Network *network = nullptr;
 	int clientKey = -1;
 };
 #endif;
