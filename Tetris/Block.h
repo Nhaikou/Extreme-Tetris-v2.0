@@ -5,7 +5,7 @@
 
 struct MinMaxPositions
 {
-	unsigned minX, maxX, minY, maxY;
+	int minX, maxX, minY, maxY;
 };
 
 class Block
@@ -24,6 +24,7 @@ public:
 
 	sf::Color getColor(); // Returns the color of the current block in play
 	MinMaxPositions calculateMinAndMaxPositions();
+	std::vector<sf::Vector2i>  getChangedPositions();
 	
 	unsigned const tetra = 4; // All block types in Tetris consist of 4 smaller blocks, hence the name Tetris, useful in loops so you can get an idea why there's a 4
 	std::vector<sf::Vector2i> positions; // X and Y positions of the 4 smaller blocks in the grid
@@ -32,6 +33,7 @@ protected:
 	Board* board; // Pointer to the game board
 	int rotation = 0; // Current rotation of the block, can vary between block types, up to 4 different rotations
 	sf::Color color; // Color of the current block
+	std::vector<sf::Vector2i> previousPositions;
 	MinMaxPositions minMaxPositions;
 };
 

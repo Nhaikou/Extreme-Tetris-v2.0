@@ -60,32 +60,6 @@ void Server::findPlayers()
 	}
 }
 
-void Server::sendRenderTexture(sf::Vector2f position, sf::Vector2u size)
-{
-	if (!networking)
-	{
-		return;
-	}
-
-	packet.clear();
-	packet << position.x << position.y;
-	packet << size.x << size.y;
-	texture = renderTexture.getTexture();
-	image = texture.copyToImage();
-
-	for (int j = 0; j < size.y; ++j)
-	{
-		for (int i = 0; i < size.x; ++i)
-		{
-			packet << image.getPixel(position.x + i, position.y + j).r << image.getPixel(position.x + i, position.y + j).g << image.getPixel(position.x + i, position.y + j).b << image.getPixel(position.x + i, position.y + j).a;
-		}
-	}
-	for (int i = 0; i < clients.size(); i++)
-	{
-		clients[i]->send(packet);
-	}
-}
-
 int Server::receiveButtonPress(unsigned id)
 {
 	if (!networking)
@@ -101,4 +75,48 @@ int Server::receiveButtonPress(unsigned id)
 	}
 	packet >> key;
 	return key;
+}
+
+void Server::sendBoard(unsigned id)
+{
+	packet.clear();
+	for (int j = 0; j < players[id]->board->getSize().y; ++j)
+	{
+		for (int i = 0; i < players[id]->board->getSize().x; ++i)
+		{
+			if (players[id]->board->grid[i][j].getTexture() == &players[id]->board->emptyTex)
+			{
+				packet << 0;
+			}
+			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Cyan)
+			{
+				packet << 1;
+			}
+			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Yellow)
+			{
+				packet << 2;
+			}
+			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Red)
+			{
+				packet << 3;
+			}
+			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Green)
+			{
+				packet << 4;
+			}
+			else if (players[id]->board->grid[i][j].getColor() == sf::Color(255, 130, 0))
+			{
+				packet << 5;
+			}
+			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Blue)
+			{
+				packet << 6;
+			}
+			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Magenta)
+			{
+				packet << 7;
+			}
+		}
+	}
+	clients[id]->send(packet);
 }

@@ -37,8 +37,7 @@ void Standard::update(const float dt)
 
 		if (server->players[i]->updateClient())
 		{
-			MinMaxPositions minMax = server->players[i]->currentBlock->calculateMinAndMaxPositions();
-			server->sendRenderTexture(sf::Vector2f(minMax.minX, minMax.minY), sf::Vector2u(minMax.maxX, minMax.maxY));
+			server->sendBoard(i);
 			server->players[i]->clientKey = -1;
 		}
 
@@ -52,25 +51,17 @@ void Standard::update(const float dt)
 
 void Standard::draw(const float dt)
 {
-	server->renderTexture.clear(sf::Color::Black);
-	for (int k = 0; k < server->players.size(); ++k)
+	if (!server->networking)
 	{
-		for (int j = 0; j < server->players[k]->board->getSize().y; ++j)
+		for (int k = 0; k < server->players.size(); ++k)
 		{
-			for (int i = 0; i < server->players[k]->board->getSize().x; ++i)
+			for (int j = 0; j < server->players[k]->board->getSize().y; ++j)
 			{
-				if (server->networking)
-				{
-					server->renderTexture.draw(server->players[k]->board->grid[i][j]);
-				}
-				else
+				for (int i = 0; i < server->players[k]->board->getSize().x; ++i)
 				{
 					stateMachine->window.draw(server->players[k]->board->grid[i][j]);
 				}
 			}
 		}
 	}
-
-	//stateMachine->window.draw(scoreText);
-	server->renderTexture.display();
 }

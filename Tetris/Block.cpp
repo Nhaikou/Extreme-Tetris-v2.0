@@ -41,6 +41,8 @@ void Block::moveLeft()
 		}
 	}
 
+	previousPositions = positions;
+
 	// There are no obstacles so we can move our block
 	for (int i = 0; i < tetra; ++i)
 	{
@@ -82,6 +84,8 @@ void Block::moveRight()
 		}
 	}
 
+	previousPositions = positions;
+
 	// There are no obstacles so we can move our block
 	for (int i = tetra - 1; i >= 0; --i)
 	{
@@ -122,6 +126,8 @@ bool Block::moveDown()
 			}
 		}
 	}
+
+	previousPositions = positions;
 
 	// There are no obstacles so we can move our block
 	for (int i = 0; i < tetra; ++i)
@@ -174,10 +180,63 @@ MinMaxPositions Block::calculateMinAndMaxPositions()
 		}
 	}
 
-	minMaxPositions.minX = board->getBoardPosition().x + (minMaxPositions.minX * board->blockTex.getSize().x) - board->blockTex.getSize().x;
-	minMaxPositions.maxX = board->getBoardPosition().x + ((minMaxPositions.maxX + 1) * board->blockTex.getSize().x) - minMaxPositions.minX + board->blockTex.getSize().x;
-	minMaxPositions.minY = board->getBoardPosition().y + (minMaxPositions.minY * board->blockTex.getSize().y) - board->blockTex.getSize().y;
-	minMaxPositions.maxY = board->getBoardPosition().y + ((minMaxPositions.maxY + 1) * board->blockTex.getSize().y) - minMaxPositions.minY + board->blockTex.getSize().y;
+	minMaxPositions.minX = board->getBoardPosition().x + (minMaxPositions.minX * board->blockTex.getSize().x) - (board->blockTex.getSize().x * 2);
+	minMaxPositions.maxX = board->getBoardPosition().x + ((minMaxPositions.maxX + 1) * board->blockTex.getSize().x) - minMaxPositions.minX + (board->blockTex.getSize().x * 2);
+	minMaxPositions.minY = board->getBoardPosition().y + (minMaxPositions.minY * board->blockTex.getSize().y) - (board->blockTex.getSize().y * 2);
+	minMaxPositions.maxY = board->getBoardPosition().y + ((minMaxPositions.maxY + 1) * board->blockTex.getSize().y) - minMaxPositions.minY + (board->blockTex.getSize().y * 2);
+
+	if (minMaxPositions.minX < 0)
+	{
+		minMaxPositions.minX = 0;
+	}
+	if (minMaxPositions.minY < 0)
+	{
+		minMaxPositions.minY = 0;
+	}
 
 	return minMaxPositions;
+}
+
+std::vector<sf::Vector2i> Block::getChangedPositions()
+{
+	std::vector<sf::Vector2i> changedPositions;
+	bool positionChanged;
+	for (int i = 0; i < positions.size(); ++i)
+	{
+		positionChanged = true;
+		for (int j = 0; j < previousPositions.size(); ++j)
+		{
+			if (positions[i] == previousPositions[j])
+			{
+				positionChanged = false;
+			}
+		}
+		if (positionChanged = true)
+		{
+			changedPositions.push_back(positions[i]);
+		}
+	}
+
+	for (int i = 0; i < previousPositions.size(); ++i)
+	{
+		positionChanged = true;
+		for (int j = 0; j < positions.size(); ++j)
+		{
+			if (previousPositions[i] == positions[j])
+			{
+				positionChanged = false;
+			}
+		}
+		if (positionChanged = true)
+		{
+			changedPositions.push_back(previousPositions[i]);
+		}
+	}
+
+	for (int i = 0; i < changedPositions.size(); ++i)
+	{
+		changedPositions[i] = sf::Vector2i(board->getBoardPosition().x + changedPositions[i].x * board->blockTex.getSize().x, board->getBoardPosition().y + changedPositions[i].y * board->blockTex.getSize().y);
+	}
+
+	return changedPositions;
 }

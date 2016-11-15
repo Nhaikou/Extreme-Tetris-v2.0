@@ -22,7 +22,6 @@ void Factory::onInitialize()
 	board->maxRows;
 	board->dropTimeReduction;
 	spawnBlock();
-	server->renderTexture.create(stateMachine->window.getSize().x, stateMachine->window.getSize().y);
 }
 
 void Factory::handleInput()
@@ -133,30 +132,22 @@ void Factory::update(const float dt)
 
 	if (updateClient)
 	{
-		MinMaxPositions minMax = currentBlock->calculateMinAndMaxPositions();
-		server->sendRenderTexture(sf::Vector2f(minMax.minX, minMax.minY), sf::Vector2u(minMax.maxX, minMax.maxY));
 		clientKey = -1;
 	}
 }
 
 void Factory::draw(const float dt)
 {
-	server->renderTexture.clear(sf::Color::Black);
-	for (int j = 0; j < board->getSize().y; ++j)
+	if (!server->networking)
 	{
-		for (int i = 0; i < board->getSize().x; ++i)
+		for (int j = 0; j < board->getSize().y; ++j)
 		{
-			if (server->networking)
-			{
-				server->renderTexture.draw(board->grid[i][j]);
-			}
-			else
+			for (int i = 0; i < board->getSize().x; ++i)
 			{
 				stateMachine->window.draw(board->grid[i][j]);
 			}
 		}
 	}
-	server->renderTexture.display();
 }
 
 void Factory::spawnBlock()

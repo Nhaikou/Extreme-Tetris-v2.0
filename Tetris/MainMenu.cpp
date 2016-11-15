@@ -27,10 +27,6 @@ void MainMenu::onInitialize()
 	text.setString("Main Menu soon...");
 	text.setCharacterSize(48);
 	text.setColor(sf::Color::White);
-
-	server->renderTexture.create(stateMachine->window.getSize().x, stateMachine->window.getSize().y);
-	draw(0);
-	server->sendRenderTexture(text.getPosition(), sf::Vector2u(500, 100));
 }
 
 void MainMenu::handleInput()
@@ -82,13 +78,7 @@ void MainMenu::update(const float dt)
 
 void MainMenu::draw(const float dt)
 {
-	if (server->networking)
-	{
-		server->renderTexture.clear(sf::Color::Black);
-		server->renderTexture.draw(text);
-		server->renderTexture.display();
-	}
-	else
+	if (!server->networking)
 	{
 		stateMachine->window.draw(text);
 	}

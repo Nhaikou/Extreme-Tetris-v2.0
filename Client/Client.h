@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "State.h"
+#include "Board.h"
 
 class Client : public State
 {
@@ -21,14 +22,12 @@ public:
 protected:
 	void onInitialize();
 private:
+	Board *board;
+	sf::Texture blockTex, emptyTex;
+	sf::Sprite block;
+
 	sf::IpAddress ip;
 	sf::TcpSocket server;
 	sf::Packet packet;
-	sf::Sprite sprite;
-	sf::Texture texture;
-	sf::Image image;
-	sf::Vector2f texturePosition;
-	sf::Vector2u textureSize;
-	sf::Color color;
 };
 #endif;

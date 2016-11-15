@@ -26,16 +26,13 @@ public:
 
 	std::vector<Player*> players;
 	void findPlayers();
-	void sendRenderTexture(sf::Vector2f position, sf::Vector2u size);
 	int receiveButtonPress(unsigned id);
+	void sendBoard(unsigned id);
 
 	std::vector<sf::TcpSocket*> clients;
-	sf::RenderTexture renderTexture;
 	bool networking;
 
 private:
-	sf::Texture texture;
-	sf::Image image;
 	bool searchPlayers = true;
 	char answer;
 };
