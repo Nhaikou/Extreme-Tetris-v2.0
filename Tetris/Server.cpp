@@ -37,7 +37,7 @@ void Server::findPlayers()
 					clients.push_back(client);
 					clients[clients.size() - 1]->setBlocking(false);
 					socketSelector.add(*client);
-					Player *player = new Player();
+					Player *player = new Player(clients.size() - 1);
 					players.push_back(player);
 				}
 				else
@@ -49,6 +49,7 @@ void Server::findPlayers()
 				std::cin >> answer;
 				if (answer == 'n')
 				{
+					packet << players.size();
 					for (int i = 0; i < clients.size(); ++i)
 					{
 						clients[i]->send(packet);
@@ -80,6 +81,7 @@ int Server::receiveButtonPress(unsigned id)
 void Server::sendBoard(unsigned id)
 {
 	packet.clear();
+	packet << 1; // secretCode
 	for (int j = 0; j < players[id]->board->getSize().y; ++j)
 	{
 		for (int i = 0; i < players[id]->board->getSize().x; ++i)

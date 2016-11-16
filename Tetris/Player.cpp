@@ -1,9 +1,9 @@
 #include "Player.h"
 
 
-Player::Player()
+Player::Player(unsigned id)
 {
-	board = new Board(sf::Vector2u(10, 20), sf::Vector2i(0, -2), sf::Vector2u(3, 3));
+	board = new Board(sf::Vector2u(10, 20), sf::Vector2i(id * 10, -2), sf::Vector2u(3, 3));
 	board->dropTime.y = 1000;
 	board->counter = 0;
 	board->maxRows;
@@ -102,7 +102,7 @@ bool Player::spawnBlock()
 	return true;
 }
 
-void Player::dropUpdate(const float dt)
+bool Player::dropUpdate(const float dt)
 {
 	board->dropTime.x += dt;
 	if (board->dropTime.x >= board->dropTime.y)
@@ -112,5 +112,7 @@ void Player::dropUpdate(const float dt)
 		{
 			spawnBlock();
 		}
+		return true;
 	}
+	return false;
 }

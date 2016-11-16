@@ -15,26 +15,7 @@ void Client::onInitialize()
 {
 	connectToServer();
 
-	blockTex.loadFromFile("../Assets/Block.png");
-	block.setTexture(blockTex);
-	emptyTex.create(blockTex.getSize().x, blockTex.getSize().y); // Create an empty texture that is the same size as Block.png
-	block.setTexture(emptyTex);
-
-	board = new Board();
-	board->grid.resize(10);
-	for (int i = 0; i < 10; ++i)
-	{
-		board->grid[i].resize(20);
-	}
-
-	for (int j = 0; j < 20; ++j)
-	{
-		for (int i = 0; i < 10; ++i)
-		{
-			board->grid[i][j] = block;
-			board->grid[i][j].setPosition(block.getGlobalBounds().width * i, block.getGlobalBounds().height * j);
-		}
-	}
+	packet >> playerCount;
 }
 
 void Client::handleInput()
@@ -56,46 +37,70 @@ void Client::update(const float dt)
 		return;
 	}
 
-	unsigned number;
-	for (int j = 0; j < 20; ++j)
+	unsigned secretCode;
+	packet >> secretCode;
+
+	if (secretCode == 0)
 	{
-		for (int i = 0; i < 10; ++i)
+		sf::Vector2i size;
+		sf::Vector2u spawn;
+		packet >> size.x >> size.y >> spawn.x >> spawn.y;
+
+		for (int i = 0; i < playerCount; ++i)
 		{
-			packet >> number;
-			if (number == 0)
+			sf::Vector2u position;
+			packet >> position.x >> position.y;
+			Player *player = new Player(position, size, spawn);
+			players.push_back(player);
+			std::cout << "Player added" << std::endl;
+		}
+	}
+	else
+	{
+		unsigned type;
+		for (int k = 0; k < players.size(); ++k)
+		{
+			for (int j = 0; j < players[k]->board->getSize().y; ++j)
 			{
-				board->grid[i][j].setTexture(emptyTex);
-			}
-			else
-			{
-				board->grid[i][j].setTexture(blockTex);
-				if (number == 1)
+				for (int i = 0; i < players[k]->board->getSize().x; ++i)
 				{
-					board->grid[i][j].setColor(sf::Color::Cyan);
-				}
-				else if (number == 2)
-				{
-					board->grid[i][j].setColor(sf::Color::Yellow);
-				}
-				else if (number == 3)
-				{
-					board->grid[i][j].setColor(sf::Color::Red);
-				}
-				else if (number == 4)
-				{
-					board->grid[i][j].setColor(sf::Color::Green);
-				}
-				else if (number == 5)
-				{
-					board->grid[i][j].setColor(sf::Color(255, 130, 0));
-				}
-				else if (number == 6)
-				{
-					board->grid[i][j].setColor(sf::Color::Blue);
-				}
-				else if (number == 7)
-				{
-					board->grid[i][j].setColor(sf::Color::Magenta);
+					packet >> type;
+					if (type == BlockType::EMPTY)
+					{
+						players[k]->board->grid[i][j].setTexture(emptyTex);
+					}
+					else
+					{
+						players[k]->board->grid[i][j].setTexture(blockTex);
+						if (type == BlockType::BLOCKI)
+						{
+							players[k]->board->grid[i][j].setColor(sf::Color::Cyan);
+						}
+						else if (type == BlockType::BLOCKO)
+						{
+							players[k]->board->grid[i][j].setColor(sf::Color::Yellow);
+						}
+						else if (type == BlockType::BLOCKZ)
+						{
+							players[k]->board->grid[i][j].setColor(sf::Color::Red);
+						}
+						else if (type == BlockType::BLOCKS)
+						{
+							players[k]->board->grid[i][j].setColor(sf::Color::Green);
+						}
+						else if (type == BlockType::BLOCKL)
+						{
+							players[k]->board->grid[i][j].setColor(sf::Color(255, 130, 0));
+						}
+						else if (type == BlockType::BLOCKJ)
+						{
+							players[k]->board->grid[i][j].setColor(sf::Color::Blue);
+						}
+						else if (type == BlockType::BLOCKT)
+						{
+							players[k]->board->grid[i][j].setColor(sf::Color::Magenta);
+						}
+					}
 				}
 			}
 		}
@@ -104,11 +109,14 @@ void Client::update(const float dt)
 
 void Client::draw(const float dt)
 {
-	for (int j = 0; j < 20; ++j)
+	for (int k = 0; k < players.size(); ++k)
 	{
-		for (int i = 0; i < 10; ++i)
+		for (int j = 0; j < players[k]->board->getSize().y; ++j)
 		{
-			stateMachine->window.draw(board->grid[i][j]);
+			for (int i = 0; i < players[k]->board->getSize().x; ++i)
+			{
+				stateMachine->window.draw(players[k]->board->grid[i][j]);
+			}
 		}
 	}
 }

@@ -16,13 +16,13 @@
 class Player
 {
 public:
-	Player();
+	Player(unsigned id);
 	~Player();
 
 	bool updateClient();
 	bool spawnBlock();
 
-	void dropUpdate(const float dt);
+	bool dropUpdate(const float dt);
 
 	int clientKey = -1;	// Clients keys for gameplay. Must be -1 (unknown), that the server doesn't register any keys pressed from the start.
 

@@ -13,14 +13,23 @@ Standard::~Standard()
 
 void Standard::onInitialize()
 {
-	if (!font.loadFromFile("../Assets/8bitOperatorPlus8-Bold.ttf"))
+	server->packet << 0; // secretCode;
+	server->packet << server->players[0]->board->getSize().x << server->players[0]->board->getSize().y << server->players[0]->board->getSpawnPoint().x << server->players[0]->board->getSpawnPoint().y;
+
+	for (int i = 0; i < server->clients.size(); ++i)
 	{
-		std::cout << "Error loading font" << std::endl;
+		server->packet << server->players[i]->board->getPosition().x << server->players[i]->board->getPosition().y;
 	}
-	scoreText.setFont(font);
-	scoreText.setColor(sf::Color::White);
-	scoreText.setCharacterSize(12);
-	scoreText.setPosition(300, 10);
+
+	for (int i = 0; i < server->clients.size(); ++i)
+	{
+		server->clients[i]->send(server->packet);
+	}
+
+	for (int i = 0; i < server->clients.size(); ++i)
+	{
+		server->sendBoard(i);
+	}
 }
 
 void Standard::handleInput()
@@ -30,22 +39,21 @@ void Standard::handleInput()
 
 void Standard::update(const float dt)
 {
-	bool updateClient = false;
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
 		server->players[i]->clientKey = server->receiveButtonPress(0);
 
-		if (server->players[i]->updateClient())
+		if (server->players[i]->clientKey != -1)
 		{
+			server->players[i]->updateClient();
 			server->sendBoard(i);
 			server->players[i]->clientKey = -1;
 		}
-
-		//ss.str("");
-		//ss << board->getScore();
-		//scoreText.setString(ss.str());
 		
-		server->players[i]->dropUpdate(dt);
+		if (server->players[i]->dropUpdate(dt))
+		{
+			server->sendBoard(i);
+		}
 	}
 }
 
