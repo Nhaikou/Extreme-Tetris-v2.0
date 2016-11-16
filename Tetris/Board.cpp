@@ -1,31 +1,24 @@
 #include "Board.h"
 
-Board::Board(sf::Vector2u size, sf::Vector2i boardPos, sf::Vector2u spawn)
+Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
 {
-	// Resource loading
-	blockTex.loadFromFile("../Assets/Block.png");
-	block.setTexture(blockTex);
-	emptyTex.create(blockTex.getSize().x, blockTex.getSize().y); // Create an empty texture that is the same size as Block.png
-	block.setTexture(emptyTex);
-
-	boardSize = size;
-	boardPosition = sf::Vector2i(boardPos.x * block.getGlobalBounds().width, boardPos.y * block.getGlobalBounds().height); // The position varies according to the texture's size
+	size = boardSize;
+	position = sf::Vector2i(boardPos.x * blockSize.x, boardPos.y * blockSize.y); // The position varies according to the texture's size
 	spawnPoint = spawn;
 
 	// Resizing the grid to fit all the blocks
-	grid.resize(boardSize.x);
-	for (int i = 0; i < boardSize.x; ++i)
+	grid.resize(size.x);
+	for (int i = 0; i < size.x; ++i)
 	{
-		grid[i].resize(boardSize.y);
+		grid[i].resize(size.y);
 	}
 
 	// Putting the blocks to their places with an empty texture
-	for (int j = 0; j < boardSize.y; ++j)
+	for (int j = 0; j < size.y; ++j)
 	{
-		for (int i = 0; i < boardSize.x; ++i)
+		for (int i = 0; i < size.x; ++i)
 		{
-			grid[i][j] = block;
-			grid[i][j].setPosition(boardPosition.x + block.getGlobalBounds().width * i, boardPosition.y + block.getGlobalBounds().height * j);
+			grid[i][j] = sf::Vector3i(position.x + blockSize.x * i, position.y + blockSize.y * j, BlockType::EMPTY);
 		}
 	}
 
@@ -48,12 +41,12 @@ Board::~Board()
 
 sf::Vector2u Board::getSize()
 {
-	return boardSize;
+	return size;
 }
 
-sf::Vector2i Board::getBoardPosition()
+sf::Vector2i Board::getPosition()
 {
-	return boardPosition;
+	return position;
 }
 
 sf::Vector2u Board::getSpawnPoint()
@@ -86,18 +79,18 @@ unsigned Board::clearRow()
 	unsigned counter = 0;
 	unsigned clearedRows = 0;
 
-	for (int j = 0; j < boardSize.y; ++j)
+	for (int j = 0; j < size.y; ++j)
 	{
-		for (int i = 0; i < boardSize.x; ++i)
+		for (int i = 0; i < size.x; ++i)
 		{
-			if (grid[i][j].getTexture() == &blockTex)
+			if (grid[i][j].z != BlockType::EMPTY)
 			{
 				++counter;
-				if (counter == boardSize.x)
+				if (counter == size.x)
 				{
-					for (int k = 0; k < boardSize.x; ++k)
+					for (int k = 0; k < size.x; ++k)
 					{
-						grid[k][j].setTexture(emptyTex);
+						grid[k][j].z = BlockType::EMPTY;
 					}
 					dropRow(j);
 					clearedRows++;
@@ -119,10 +112,9 @@ void Board::dropRow(int y)
 {
 	for (int j = y; j > 0; --j)
 	{
-		for (int i = 0; i < boardSize.x; ++i)
+		for (int i = 0; i < size.x; ++i)
 		{
-			grid[i][j].setTexture(*grid[i][j - 1].getTexture());
-			grid[i][j].setColor(grid[i][j - 1].getColor());
+			grid[i][j].z = grid[i][j - 1].z;
 		}
 	}
 }

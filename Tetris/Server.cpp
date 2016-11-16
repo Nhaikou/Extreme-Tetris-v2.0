@@ -84,38 +84,7 @@ void Server::sendBoard(unsigned id)
 	{
 		for (int i = 0; i < players[id]->board->getSize().x; ++i)
 		{
-			if (players[id]->board->grid[i][j].getTexture() == &players[id]->board->emptyTex)
-			{
-				packet << 0;
-			}
-			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Cyan)
-			{
-				packet << 1;
-			}
-			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Yellow)
-			{
-				packet << 2;
-			}
-			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Red)
-			{
-				packet << 3;
-			}
-			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Green)
-			{
-				packet << 4;
-			}
-			else if (players[id]->board->grid[i][j].getColor() == sf::Color(255, 130, 0))
-			{
-				packet << 5;
-			}
-			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Blue)
-			{
-				packet << 6;
-			}
-			else if (players[id]->board->grid[i][j].getColor() == sf::Color::Magenta)
-			{
-				packet << 7;
-			}
+			packet << players[id]->board->grid[i][j].z;
 		}
 	}
 	clients[id]->send(packet);

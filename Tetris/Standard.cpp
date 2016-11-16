@@ -51,17 +51,5 @@ void Standard::update(const float dt)
 
 void Standard::draw(const float dt)
 {
-	if (!server->networking)
-	{
-		for (int k = 0; k < server->players.size(); ++k)
-		{
-			for (int j = 0; j < server->players[k]->board->getSize().y; ++j)
-			{
-				for (int i = 0; i < server->players[k]->board->getSize().x; ++i)
-				{
-					stateMachine->window.draw(server->players[k]->board->grid[i][j]);
-				}
-			}
-		}
-	}
+	
 }

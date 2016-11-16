@@ -22,7 +22,7 @@ void Block::moveLeft()
 			return;
 		}
 		// Check if there's an empty space next to (left) the current block
-		if (board->grid[positions[i].x - 1][positions[i].y].getTexture() != &board->emptyTex)
+		if (board->grid[positions[i].x - 1][positions[i].y].z != BlockType::EMPTY)
 		{
 			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
@@ -41,16 +41,13 @@ void Block::moveLeft()
 		}
 	}
 
-	previousPositions = positions;
-
 	// There are no obstacles so we can move our block
 	for (int i = 0; i < tetra; ++i)
 	{
 		// Clear the current blocks, change the x-positions by -1 and set the texture and color
-		board->grid[positions[i].x][positions[i].y].setTexture(board->emptyTex);
+		board->grid[positions[i].x][positions[i].y].z = BlockType::EMPTY;
 		positions[i].x--;
-		board->grid[positions[i].x][positions[i].y].setTexture(board->blockTex);
-		board->grid[positions[i].x][positions[i].y].setColor(color);
+		board->grid[positions[i].x][positions[i].y].z = type;
 	}
 }
 
@@ -65,7 +62,7 @@ void Block::moveRight()
 			return;
 		}
 		// Check if there's an empty space next to (right) the current block
-		if (board->grid[positions[i].x + 1][positions[i].y].getTexture() != &board->emptyTex)
+		if (board->grid[positions[i].x + 1][positions[i].y].z != BlockType::EMPTY)
 		{
 			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
@@ -84,16 +81,13 @@ void Block::moveRight()
 		}
 	}
 
-	previousPositions = positions;
-
 	// There are no obstacles so we can move our block
 	for (int i = tetra - 1; i >= 0; --i)
 	{
 		// Clear the current blocks, change the x-positions by +1 and set the texture and color
-		board->grid[positions[i].x][positions[i].y].setTexture(board->emptyTex);
+		board->grid[positions[i].x][positions[i].y].z = BlockType::EMPTY;
 		positions[i].x++;
-		board->grid[positions[i].x][positions[i].y].setTexture(board->blockTex);
-		board->grid[positions[i].x][positions[i].y].setColor(color);
+		board->grid[positions[i].x][positions[i].y].z = type;
 	}
 }
 
@@ -108,7 +102,7 @@ bool Block::moveDown()
 			return false;
 		}
 		// Check if there's an empty space next to (down) the current block
-		if (board->grid[positions[i].x][positions[i].y + 1].getTexture() != &board->emptyTex)
+		if (board->grid[positions[i].x][positions[i].y + 1].z != BlockType::EMPTY)
 		{
 			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
@@ -127,16 +121,13 @@ bool Block::moveDown()
 		}
 	}
 
-	previousPositions = positions;
-
 	// There are no obstacles so we can move our block
 	for (int i = 0; i < tetra; ++i)
 	{
 		// Clear the current blocks, change the x-positions by +1 and set the texture and color
-		board->grid[positions[i].x][positions[i].y].setTexture(board->emptyTex);
+		board->grid[positions[i].x][positions[i].y].z = BlockType::EMPTY;
 		positions[i].y++;
-		board->grid[positions[i].x][positions[i].y].setTexture(board->blockTex);
-		board->grid[positions[i].x][positions[i].y].setColor(color);
+		board->grid[positions[i].x][positions[i].y].z = type;
 	}
 
 	return true;
@@ -152,91 +143,7 @@ void Block::rotate(int direction)
 	direction;
 }
 
-sf::Color Block::getColor()
+unsigned Block::getType()
 {
-	return color;
-}
-
-MinMaxPositions Block::calculateMinAndMaxPositions()
-{
-	minMaxPositions.minX = positions[0].x, minMaxPositions.maxX = positions[0].x, minMaxPositions.minY = positions[0].y, minMaxPositions.maxY = positions[0].y;
-	for (int i = 1; i < positions.size(); ++i)
-	{
-		if (positions[i].x < minMaxPositions.minX)
-		{
-			minMaxPositions.minX = positions[i].x;
-		}
-		if (positions[i].x > minMaxPositions.maxX)
-		{
-			minMaxPositions.maxX = positions[i].x;
-		}
-		if (positions[i].y < minMaxPositions.minY)
-		{
-			minMaxPositions.minY = positions[i].y;
-		}
-		if (positions[i].y > minMaxPositions.maxY)
-		{
-			minMaxPositions.maxY = positions[i].y;
-		}
-	}
-
-	minMaxPositions.minX = board->getBoardPosition().x + (minMaxPositions.minX * board->blockTex.getSize().x) - (board->blockTex.getSize().x * 2);
-	minMaxPositions.maxX = board->getBoardPosition().x + ((minMaxPositions.maxX + 1) * board->blockTex.getSize().x) - minMaxPositions.minX + (board->blockTex.getSize().x * 2);
-	minMaxPositions.minY = board->getBoardPosition().y + (minMaxPositions.minY * board->blockTex.getSize().y) - (board->blockTex.getSize().y * 2);
-	minMaxPositions.maxY = board->getBoardPosition().y + ((minMaxPositions.maxY + 1) * board->blockTex.getSize().y) - minMaxPositions.minY + (board->blockTex.getSize().y * 2);
-
-	if (minMaxPositions.minX < 0)
-	{
-		minMaxPositions.minX = 0;
-	}
-	if (minMaxPositions.minY < 0)
-	{
-		minMaxPositions.minY = 0;
-	}
-
-	return minMaxPositions;
-}
-
-std::vector<sf::Vector2i> Block::getChangedPositions()
-{
-	std::vector<sf::Vector2i> changedPositions;
-	bool positionChanged;
-	for (int i = 0; i < positions.size(); ++i)
-	{
-		positionChanged = true;
-		for (int j = 0; j < previousPositions.size(); ++j)
-		{
-			if (positions[i] == previousPositions[j])
-			{
-				positionChanged = false;
-			}
-		}
-		if (positionChanged = true)
-		{
-			changedPositions.push_back(positions[i]);
-		}
-	}
-
-	for (int i = 0; i < previousPositions.size(); ++i)
-	{
-		positionChanged = true;
-		for (int j = 0; j < positions.size(); ++j)
-		{
-			if (previousPositions[i] == positions[j])
-			{
-				positionChanged = false;
-			}
-		}
-		if (positionChanged = true)
-		{
-			changedPositions.push_back(previousPositions[i]);
-		}
-	}
-
-	for (int i = 0; i < changedPositions.size(); ++i)
-	{
-		changedPositions[i] = sf::Vector2i(board->getBoardPosition().x + changedPositions[i].x * board->blockTex.getSize().x, board->getBoardPosition().y + changedPositions[i].y * board->blockTex.getSize().y);
-	}
-
-	return changedPositions;
+	return type;
 }

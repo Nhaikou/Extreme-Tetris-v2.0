@@ -26,37 +26,7 @@ void Factory::onInitialize()
 
 void Factory::handleInput()
 {
-	if (stateMachine->event.type == sf::Event::KeyPressed)
-	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		{
-			stateMachine->popState();
-			return;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			currentBlock->moveLeft();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			currentBlock->moveRight();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			if (!currentBlock->moveDown())
-			{
-				spawnBlock();
-			}
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-		{
-			currentBlock->rotate(-1);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-		{
-			currentBlock->rotate(1);
-		}
-	}
+
 }
 
 void Factory::update(const float dt)
@@ -138,66 +108,7 @@ void Factory::update(const float dt)
 
 void Factory::draw(const float dt)
 {
-	if (!server->networking)
-	{
-		for (int j = 0; j < board->getSize().y; ++j)
-		{
-			for (int i = 0; i < board->getSize().x; ++i)
-			{
-				stateMachine->window.draw(board->grid[i][j]);
-			}
-		}
-	}
-}
 
-void Factory::spawnBlock()
-{
-	board->counter += board->clearRow();
-	if (board->counter >= board->maxRows)
-	{
-		board->dropTime.y -= board->dropTimeReduction;
-		board->counter -= board->maxRows;
-		std::cout << "Current drop speed: " << board->dropTime.y << std::endl;
-	}
-
-
-	unsigned randomBlock = bag.getNextBlock();
-	if (currentBlock != nullptr)
-	{
-		delete currentBlock;
-	}
-	if (randomBlock == 0)
-	{
-		currentBlock = new BlockI(board);
-	}
-	if (randomBlock == 1)
-	{
-		currentBlock = new BlockO(board);
-	}
-	if (randomBlock == 2)
-	{
-		currentBlock = new BlockZ(board);
-	}
-	if (randomBlock == 3)
-	{
-		currentBlock = new BlockS(board);
-	}
-	if (randomBlock == 4)
-	{
-		currentBlock = new BlockL(board);
-	}
-	if (randomBlock == 5)
-	{
-		currentBlock = new BlockJ(board);
-	}
-	if (randomBlock == 6)
-	{
-		currentBlock = new BlockT(board);
-	}
-	if (!currentBlock->spawn())
-	{
-		stateMachine->window.close();
-	}
 }
 
 void Factory::moveLineLeft()
