@@ -24,7 +24,6 @@ public:
 	void update(const float dt);
 	void draw(const float dt);
 
-	void spawnBlock();
 	void moveLineLeft();
 	void moveLineRight();
 

@@ -14,18 +14,17 @@ BlockO::~BlockO()
 
 bool BlockO::spawn()
 {
-	color = sf::Color::Yellow;
+	type = BlockType::BLOCKO;
 
 	unsigned counter = 0;
 	for (int i = 0; i < 2; ++i)
 	{
 		for (int j = 1; j >= 0; --j)
 		{
-			if (board->grid[board->getSpawnPoint().x + i][board->getSpawnPoint().y + j].getTexture() == &board->emptyTex)
+			if (board->grid[board->getSpawnPoint().x + i][board->getSpawnPoint().y + j].z == BlockType::EMPTY)
 			{ 
 				positions[counter] = sf::Vector2i(board->getSpawnPoint().x + i, board->getSpawnPoint().y + j);
-				board->grid[positions[counter].x][positions[counter].y].setTexture(board->blockTex);
-				board->grid[positions[counter].x][positions[counter].y].setColor(color);
+				board->grid[positions[i].x][positions[i].y].z = BlockType::BLOCKO;
 				counter++;
 			}
 			else

@@ -15,28 +15,24 @@ BlockL::~BlockL()
 bool BlockL::spawn()
 {
 	// Orange color
-	color = sf::Color(255, 130, 0);
+	type = BlockType::BLOCKL;
 
-	if (board->grid[board->getSpawnPoint().x][board->getSpawnPoint().y].getTexture() == &board->emptyTex &&
-		board->grid[board->getSpawnPoint().x][board->getSpawnPoint().y + 1].getTexture() == &board->emptyTex &&
-		board->grid[board->getSpawnPoint().x + 1][board->getSpawnPoint().y].getTexture() == &board->emptyTex &&
-		board->grid[board->getSpawnPoint().x + 2][board->getSpawnPoint().y].getTexture() == &board->emptyTex)
+	if (board->grid[board->getSpawnPoint().x][board->getSpawnPoint().y].z == BlockType::EMPTY &&
+		board->grid[board->getSpawnPoint().x][board->getSpawnPoint().y + 1].z == BlockType::EMPTY &&
+		board->grid[board->getSpawnPoint().x + 1][board->getSpawnPoint().y].z == BlockType::EMPTY &&
+		board->grid[board->getSpawnPoint().x + 2][board->getSpawnPoint().y].z == BlockType::EMPTY)
 	{
 		positions[1] = sf::Vector2i(board->getSpawnPoint().x, board->getSpawnPoint().y);
-		board->grid[positions[1].x][positions[1].y].setTexture(board->blockTex);
-		board->grid[positions[1].x][positions[1].y].setColor(color);
+		board->grid[positions[1].x][positions[1].y].z = BlockType::BLOCKL;
 
 		positions[0] = sf::Vector2i(board->getSpawnPoint().x, board->getSpawnPoint().y + 1);
-		board->grid[positions[0].x][positions[0].y].setTexture(board->blockTex);
-		board->grid[positions[0].x][positions[0].y].setColor(color);
+		board->grid[positions[0].x][positions[0].y].z = BlockType::BLOCKL;
 
 		positions[2] = sf::Vector2i(board->getSpawnPoint().x + 1, board->getSpawnPoint().y);
-		board->grid[positions[2].x][positions[2].y].setTexture(board->blockTex);
-		board->grid[positions[2].x][positions[2].y].setColor(color);
+		board->grid[positions[2].x][positions[2].y].z = BlockType::BLOCKL;
 
 		positions[3] = sf::Vector2i(board->getSpawnPoint().x + 2, board->getSpawnPoint().y);
-		board->grid[positions[3].x][positions[3].y].setTexture(board->blockTex);
-		board->grid[positions[3].x][positions[3].y].setColor(color);
+		board->grid[positions[3].x][positions[3].y].z = BlockType::BLOCKL;
 	}
 
 	else
@@ -51,16 +47,16 @@ void BlockL::rotate(int direction)
 {
 	for (int i = 0; i < tetra; ++i)
 	{
-		board->grid[positions[i].x][positions[i].y].setTexture(board->emptyTex);
+		board->grid[positions[i].x][positions[i].y].z = BlockType::EMPTY;
 	}
 
 	// Clockwise rotation
 	if (direction == 1)
 	{
-		if (rotation == 0 && board->grid[positions[0].x + 1][positions[0].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[1].x][positions[1].y - 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[2].x][positions[2].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[3].x - 1][positions[3].y - 1].getTexture() == &board->emptyTex)
+		if (rotation == 0 && board->grid[positions[0].x + 1][positions[0].y].z == BlockType::EMPTY &&
+			board->grid[positions[1].x][positions[1].y - 1].z == BlockType::EMPTY &&
+			board->grid[positions[2].x][positions[2].y].z == BlockType::EMPTY &&
+			board->grid[positions[3].x - 1][positions[3].y - 1].z == BlockType::EMPTY)
 		{
 			positions[0] += sf::Vector2i(1, 0);
 			positions[1] += sf::Vector2i(0, -1);
@@ -69,10 +65,10 @@ void BlockL::rotate(int direction)
 
 			rotation = 1;
 		}
-		else if (rotation == 1 && positions[2].x + 1 < board->getSize().x && board->grid[positions[0].x - 1][positions[0].y - 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[1].x + 1][positions[1].y + 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[2].x + 1][positions[2].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[3].x + 1][positions[3].y].getTexture() == &board->emptyTex)
+		else if (rotation == 1 && positions[2].x + 1 < board->getSize().x && board->grid[positions[0].x - 1][positions[0].y - 1].z == BlockType::EMPTY &&
+			board->grid[positions[1].x + 1][positions[1].y + 1].z == BlockType::EMPTY &&
+			board->grid[positions[2].x + 1][positions[2].y].z == BlockType::EMPTY &&
+			board->grid[positions[3].x + 1][positions[3].y].z == BlockType::EMPTY)
 		{
 			positions[0] += sf::Vector2i(-1, -1);
 			positions[1] += sf::Vector2i(1, 1);
@@ -81,10 +77,10 @@ void BlockL::rotate(int direction)
 
 			rotation = 2;
 		}
-		else if (rotation == 2 && positions[1].y + 1 < board->getSize().y && board->grid[positions[0].x + 1][positions[0].y + 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[1].x + 1][positions[1].y + 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[2].x - 1][positions[2].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[3].x - 1][positions[3].y].getTexture() == &board->emptyTex)
+		else if (rotation == 2 && positions[1].y + 1 < board->getSize().y && board->grid[positions[0].x + 1][positions[0].y + 1].z == BlockType::EMPTY &&
+			board->grid[positions[1].x + 1][positions[1].y + 1].z == BlockType::EMPTY &&
+			board->grid[positions[2].x - 1][positions[2].y].z == BlockType::EMPTY &&
+			board->grid[positions[3].x - 1][positions[3].y].z == BlockType::EMPTY)
 		{
 			positions[0] += sf::Vector2i(1, 1);
 			positions[1] += sf::Vector2i(1, 1);
@@ -93,10 +89,10 @@ void BlockL::rotate(int direction)
 
 			rotation = 3;
 		}
-		else if (rotation == 3 && positions[2].x > 0 && board->grid[positions[0].x - 1][positions[0].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[1].x - 2][positions[1].y - 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[2].x][positions[2].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[3].x + 1][positions[3].y + 1].getTexture() == &board->emptyTex)
+		else if (rotation == 3 && positions[2].x > 0 && board->grid[positions[0].x - 1][positions[0].y].z == BlockType::EMPTY &&
+			board->grid[positions[1].x - 2][positions[1].y - 1].z == BlockType::EMPTY &&
+			board->grid[positions[2].x][positions[2].y].z == BlockType::EMPTY &&
+			board->grid[positions[3].x + 1][positions[3].y + 1].z == BlockType::EMPTY)
 		{
 			positions[0] += sf::Vector2i(-1, 0);
 			positions[1] += sf::Vector2i(-2, -1);
@@ -110,10 +106,10 @@ void BlockL::rotate(int direction)
 	// Counter clockwise rotation
 	else if (direction == -1)
 	{
-		if (rotation == 0 && board->grid[positions[0].x + 1][positions[0].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[1].x + 2][positions[1].y + 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[2].x][positions[2].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[3].x - 1][positions[3].y - 1].getTexture() == &board->emptyTex)
+		if (rotation == 0 && board->grid[positions[0].x + 1][positions[0].y].z == BlockType::EMPTY &&
+			board->grid[positions[1].x + 2][positions[1].y + 1].z == BlockType::EMPTY &&
+			board->grid[positions[2].x][positions[2].y].z == BlockType::EMPTY &&
+			board->grid[positions[3].x - 1][positions[3].y - 1].z == BlockType::EMPTY)
 		{
 			positions[0] += sf::Vector2i(1, 0);
 			positions[1] += sf::Vector2i(2, 1);
@@ -122,10 +118,10 @@ void BlockL::rotate(int direction)
 
 			rotation = 3;
 		}
-		else if (rotation == 1 && positions[2].x + 1 < board->getSize().x && board->grid[positions[0].x - 1][positions[0].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[1].x][positions[1].y + 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[2].x][positions[2].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[3].x + 1][positions[3].y + 1].getTexture() == &board->emptyTex)
+		else if (rotation == 1 && positions[2].x + 1 < board->getSize().x && board->grid[positions[0].x - 1][positions[0].y].z == BlockType::EMPTY &&
+			board->grid[positions[1].x][positions[1].y + 1].z == BlockType::EMPTY &&
+			board->grid[positions[2].x][positions[2].y].z == BlockType::EMPTY &&
+			board->grid[positions[3].x + 1][positions[3].y + 1].z == BlockType::EMPTY)
 		{
 			positions[0] += sf::Vector2i(-1, 0);
 			positions[1] += sf::Vector2i(0, 1);
@@ -134,10 +130,10 @@ void BlockL::rotate(int direction)
 
 			rotation = 0;
 		}
-		else if (rotation == 2 && positions[2].y + 1 < board->getSize().y && board->grid[positions[0].x + 1][positions[0].y + 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[1].x - 1][positions[1].y - 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[2].x - 1][positions[2].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[3].x - 1][positions[3].y].getTexture() == &board->emptyTex)
+		else if (rotation == 2 && positions[2].y + 1 < board->getSize().y && board->grid[positions[0].x + 1][positions[0].y + 1].z == BlockType::EMPTY &&
+			board->grid[positions[1].x - 1][positions[1].y - 1].z == BlockType::EMPTY &&
+			board->grid[positions[2].x - 1][positions[2].y].z == BlockType::EMPTY &&
+			board->grid[positions[3].x - 1][positions[3].y].z == BlockType::EMPTY)
 		{
 			positions[0] += sf::Vector2i(1, 1);
 			positions[1] += sf::Vector2i(-1, -1);
@@ -146,10 +142,10 @@ void BlockL::rotate(int direction)
 
 			rotation = 1;
 		}
-		else if (rotation == 3 && positions[2].x > 0 && board->grid[positions[0].x - 1][positions[0].y - 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[1].x - 1][positions[1].y - 1].getTexture() == &board->emptyTex &&
-			board->grid[positions[2].x + 1][positions[2].y].getTexture() == &board->emptyTex &&
-			board->grid[positions[3].x + 1][positions[3].y].getTexture() == &board->emptyTex)
+		else if (rotation == 3 && positions[2].x > 0 && board->grid[positions[0].x - 1][positions[0].y - 1].z == BlockType::EMPTY &&
+			board->grid[positions[1].x - 1][positions[1].y - 1].z == BlockType::EMPTY &&
+			board->grid[positions[2].x + 1][positions[2].y].z == BlockType::EMPTY &&
+			board->grid[positions[3].x + 1][positions[3].y].z == BlockType::EMPTY)
 		{
 			positions[0] += sf::Vector2i(-1, -1);
 			positions[1] += sf::Vector2i(-1, -1);
@@ -162,7 +158,6 @@ void BlockL::rotate(int direction)
 
 	for (int i = 0; i < tetra; ++i)
 	{
-		board->grid[positions[i].x][positions[i].y].setTexture(board->blockTex);
-		board->grid[positions[i].x][positions[i].y].setColor(color);
+		board->grid[positions[i].x][positions[i].y].z = BlockType::BLOCKL;
 	}
 }

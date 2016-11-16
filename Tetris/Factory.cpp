@@ -21,7 +21,6 @@ void Factory::onInitialize()
 	board->counter = 0;
 	board->maxRows;
 	board->dropTimeReduction;
-	spawnBlock();
 }
 
 void Factory::handleInput()
@@ -61,7 +60,7 @@ void Factory::update(const float dt)
 	{
 		if (!currentBlock->moveDown())
 		{
-			spawnBlock();
+			
 		}
 	}
 	if (clientKey == sf::Keyboard::Z)
@@ -79,7 +78,7 @@ void Factory::update(const float dt)
 		board->dropTime.x = 0;
 		if (!currentBlock->moveDown())
 		{
-			spawnBlock();
+			
 		}
 		updateClient = true;
 	}
@@ -175,7 +174,7 @@ void Factory::moveLineLeft()
 			{
 				if (!currentBlock->moveDown())
 				{
-					spawnBlock();
+					
 					return;
 				}
 			}
@@ -255,7 +254,7 @@ void Factory::moveLineRight()
 			{
 				if (!currentBlock->moveDown())
 				{
-					spawnBlock();
+					
 					return;
 				}
 			}
