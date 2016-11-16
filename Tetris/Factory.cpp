@@ -119,7 +119,7 @@ void Factory::moveLineLeft()
 	{
 		for (int i = 0; i < board->getSize().x; ++i)
 		{
-			board->updatedGrid[i][j].setTexture(board->emptyTex);
+			board->updatedGrid[i][j].z = BlockType::EMPTY;
 		}
 	}
 
@@ -130,7 +130,7 @@ void Factory::moveLineLeft()
 			if (!(currentBlock->positions[0] == sf::Vector2i(i, j) || currentBlock->positions[1] == sf::Vector2i(i, j) ||
 				currentBlock->positions[2] == sf::Vector2i(i, j) || currentBlock->positions[3] == sf::Vector2i(i, j)))
 			{
-				if (board->grid[i][j].getTexture() == &board->blockTex)
+				if (board->grid[i][j].z == BlockType::EMPTY)
 				{
 					if (i == 0)
 					{
@@ -139,8 +139,7 @@ void Factory::moveLineLeft()
 						{
 							hitCurrentBlock = true;
 						}
-						board->updatedGrid[board->getSize().x - 1][j].setTexture(board->blockTex);
-						board->updatedGrid[board->getSize().x - 1][j].setColor(board->grid[i][j].getColor());
+						board->updatedGrid[board->getSize().x - 1][j].z = board->grid[i][j].z;
 					}
 					else
 					{
@@ -149,8 +148,7 @@ void Factory::moveLineLeft()
 						{
 							hitCurrentBlock = true;
 						}
-						board->updatedGrid[i - 1][j].setTexture(board->blockTex);
-						board->updatedGrid[i - 1][j].setColor(board->grid[i][j].getColor());
+						board->updatedGrid[i - 1][j].z = board->grid[i][j].z;
 					}
 				}
 			}
@@ -168,8 +166,7 @@ void Factory::moveLineLeft()
 				currentBlock->positions[i].x = board->getSize().x - 1;
 				blockWrapped = true;
 			}
-			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].setTexture(board->blockTex);
-			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].setColor(currentBlock->getColor());
+			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].z = currentBlock->getType();
 		}
 		board->grid = board->updatedGrid;
 		if (blockWrapped)
@@ -188,8 +185,7 @@ void Factory::moveLineLeft()
 	{
 		for (int i = 0; i < currentBlock->tetra; ++i)
 		{
-			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].setTexture(board->blockTex);
-			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].setColor(currentBlock->getColor());
+			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].z = currentBlock->getType();
 		}
 		board->grid = board->updatedGrid;
 	}
@@ -203,7 +199,7 @@ void Factory::moveLineRight()
 	{
 		for (int i = 0; i < board->getSize().x; ++i)
 		{
-			board->updatedGrid[i][j].setTexture(board->emptyTex);
+			board->updatedGrid[i][j].z = BlockType::EMPTY;
 		}
 	}
 
@@ -214,7 +210,7 @@ void Factory::moveLineRight()
 			if (!(currentBlock->positions[0] == sf::Vector2i(i, j) || currentBlock->positions[1] == sf::Vector2i(i, j) ||
 				currentBlock->positions[2] == sf::Vector2i(i, j) || currentBlock->positions[3] == sf::Vector2i(i, j)))
 			{
-				if (board->grid[i][j].getTexture() == &board->blockTex)
+				if (board->grid[i][j].z == BlockType::EMPTY)
 				{
 					if (i == board->getSize().x - 1)
 					{
@@ -223,8 +219,7 @@ void Factory::moveLineRight()
 						{
 							hitCurrentBlock = true;
 						}
-						board->updatedGrid[0][j].setTexture(board->blockTex);
-						board->updatedGrid[0][j].setColor(board->grid[i][j].getColor());
+						board->updatedGrid[0][j].z = board->grid[i][j].z;
 					}
 					else
 					{
@@ -233,8 +228,7 @@ void Factory::moveLineRight()
 						{
 							hitCurrentBlock = true;
 						}
-						board->updatedGrid[i + 1][j].setTexture(board->blockTex);
-						board->updatedGrid[i + 1][j].setColor(board->grid[i][j].getColor());
+						board->updatedGrid[i + 1][j].z = board->grid[i][j].z;
 					}
 				}
 			}
@@ -252,8 +246,7 @@ void Factory::moveLineRight()
 				currentBlock->positions[i].x = 0;
 				blockWrapped = true;
 			}
-			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].setTexture(board->blockTex);
-			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].setColor(currentBlock->getColor());
+			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].z = currentBlock->getType();
 		}
 		board->grid = board->updatedGrid;
 		if (blockWrapped)
@@ -272,8 +265,7 @@ void Factory::moveLineRight()
 	{
 		for (int i = currentBlock->tetra - 1; i >= 0; --i)
 		{
-			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].setTexture(board->blockTex);
-			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].setColor(currentBlock->getColor());
+			board->updatedGrid[currentBlock->positions[i].x][currentBlock->positions[i].y].z = currentBlock->getType();
 		}
 		board->grid = board->updatedGrid;
 	}
