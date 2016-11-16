@@ -28,10 +28,11 @@ public:
 	sf::Vector2i getPosition();
 	sf::Vector2u getSpawnPoint();
 
+	sf::Texture blockTex, emptyTex;
+
 private:
 	sf::Vector2u size, spawnPoint, blockSize = { 16, 16 };
 	sf::Vector2i position;
-	sf::Texture blockTex, emptyTex;
 	sf::Sprite block;
 };
 

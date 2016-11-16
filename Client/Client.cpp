@@ -42,64 +42,62 @@ void Client::update(const float dt)
 
 	if (secretCode == 0)
 	{
-		sf::Vector2i size;
+		sf::Vector2u size;
 		sf::Vector2u spawn;
 		packet >> size.x >> size.y >> spawn.x >> spawn.y;
 
 		for (int i = 0; i < playerCount; ++i)
 		{
-			sf::Vector2u position;
+			sf::Vector2i position;
 			packet >> position.x >> position.y;
-			Player *player = new Player(position, size, spawn);
+			Player *player = new Player(size, position, spawn);
 			players.push_back(player);
 			std::cout << "Player added" << std::endl;
 		}
 	}
 	else
 	{
-		unsigned type;
-		for (int k = 0; k < players.size(); ++k)
+		unsigned type, id;
+		packet >> id;
+		for (int j = 0; j < players[id]->board->getSize().y; ++j)
 		{
-			for (int j = 0; j < players[k]->board->getSize().y; ++j)
+			for (int i = 0; i < players[id]->board->getSize().x; ++i)
 			{
-				for (int i = 0; i < players[k]->board->getSize().x; ++i)
+				packet >> type;
+				if (type == BlockType::EMPTY)
 				{
-					packet >> type;
-					if (type == BlockType::EMPTY)
+					players[id]->board->grid[i][j].setTexture(players[id]->board->emptyTex);
+				}
+				else
+				{
+					players[id]->board->grid[i][j].setTexture(players[id]->board->blockTex);
+					if (type == BlockType::BLOCKI)
 					{
-						players[k]->board->grid[i][j].setTexture(emptyTex);
+						players[id]->board->grid[i][j].setColor(sf::Color::Cyan);
 					}
-					else
+					else if (type == BlockType::BLOCKO)
 					{
-						players[k]->board->grid[i][j].setTexture(blockTex);
-						if (type == BlockType::BLOCKI)
-						{
-							players[k]->board->grid[i][j].setColor(sf::Color::Cyan);
-						}
-						else if (type == BlockType::BLOCKO)
-						{
-							players[k]->board->grid[i][j].setColor(sf::Color::Yellow);
-						}
-						else if (type == BlockType::BLOCKZ)
-						{
-							players[k]->board->grid[i][j].setColor(sf::Color::Red);
-						}
-						else if (type == BlockType::BLOCKS)
-						{
-							players[k]->board->grid[i][j].setColor(sf::Color::Green);
-						}
-						else if (type == BlockType::BLOCKL)
-						{
-							players[k]->board->grid[i][j].setColor(sf::Color(255, 130, 0));
-						}
-						else if (type == BlockType::BLOCKJ)
-						{
-							players[k]->board->grid[i][j].setColor(sf::Color::Blue);
-						}
-						else if (type == BlockType::BLOCKT)
-						{
-							players[k]->board->grid[i][j].setColor(sf::Color::Magenta);
-						}
+						players[id]->board->grid[i][j].setColor(sf::Color::Yellow);
+					}
+					else if (type == BlockType::BLOCKZ)
+					{
+						players[id]->board->grid[i][j].setColor(sf::Color::Red);
+					}
+					else if (type == BlockType::BLOCKS)
+					{
+						players[id]->board->grid[i][j].setColor(sf::Color::Green);
+					}
+					else if (type == BlockType::BLOCKL)
+					{
+						players[id]->board->grid[i][j].setColor(sf::Color(255, 130, 0));
+					}
+					else if (type == BlockType::BLOCKJ)
+					{
+						players[id]->board->grid[i][j].setColor(sf::Color::Blue);
+					}
+					else if (type == BlockType::BLOCKT)
+					{
+						players[id]->board->grid[i][j].setColor(sf::Color::Magenta);
 					}
 				}
 			}

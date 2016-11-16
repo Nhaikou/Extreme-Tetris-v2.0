@@ -82,6 +82,7 @@ void Server::sendBoard(unsigned id)
 {
 	packet.clear();
 	packet << 1; // secretCode
+	packet << id;
 	for (int j = 0; j < players[id]->board->getSize().y; ++j)
 	{
 		for (int i = 0; i < players[id]->board->getSize().x; ++i)
@@ -89,5 +90,8 @@ void Server::sendBoard(unsigned id)
 			packet << players[id]->board->grid[i][j].z;
 		}
 	}
-	clients[id]->send(packet);
+	for (int i = 0; i < clients.size(); ++i)
+	{
+		clients[i]->send(packet);
+	}
 }

@@ -23,10 +23,6 @@ public:
 protected:
 	void onInitialize();
 private:
-	Board *board;
-	sf::Texture blockTex, emptyTex;
-	sf::Sprite block;
-
 	sf::IpAddress ip;
 	sf::TcpSocket server;
 	sf::Packet packet;

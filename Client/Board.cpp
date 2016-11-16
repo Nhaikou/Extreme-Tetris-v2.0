@@ -9,7 +9,7 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
 	block.setTexture(emptyTex);
 
 	size = boardSize;
-	position = sf::Vector2i(boardPos.x * blockSize.x, boardPos.y * blockSize.y); // The position varies according to the texture's size
+	position = boardPos;
 	spawnPoint = spawn;
 
 	// Resizing the grid to fit all the blocks
@@ -25,7 +25,7 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
 		for (int i = 0; i < size.x; ++i)
 		{
 			grid[i][j] = block;
-			grid[i][j].setPosition(block.getGlobalBounds().width * i, block.getGlobalBounds().height * j);
+			grid[i][j].setPosition(position.x + block.getGlobalBounds().width * i, position.y + block.getGlobalBounds().height * j);
 		}
 	}
 }

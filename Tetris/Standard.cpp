@@ -13,6 +13,7 @@ Standard::~Standard()
 
 void Standard::onInitialize()
 {
+	server->packet.clear();
 	server->packet << 0; // secretCode;
 	server->packet << server->players[0]->board->getSize().x << server->players[0]->board->getSize().y << server->players[0]->board->getSpawnPoint().x << server->players[0]->board->getSpawnPoint().y;
 
@@ -41,7 +42,7 @@ void Standard::update(const float dt)
 {
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
-		server->players[i]->clientKey = server->receiveButtonPress(0);
+		server->players[i]->clientKey = server->receiveButtonPress(i);
 
 		if (server->players[i]->clientKey != -1)
 		{
