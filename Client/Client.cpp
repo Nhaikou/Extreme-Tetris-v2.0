@@ -54,6 +54,9 @@ void Client::update(const float dt)
 			players.push_back(player);
 			std::cout << "Player added" << std::endl;
 		}
+		sf::View newView(sf::FloatRect(0, 0, players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition().x + 16, players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition().y + 16));
+		stateMachine->window.setView(newView);
+		stateMachine->window.setSize(sf::Vector2u(players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition()) + sf::Vector2u(16,16));
 	}
 	else
 	{
