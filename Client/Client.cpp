@@ -67,6 +67,7 @@ void Client::update(const float dt)
 				if (type == BlockType::EMPTY)
 				{
 					players[id]->board->grid[i][j].setTexture(players[id]->board->emptyTex);
+					players[id]->board->grid[i][j].setColor(sf::Color::White);
 				}
 				else
 				{
@@ -115,6 +116,13 @@ void Client::draw(const float dt)
 			{
 				stateMachine->window.draw(players[k]->board->grid[i][j]);
 			}
+		}
+	}
+	for (int j = 0; j < players.size(); ++j)
+	{
+		for (int i = 0; i < players[j]->board->walls.size(); ++i)
+		{
+			stateMachine->window.draw(players[j]->board->walls[i]);
 		}
 	}
 }

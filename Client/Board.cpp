@@ -4,9 +4,12 @@
 Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
 {
 	blockTex.loadFromFile("../Assets/Block.png");
-	block.setTexture(blockTex);
-	emptyTex.create(blockTex.getSize().x, blockTex.getSize().y); // Create an empty texture that is the same size as Block.png
+	emptyTex.loadFromFile("../Assets/Brick2.png");
+	wallTex.loadFromFile("../Assets/Brick.png");
+	floorTex.loadFromFile("../Assets/Brick3.png");
 	block.setTexture(emptyTex);
+	wall.setTexture(wallTex);
+	floor.setTexture(floorTex);
 
 	size = boardSize;
 	position = boardPos;
@@ -26,8 +29,29 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
 		{
 			grid[i][j] = block;
 			grid[i][j].setPosition(position.x + block.getGlobalBounds().width * i, position.y + block.getGlobalBounds().height * j);
+
+			if (i == 0)
+			{
+				wall.setPosition(grid[i][j].getPosition() - sf::Vector2f(blockSize.x, 0));
+				walls.push_back(wall);
+			}
+			if (i == size.x - 1)
+			{
+				wall.setPosition(grid[i][j].getPosition() + sf::Vector2f(blockSize.x, 0));
+				walls.push_back(wall);
+			}
+			if (j == size.y - 1)
+			{
+				floor.setPosition(grid[i][j].getPosition() + sf::Vector2f(0, blockSize.y));
+				walls.push_back(floor);
+			}
 		}
 	}
+
+	floor.setPosition(grid[0][size.y - 1].getPosition().x - blockSize.x, grid[0][size.y - 1].getPosition().y + blockSize.y);
+	walls.push_back(floor);
+	floor.setPosition(grid[size.x - 1][size.y - 1].getPosition() + sf::Vector2f(blockSize.x, blockSize.y));
+	walls.push_back(floor);
 }
 
 

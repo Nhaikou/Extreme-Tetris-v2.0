@@ -23,17 +23,18 @@ public:
 	~Board();
 
 	std::vector<std::vector<sf::Sprite>> grid;
+	std::vector<sf::Sprite> walls;
 
 	sf::Vector2u getSize();
 	sf::Vector2i getPosition();
 	sf::Vector2u getSpawnPoint();
 
-	sf::Texture blockTex, emptyTex;
+	sf::Texture blockTex, emptyTex, wallTex, floorTex;
 
 private:
 	sf::Vector2u size, spawnPoint, blockSize = { 16, 16 };
 	sf::Vector2i position;
-	sf::Sprite block;
+	sf::Sprite block, wall, floor;
 };
 
 #endif
