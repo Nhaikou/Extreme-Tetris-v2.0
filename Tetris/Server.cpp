@@ -37,7 +37,7 @@ void Server::findPlayers()
 					clients.push_back(client);
 					clients[clients.size() - 1]->setBlocking(false);
 					socketSelector.add(*client);
-					Player *player = new Player(clients.size() - 1);
+					Player *player = new Player(clients.size() - 1, sf::Vector2i(0, -2), sf::Vector2u(50, 50), sf::Vector2u(3, 3));
 					players.push_back(player);
 				}
 				else

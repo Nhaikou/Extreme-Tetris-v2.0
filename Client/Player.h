@@ -7,7 +7,7 @@
 class Player
 {
 public:
-	Player(sf::Vector2u position, sf::Vector2i size, sf::Vector2u spawn);
+	Player(sf::Vector2u size, sf::Vector2i position, sf::Vector2u spawn);
 	~Player();
 
 	Board* board = nullptr;

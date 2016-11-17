@@ -1,9 +1,9 @@
 #include "Player.h"
 
 
-Player::Player(unsigned id)
+Player::Player(unsigned id, sf::Vector2i position, sf::Vector2u size, sf::Vector2u spawn)
 {
-	board = new Board(sf::Vector2u(10, 20), sf::Vector2i((id + 1) + id * 10, -2), sf::Vector2u(3, 3));
+	board = new Board(size, sf::Vector2i(position.x + (id + 1) + id * size.x, position.y), spawn);
 	board->dropTime.y = 1000;
 	board->counter = 0;
 	board->maxRows;

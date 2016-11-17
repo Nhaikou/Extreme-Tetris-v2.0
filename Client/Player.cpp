@@ -1,9 +1,9 @@
 #include "Player.h"
 
 
-Player::Player(sf::Vector2u position, sf::Vector2i size, sf::Vector2u spawn)
+Player::Player(sf::Vector2u size, sf::Vector2i position, sf::Vector2u spawn)
 {
-	board = new Board(position, size, spawn);
+	board = new Board(size, position, spawn);
 }
 
 
