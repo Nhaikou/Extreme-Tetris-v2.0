@@ -11,7 +11,6 @@ Player::Player(unsigned id, sf::Vector2i position, sf::Vector2u size, sf::Vector
 	spawnBlock();
 }
 
-
 Player::~Player()
 {
 	delete board;

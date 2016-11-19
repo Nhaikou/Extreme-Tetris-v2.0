@@ -21,10 +21,10 @@ bool BlockO::spawn()
 	{
 		for (int j = 1; j >= 0; --j)
 		{
-			if (board->grid[board->getSpawnPoint().x + i][board->getSpawnPoint().y + j].z == BlockType::EMPTY)
+			if (board->grid[board->getSpawnPoint().x + i][board->getSpawnPoint().y + j] == BlockType::EMPTY)
 			{ 
 				positions[counter] = sf::Vector2i(board->getSpawnPoint().x + i, board->getSpawnPoint().y + j);
-				board->grid[positions[counter].x][positions[counter].y].z = BlockType::BLOCKO;
+				board->grid[positions[counter].x][positions[counter].y] = BlockType::BLOCKO;
 				counter++;
 			}
 			else

@@ -28,6 +28,9 @@ public:
 	void findPlayers();
 	int receiveButtonPress(unsigned id);
 	void sendBoard(unsigned id);
+	void updateLine(const float dt);
+	void moveLineLeft();
+	void moveLineRight();
 
 	std::vector<sf::TcpSocket*> clients;
 	bool networking;
@@ -35,6 +38,9 @@ public:
 private:
 	bool searchPlayers = true;
 	char answer;
+
+	sf::Vector2f lineTime = { 0, 0 };
+	int lineDirection = 1;
 };
 #endif;
 

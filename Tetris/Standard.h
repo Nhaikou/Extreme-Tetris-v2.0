@@ -31,8 +31,5 @@ protected:
 
 private:
 	Server *server = nullptr;
-	sf::Font font;
-	sf::Text scoreText;
-	std::stringstream ss;
 };
 #endif

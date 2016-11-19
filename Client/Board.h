@@ -19,7 +19,7 @@ enum BlockType
 class Board
 {
 public:
-	Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn);
+	Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, bool lastPlayer);
 	~Board();
 
 	std::vector<std::vector<sf::Sprite>> grid;

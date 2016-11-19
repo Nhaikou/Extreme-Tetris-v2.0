@@ -48,9 +48,14 @@ void Client::update(const float dt)
 
 		for (int i = 0; i < playerCount; ++i)
 		{
+			bool lastPlayer = false;
+			if (i == playerCount - 1)
+			{
+				lastPlayer = true;
+			}
 			sf::Vector2i position;
 			packet >> position.x >> position.y;
-			Player *player = new Player(size, position, spawn);
+			Player *player = new Player(size, position, spawn, lastPlayer);
 			players.push_back(player);
 			std::cout << "Player added" << std::endl;
 		}

@@ -31,14 +31,8 @@ protected:
 	void onInitialize();
 
 private:
-	Bag bag;
 	Server *server = nullptr;
-	int lineDirection = 1;
 	sf::Vector2u boardSize;
-	sf::Vector2f dropTime = { 0, 0 }, lineTime = { 0, 0 };
-	Board *board = nullptr, *leftBoard = nullptr, *rightBoard = nullptr;
-	Block *currentBlock = nullptr;
-	int clientKey = -1;
 };
 
 #endif

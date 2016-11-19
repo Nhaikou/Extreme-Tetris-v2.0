@@ -18,7 +18,7 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
 	{
 		for (int i = 0; i < size.x; ++i)
 		{
-			grid[i][j] = sf::Vector3i(position.x + blockSize.x * i, position.y + blockSize.y * j, BlockType::EMPTY);
+			grid[i][j] = BlockType::EMPTY;
 		}
 	}
 
@@ -26,6 +26,13 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
 	updatedGrid = grid;
 
 	// Our grid is now ready and all we need to do now is to change textures and colors to make it look like the blocks are moving
+
+	// Factory things
+	gridSlice.resize(size.y);
+	for (int i = 0; i < size.y; ++i)
+	{
+		gridSlice[i] = BlockType::EMPTY;
+	}
 
 	// Initializing points gained by clearing rows
 	pointsPerRow.push_back(40);		// One row cleared
@@ -83,14 +90,14 @@ unsigned Board::clearRow()
 	{
 		for (int i = 0; i < size.x; ++i)
 		{
-			if (grid[i][j].z != BlockType::EMPTY)
+			if (grid[i][j] != BlockType::EMPTY)
 			{
 				++counter;
 				if (counter == size.x)
 				{
 					for (int k = 0; k < size.x; ++k)
 					{
-						grid[k][j].z = BlockType::EMPTY;
+						grid[k][j] = BlockType::EMPTY;
 					}
 					dropRow(j);
 					clearedRows++;
@@ -114,7 +121,7 @@ void Board::dropRow(int y)
 	{
 		for (int i = 0; i < size.x; ++i)
 		{
-			grid[i][j].z = grid[i][j - 1].z;
+			grid[i][j] = grid[i][j - 1];
 		}
 	}
 }

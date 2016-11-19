@@ -22,7 +22,7 @@ void Block::moveLeft()
 			return;
 		}
 		// Check if there's an empty space next to (left) the current block
-		if (board->grid[positions[i].x - 1][positions[i].y].z != BlockType::EMPTY)
+		if (board->grid[positions[i].x - 1][positions[i].y] != BlockType::EMPTY)
 		{
 			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
@@ -45,9 +45,9 @@ void Block::moveLeft()
 	for (int i = 0; i < tetra; ++i)
 	{
 		// Clear the current blocks, change the x-positions by -1 and set the texture and color
-		board->grid[positions[i].x][positions[i].y].z = BlockType::EMPTY;
+		board->grid[positions[i].x][positions[i].y] = BlockType::EMPTY;
 		positions[i].x--;
-		board->grid[positions[i].x][positions[i].y].z = type;
+		board->grid[positions[i].x][positions[i].y] = type;
 	}
 }
 
@@ -62,7 +62,7 @@ void Block::moveRight()
 			return;
 		}
 		// Check if there's an empty space next to (right) the current block
-		if (board->grid[positions[i].x + 1][positions[i].y].z != BlockType::EMPTY)
+		if (board->grid[positions[i].x + 1][positions[i].y] != BlockType::EMPTY)
 		{
 			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
@@ -85,9 +85,9 @@ void Block::moveRight()
 	for (int i = tetra - 1; i >= 0; --i)
 	{
 		// Clear the current blocks, change the x-positions by +1 and set the texture and color
-		board->grid[positions[i].x][positions[i].y].z = BlockType::EMPTY;
+		board->grid[positions[i].x][positions[i].y] = BlockType::EMPTY;
 		positions[i].x++;
-		board->grid[positions[i].x][positions[i].y].z = type;
+		board->grid[positions[i].x][positions[i].y] = type;
 	}
 }
 
@@ -107,7 +107,7 @@ bool Block::moveDown()
 			return false;
 		}
 		// Check if there's an empty space next to (down) the current block
-		if (board->grid[positions[i].x][positions[i].y + 1].z != BlockType::EMPTY)
+		if (board->grid[positions[i].x][positions[i].y + 1] != BlockType::EMPTY)
 		{
 			// Check if the space that had a texture is part of the current block type
 			bool ok = false;
@@ -130,9 +130,9 @@ bool Block::moveDown()
 	for (int i = 0; i < tetra; ++i)
 	{
 		// Clear the current blocks, change the x-positions by +1 and set the texture and color
-		board->grid[positions[i].x][positions[i].y].z = BlockType::EMPTY;
+		board->grid[positions[i].x][positions[i].y] = BlockType::EMPTY;
 		positions[i].y++;
-		board->grid[positions[i].x][positions[i].y].z = type;
+		board->grid[positions[i].x][positions[i].y] = type;
 	}
 
 	return true;
