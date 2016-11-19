@@ -26,6 +26,8 @@ bool Player::updateClient()
 		updated = true;
 	}
 
+	board->updatedGrid = board->grid;
+
 	if (clientKey == sf::Keyboard::Left)
 	{
 		currentBlock->moveLeft();
@@ -33,6 +35,11 @@ bool Player::updateClient()
 	if (clientKey == sf::Keyboard::Right)
 	{
 		currentBlock->moveRight();
+	}
+	if (clientKey == sf::Keyboard::Up)
+	{
+		currentBlock->dropDown();
+		spawnBlock();
 	}
 	if (clientKey == sf::Keyboard::Down)
 	{
@@ -107,6 +114,7 @@ bool Player::dropUpdate(const float dt)
 	board->dropTime.x += dt;
 	if (board->dropTime.x >= board->dropTime.y)
 	{
+		board->updatedGrid = board->grid;
 		board->dropTime.x = 0;
 		if (!currentBlock->moveDown())
 		{

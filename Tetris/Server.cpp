@@ -37,7 +37,7 @@ void Server::findPlayers()
 					clients.push_back(client);
 					clients[clients.size() - 1]->setBlocking(false);
 					socketSelector.add(*client);
-					Player *player = new Player(clients.size() - 1, sf::Vector2i(0, -2), sf::Vector2u(50, 50), sf::Vector2u(3, 3));
+					Player *player = new Player(clients.size() - 1, sf::Vector2i(0, -2), sf::Vector2u(10, 20), sf::Vector2u(3, 3));
 					players.push_back(player);
 				}
 				else
@@ -83,11 +83,15 @@ void Server::sendBoard(unsigned id)
 	packet.clear();
 	packet << 1; // secretCode
 	packet << id;
+
 	for (int j = 0; j < players[id]->board->getSize().y; ++j)
 	{
 		for (int i = 0; i < players[id]->board->getSize().x; ++i)
 		{
-			packet << players[id]->board->grid[i][j].z;
+			if (players[id]->board->updatedGrid[i][j] != players[id]->board->grid[i][j])
+			{
+				packet << i << j << players[id]->board->grid[i][j].z;
+			}
 		}
 	}
 	for (int i = 0; i < clients.size(); ++i)

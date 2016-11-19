@@ -91,6 +91,11 @@ void Block::moveRight()
 	}
 }
 
+void Block::dropDown()
+{
+	while (moveDown());
+}
+
 bool Block::moveDown()
 {
 	// Go through all the smaller blocks in our current block type

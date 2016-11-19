@@ -12,6 +12,7 @@ public:
 	// Move functions for the current block that is in play
 	void moveLeft();
 	void moveRight();
+	void dropDown();
 	bool moveDown();
 
 	virtual bool spawn(); // Goes to the spawn function of the block type that is spawned
