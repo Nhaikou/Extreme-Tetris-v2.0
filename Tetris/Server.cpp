@@ -121,10 +121,16 @@ void Server::updateLine(const float dt)
 		}
 		for (int i = 0; i < players.size(); ++i)
 		{
-			players[i]->board->clearRow();
+			if (players[i]->board->clearRow() > 0)
+			{
+				for (int j = players[i]->currentBlock->positions.size() - 1; j >= 0; --j)
+				{
+					players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y + 1] = BlockType::EMPTY;
+					players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y] = players[i]->currentBlock->getType();
+				}
+			}
 			sendBoard(i);
 		}
-		std::cout << "Line moved." << std::endl;
 	}
 }
 

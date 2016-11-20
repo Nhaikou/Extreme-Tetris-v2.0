@@ -60,6 +60,8 @@ bool Player::updateClient()
 
 bool Player::spawnBlock()
 {
+	board->clearRow();
+
 	unsigned randomBlock = bag.getNextBlock();
 	if (currentBlock != nullptr)
 	{
@@ -93,9 +95,6 @@ bool Player::spawnBlock()
 	{
 		currentBlock = new BlockT(board);
 	}
-
-	board->clearRow();
-	board->dropTime.x = 0;
 
 	if (!currentBlock->spawn())
 	{
