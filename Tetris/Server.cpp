@@ -107,6 +107,10 @@ void Server::updateLine(const float dt)
 	if (lineTime.x >= lineTime.y)
 	{
 		lineTime.x = 0;
+		for (int i = 0; i < players.size(); ++i)
+		{
+			players[i]->board->updatedGrid = players[i]->board->grid;
+		}
 		if (lineDirection == -1)
 		{
 			moveLineLeft();
@@ -117,108 +121,12 @@ void Server::updateLine(const float dt)
 		}
 		for (int i = 0; i < players.size(); ++i)
 		{
+			players[i]->board->clearRow();
 			sendBoard(i);
 		}
 		std::cout << "Line moved." << std::endl;
 	}
 }
-
-/*
-void Server::moveLineLeft()
-{
-	bool hitCurrentBlock = false;
-
-	for (int k = 0; k < players.size(); ++k)
-	{
-		for (int j = 0; j < players[k]->board->getSize().y; ++j)
-		{
-			for (int i = 0; i < players[k]->board->getSize().x; ++i)
-			{
-				players[k]->board->updatedGrid[i][j] = BlockType::EMPTY;
-			}
-		}
-	}
-
-	for (int k = 0; k < players.size(); ++k)
-	{
-		for (int j = 0; j < players[k]->board->getSize().y; ++j)
-		{
-			for (int i = 0; i < players[k]->board->getSize().x; ++i)
-			{
-				if (!(players[k]->currentBlock->positions[0] == sf::Vector2i(i, j) || players[k]->currentBlock->positions[1] == sf::Vector2i(i, j) ||
-					players[k]->currentBlock->positions[2] == sf::Vector2i(i, j) || players[k]->currentBlock->positions[3] == sf::Vector2i(i, j)))
-				{
-					if (players[k]->board->grid[i][j] == BlockType::EMPTY)
-					{
-						if (i == 0)
-						{
-							if (players[k]->currentBlock->positions[0] == sf::Vector2i(players[k]->board->getSize().x - 1, j) || players[k]->currentBlock->positions[1] == sf::Vector2i(players[k]->board->getSize().x - 1, j) ||
-								players[k]->currentBlock->positions[2] == sf::Vector2i(players[k]->board->getSize().x - 1, j) || players[k]->currentBlock->positions[3] == sf::Vector2i(players[k]->board->getSize().x - 1, j))
-							{
-								hitCurrentBlock = true;
-							}
-							players[k]->board->updatedGrid[players[k]->board->getSize().x - 1][j] = players[k]->board->grid[i][j];
-						}
-						else
-						{
-							if (players[k]->currentBlock->positions[0] == sf::Vector2i(i - 1, j) || players[k]->currentBlock->positions[1] == sf::Vector2i(i - 1, j) ||
-								players[k]->currentBlock->positions[2] == sf::Vector2i(i - 1, j) || players[k]->currentBlock->positions[3] == sf::Vector2i(i - 1, j))
-							{
-								hitCurrentBlock = true;
-							}
-							players[k]->board->updatedGrid[i - 1][j] = players[k]->board->grid[i][j];
-						}
-					}
-				}
-			}
-		}
-	}
-
-	if (hitCurrentBlock)
-	{
-		bool blockWrapped = false;
-		for (int j = 0; j < players.size(); ++j)
-		{
-			for (int i = 0; i < players[j]->currentBlock->tetra; ++i)
-			{
-				players[j]->currentBlock->positions[i].x--;
-				if (players[j]->currentBlock->positions[i].x == -1)
-				{
-					players[j]->currentBlock->positions[i].x = players[j]->board->getSize().x - 1;
-					blockWrapped = true;
-				}
-				players[j]->board->updatedGrid[players[j]->currentBlock->positions[i].x][players[j]->currentBlock->positions[i].y] = players[j]->currentBlock->getType();
-			}
-		}
-		for (int i = 0; i < players.size(); ++i)
-		{
-			players[i]->board->grid = players[i]->board->updatedGrid;
-			if (blockWrapped)
-			{
-				while (true)
-				{
-					if (!players[i]->currentBlock->moveDown())
-					{
-
-						return;
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		for (int j = 0; j < players.size(); ++j)
-		{
-			for (int i = 0; i < players[j]->currentBlock->tetra; ++i)
-			{
-				players[j]->board->updatedGrid[players[j]->currentBlock->positions[i].x][players[j]->currentBlock->positions[i].y] = players[j]->currentBlock->getType();
-			}
-			players[j]->board->grid = players[j]->board->updatedGrid;
-		}
-	}
-}
-*/
 
 void Server::moveLineLeft()
 {
@@ -227,10 +135,20 @@ void Server::moveLineLeft()
 
 void Server::moveLineRight()
 {
-	std::vector<unsigned> tempSlice = players[players.size() - 1]->board->gridSlice;
-
-	for (int k = players.size() - 1; k >= 0; --k)
+	std::vector<std::vector<unsigned>> tempSlices;
+	for (int i = 0; i < players.size(); ++i)
 	{
+		std::vector<unsigned> tempSlice = players[i]->board->gridSlice;
+		tempSlices.push_back(tempSlice);
+	}
+
+	for (int k = 0; k < players.size(); ++k)
+	{
+		for (int i = 0; i < players[k]->currentBlock->positions.size(); ++i)
+		{
+			players[k]->board->grid[players[k]->currentBlock->positions[i].x][players[k]->currentBlock->positions[i].y] = BlockType::EMPTY;
+		}
+
 		for (int j = 0; j < players[k]->board->getSize().y; ++j)
 		{
 			for (int i = players[k]->board->getSize().x - 1; i >= 0; --i)
@@ -239,31 +157,97 @@ void Server::moveLineRight()
 				{
 					players[k]->board->gridSlice[j] = players[k]->board->grid[i][j];
 				}
-				else if (i == 0)
+				if (i == 0)
 				{
-					if (k - 1 > 0)
+					if (k == 0 && players.size() != 1)
 					{
-						players[k]->board->updatedGrid[i][j] = players[k - 1]->board->gridSlice[j];
+						players[k]->board->grid[i][j] = players[players.size() - 1]->board->gridSlice[j];
+					}
+					else if (k == 0 && players.size() == 1)
+					{
+						players[k]->board->grid[i][j] = tempSlices[k][j];
 					}
 					else
 					{
-						players[k]->board->updatedGrid[i][j] = players[players.size() - 1]->board->gridSlice[j];
-					}			
+						players[k]->board->grid[i][j] = tempSlices[k - 1][j];
+					}
 				}
 				else
 				{
-					players[k]->board->updatedGrid[i + 1][j] = players[k]->board->grid[i][j];
+					players[k]->board->grid[i][j] = players[k]->board->grid[i - 1][j];
 				}
 			}
 		}
-	}
 
-	for (int i = 0; i < players[0]->board->getSize().y; ++i)
-	{
-		players[0]->board->updatedGrid[0][i] = tempSlice[i];
-	}
-	for (int i = 0; i < players.size(); ++i)
-	{
-		players[i]->board->grid = players[i]->board->updatedGrid;
+		bool moveBlock = false, blockWrapped = false;
+		for (int i = 0; i < players[k]->currentBlock->positions.size(); ++i)
+		{
+			if (players[k]->board->grid[players[k]->currentBlock->positions[i].x][players[k]->currentBlock->positions[i].y] != BlockType::EMPTY)
+			{
+				moveBlock = true;
+			}
+		}
+
+		if (moveBlock)
+		{
+			for (int i = 0; i < players[k]->currentBlock->positions.size(); ++i)
+			{
+				players[k]->currentBlock->positions[i].x++;
+				if (players[k]->currentBlock->positions[i].x >= players[k]->board->getSize().x)
+				{
+					blockWrapped = true;
+				}
+			}
+		}
+		if (blockWrapped)
+		{
+			unsigned dropCount = 0, currentDropCount = players[k]->board->getSize().y;
+			for (int i = 0; i < players[k]->currentBlock->positions.size(); ++i)
+			{
+				dropCount = 0;
+				if (players[k]->currentBlock->positions[i].x >= players[k]->board->getSize().x)
+				{
+					while (players[k]->currentBlock->positions[i].y + dropCount != players[k]->board->getSize().y - 1 && players[k]->board->gridSlice[players[k]->currentBlock->positions[i].y + dropCount + 1] == BlockType::EMPTY)
+					{
+						dropCount++;
+					}
+				}
+				else
+				{
+					while (players[k]->currentBlock->positions[i].y + dropCount != players[k]->board->getSize().y - 1 && players[k]->board->grid[players[k]->currentBlock->positions[i].x][players[k]->currentBlock->positions[i].y + dropCount + 1] == BlockType::EMPTY)
+					{
+						dropCount++;
+					}
+				}
+				if (dropCount < currentDropCount)
+				{
+					currentDropCount = dropCount;
+				}
+			}
+
+			for (int i = 0; i < players[k]->currentBlock->positions.size(); ++i)
+			{
+				for (int j = 0; j < currentDropCount; ++j)
+				{
+					if (players[k]->currentBlock->positions[i].x >= players[k]->board->getSize().x)
+					{
+						players[k]->board->gridSlice[players[k]->currentBlock->positions[i].y + currentDropCount] = players[k]->currentBlock->getType();
+					}
+					else
+					{
+						players[k]->board->grid[players[k]->currentBlock->positions[i].x][players[k]->currentBlock->positions[i].y + currentDropCount] = players[k]->currentBlock->getType();
+					}
+				}
+			}
+
+			players[k]->spawnBlock();
+		}
+		else
+		{
+			for (int i = 0; i < players[k]->currentBlock->positions.size(); ++i)
+			{
+				players[k]->board->grid[players[k]->currentBlock->positions[i].x][players[k]->currentBlock->positions[i].y] = players[k]->currentBlock->getType();
+			}
+		}
 	}
 }

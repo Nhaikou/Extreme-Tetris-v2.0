@@ -65,13 +65,3 @@ void Factory::draw(const float dt)
 {
 
 }
-
-void Factory::moveLineLeft()
-{
-	
-}
-
-void Factory::moveLineRight()
-{
-
-}

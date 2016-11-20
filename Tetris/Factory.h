@@ -24,9 +24,6 @@ public:
 	void update(const float dt);
 	void draw(const float dt);
 
-	void moveLineLeft();
-	void moveLineRight();
-
 protected:
 	void onInitialize();
 

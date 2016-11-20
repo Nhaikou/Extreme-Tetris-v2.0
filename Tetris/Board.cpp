@@ -112,6 +112,13 @@ unsigned Board::clearRow()
 		score += pointsPerRow[clearedRows - 1] * (level + 1);
 	}
 
+	if (counter >= maxRows)
+	{
+		dropTime.y -= dropTimeReduction;
+		counter -= maxRows;
+		std::cout << "Current drop speed: " << dropTime.y << std::endl;
+	}
+
 	return clearedRows;
 }
 
