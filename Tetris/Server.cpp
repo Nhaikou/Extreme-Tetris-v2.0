@@ -82,7 +82,7 @@ int Server::receiveButtonPress(unsigned id)
 void Server::sendBoard(unsigned id)
 {
 	packet.clear();
-	packet << 1; // secretCode
+	packet << 2; // secretCode
 	packet << id;
 
 	for (int j = 0; j < players[id]->board->getSize().y; ++j)
@@ -95,9 +95,35 @@ void Server::sendBoard(unsigned id)
 			}
 		}
 	}
-	for (int i = 0; i < clients.size(); ++i)
+
+	if (gameMode == STANDARD)
 	{
-		clients[i]->send(packet);
+		for (int i = 0; i < clients.size(); ++i)
+		{
+			clients[i]->send(packet);
+		}
+	}
+	else if (gameMode == FACTORY)
+	{
+		if (id > 0)
+		{
+			clients[id - 1]->send(packet);
+		}
+		else
+		{
+			clients[clients.size() - 1]->send(packet);
+		}
+
+		clients[id]->send(packet);
+
+		if (id < clients.size() - 1)
+		{
+			clients[id + 1]->send(packet);
+		}
+		else
+		{
+			clients[0]->send(packet);
+		}
 	}
 }
 

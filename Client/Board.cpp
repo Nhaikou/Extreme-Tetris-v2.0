@@ -7,6 +7,7 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, 
 	emptyTex.loadFromFile("../Assets/Brick2.png");
 	wallTex.loadFromFile("../Assets/Brick.png");
 	floorTex.loadFromFile("../Assets/Brick3.png");
+	glassTex.loadFromFile("../Assets/Glass.png");
 	block.setTexture(emptyTex);
 	wall.setTexture(wallTex);
 	floor.setTexture(floorTex);

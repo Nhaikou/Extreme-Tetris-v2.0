@@ -14,17 +14,15 @@ Factory::~Factory()
 
 void Factory::onInitialize()
 {
-	server->packet.clear();
-	server->packet << 0; // secretCode;
-	server->packet << server->players[0]->board->getSize().x << server->players[0]->board->getSize().y << server->players[0]->board->getSpawnPoint().x << server->players[0]->board->getSpawnPoint().y;
-
+	server->gameMode = GameMode::FACTORY;
+	
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
-		server->packet << server->players[i]->board->getPosition().x << server->players[i]->board->getPosition().y;
-	}
-
-	for (int i = 0; i < server->clients.size(); ++i)
-	{
+		server->packet.clear();
+		server->packet << 1; // secretCode;
+		server->packet << GameMode::FACTORY;
+		server->packet << i;
+		server->packet << server->players[0]->board->getSize().x << server->players[0]->board->getSize().y << server->players[0]->board->getSpawnPoint().x << server->players[0]->board->getSpawnPoint().y;
 		server->clients[i]->send(server->packet);
 	}
 

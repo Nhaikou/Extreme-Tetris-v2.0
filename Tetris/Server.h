@@ -13,6 +13,13 @@ enum Networking
 	MULTIPLAYER = true,
 };
 
+enum GameMode
+{
+	MENU = 0,
+	STANDARD = 1,
+	FACTORY = 2,
+};
+
 class Server
 {
 public:
@@ -34,6 +41,7 @@ public:
 
 	std::vector<sf::TcpSocket*> clients;
 	bool networking;
+	unsigned gameMode;
 
 private:
 	bool searchPlayers = true;

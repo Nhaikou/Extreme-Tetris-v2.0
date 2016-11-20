@@ -44,7 +44,7 @@ void Client::update(const float dt)
 	{
 		sf::Vector2u size;
 		sf::Vector2u spawn;
-		packet >> size.x >> size.y >> spawn.x >> spawn.y;
+		packet >> gameMode >> size.x >> size.y >> spawn.x >> spawn.y;
 
 		for (int i = 0; i < playerCount; ++i)
 		{
@@ -57,16 +57,59 @@ void Client::update(const float dt)
 			packet >> position.x >> position.y;
 			Player *player = new Player(size, position, spawn, lastPlayer);
 			players.push_back(player);
-			std::cout << "Player added" << std::endl;
 		}
 		sf::View newView(sf::FloatRect(0, 0, players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition().x + 16, players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition().y + 16));
 		stateMachine->window.setView(newView);
 		stateMachine->window.setSize(sf::Vector2u(players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition()) + sf::Vector2u(16,16));
 	}
+	else if (secretCode == 1)
+	{
+		sf::Vector2u size;
+		sf::Vector2u spawn;
+		packet >> gameMode >> clientNumber >> size.x >> size.y >> spawn.x >> spawn.y;
+		for (int i = 0; i < 3; ++i)
+		{
+			bool lastPlayer = false;
+			if (i == 2)
+			{
+				lastPlayer = true;
+			}
+			Player *player = new Player(size, sf::Vector2i(i * (size.x + 1) * 16 + 16, -2 * 16), spawn, lastPlayer);
+			players.push_back(player);
+		}
+
+		sf::View newView(sf::FloatRect(0, 0, players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition().x + 16, players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition().y + 16));
+		stateMachine->window.setView(newView);
+		stateMachine->window.setSize(sf::Vector2u(players[players.size() - 1]->board->walls[players[players.size() - 1]->board->walls.size() - 1].getPosition()) + sf::Vector2u(16, 16));
+	}
 	else
 	{
 		unsigned type, id, i, j;
 		packet >> id;
+		if (gameMode == 2)
+		{
+			if (id == clientNumber)
+			{
+				id = 1;
+			}
+			else if (clientNumber == playerCount - 1 && id == 0)
+			{
+				id = 2;
+			}
+			else if (clientNumber == 0 && id == playerCount - 1)
+			{
+				id = 0;
+			}
+			else if (id < clientNumber)
+			{
+				id = 0;
+			}
+			else if(id > clientNumber)
+			{
+				id = 2;
+			}
+		}
+
 		while (!packet.endOfPacket())
 		{
 			packet >> i >> j >> type;

@@ -13,8 +13,10 @@ Standard::~Standard()
 
 void Standard::onInitialize()
 {
+	server->gameMode = GameMode::STANDARD;
 	server->packet.clear();
 	server->packet << 0; // secretCode;
+	server->packet << GameMode::STANDARD;
 	server->packet << server->players[0]->board->getSize().x << server->players[0]->board->getSize().y << server->players[0]->board->getSpawnPoint().x << server->players[0]->board->getSpawnPoint().y;
 
 	for (int i = 0; i < server->clients.size(); ++i)

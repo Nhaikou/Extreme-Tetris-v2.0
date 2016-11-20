@@ -27,7 +27,7 @@ private:
 	sf::TcpSocket server;
 	sf::Packet packet;
 
-	unsigned playerCount;
+	unsigned playerCount, clientNumber, gameMode;
 	std::vector<Player*> players;
 };
 #endif;
