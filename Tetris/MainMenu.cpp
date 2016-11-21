@@ -1,6 +1,5 @@
 #include "MainMenu.h"
-#include "Standard.h"
-#include "Factory.h"
+#include "GameMode.h"
 
 MainMenu::MainMenu(StateMachine* sm)
 {
@@ -14,38 +13,7 @@ MainMenu::~MainMenu()
 
 void MainMenu::onInitialize()
 {
-	//server = new Server(Networking::SINGLEPLAYER);
-	server = new Server(Networking::MULTIPLAYER);
-
-	if (!font.loadFromFile("../Assets/8bitOperatorPlus8-Bold.ttf"))
-	{
-		std::cout << "Error loading font" << std::endl;
-	}
-	
-	text.setFont(font);
-
-	text.setString("Main Menu soon...");
-	text.setCharacterSize(48);
-	text.setColor(sf::Color::White);
-}
-
-void MainMenu::handleInput()
-{
-	sf::Keyboard key;
-
-	// Close program
-	if (key.isKeyPressed(key.BackSpace))
-	{
-		stateMachine->window.close();
-	}
-	if (key.isKeyPressed(key.Space))
-	{
-		stateMachine->pushState(new Standard(stateMachine, server));
-	}
-	if (key.isKeyPressed(key.F))
-	{
-		stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 20), server));
-	}
+	server = new Server();
 }
 
 void MainMenu::update(const float dt)
@@ -55,31 +23,15 @@ void MainMenu::update(const float dt)
 		clientKey = server->receiveButtonPress(i);
 		if (clientKey != -1)
 		{
-			if (clientKey == sf::Keyboard::Escape)
-			{
-				stateMachine->window.close();
-			}
 			if (clientKey == sf::Keyboard::F)
 			{
-				stateMachine->pushState(new Factory(stateMachine, sf::Vector2u(10, 20), server));
+				stateMachine->pushState(new GameMode(stateMachine, server, true));
 			}
 			if (clientKey == sf::Keyboard::Space)
 			{
-				stateMachine->pushState(new Standard(stateMachine, server));
-			}
-			else
-			{
-				std::cout << "Client " << i << " pressed button " << clientKey << std::endl;
+				stateMachine->pushState(new GameMode(stateMachine, server, false));
 			}
 			clientKey = -1;
 		}
-	}
-}
-
-void MainMenu::draw(const float dt)
-{
-	if (!server->networking)
-	{
-		stateMachine->window.draw(text);
 	}
 }

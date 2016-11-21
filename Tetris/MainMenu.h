@@ -10,16 +10,12 @@ public:
 	MainMenu(StateMachine* sm);
 	~MainMenu();
 
-	void handleInput();
 	void update(const float dt);
-	void draw(const float dt);
 
 protected:
 	void onInitialize();
 private:
 	Server *server = nullptr;
-	sf::Font font;
-	sf::Text text;
 	int clientKey = -1;
 };
 #endif;

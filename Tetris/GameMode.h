@@ -1,9 +1,8 @@
-#ifndef FACTORY_H
-#define FACTORY_H
+#ifndef GAMEMODE_H
+#define GAMEMODE_H
 
-#include "Bag.h"
-#include "Server.h"
 #include "State.h"
+#include "Server.h"
 #include "Board.h"
 #include "Block.h"
 #include "BlockI.h"
@@ -13,23 +12,26 @@
 #include "BlockL.h"
 #include "BlockJ.h"
 #include "BlockT.h"
+#include "Bag.h"
 
-class Factory : public State
+#include <sstream>
+
+class GameMode : public State
 {
 public:
-	Factory(StateMachine* sm, sf::Vector2u size, Server *srvr);
-	~Factory();
+	GameMode(StateMachine* sm, Server *srvr, bool factory);
+	~GameMode();
 
-	void handleInput();
 	void update(const float dt);
-	void draw(const float dt);
 
 protected:
 	void onInitialize();
+	void standardInitialize();
+	void factoryInitialize();
 
 private:
 	Server *server = nullptr;
-	sf::Vector2u boardSize;
+	bool factoryMode;
 };
 
 #endif

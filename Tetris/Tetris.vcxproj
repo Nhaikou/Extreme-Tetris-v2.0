@@ -22,12 +22,11 @@
     <ClCompile Include="BlockT.cpp" />
     <ClCompile Include="BlockZ.cpp" />
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Factory.cpp" />
+    <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Server.cpp" />
-    <ClCompile Include="Standard.cpp" />
     <ClCompile Include="StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -42,11 +41,10 @@
     <ClInclude Include="BlockT.h" />
     <ClInclude Include="BlockZ.h" />
     <ClInclude Include="Board.h" />
-    <ClInclude Include="Factory.h" />
+    <ClInclude Include="GameMode.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Server.h" />
-    <ClInclude Include="Standard.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />
   </ItemGroup>

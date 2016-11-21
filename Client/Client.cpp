@@ -42,9 +42,10 @@ void Client::update(const float dt)
 
 	if (secretCode == 0)
 	{
+		gameMode = 1;
 		sf::Vector2u size;
 		sf::Vector2u spawn;
-		packet >> gameMode >> size.x >> size.y >> spawn.x >> spawn.y;
+		packet >> size.x >> size.y >> spawn.x >> spawn.y;
 
 		for (int i = 0; i < playerCount; ++i)
 		{
@@ -64,9 +65,10 @@ void Client::update(const float dt)
 	}
 	else if (secretCode == 1)
 	{
+		gameMode = 2;
 		sf::Vector2u size;
 		sf::Vector2u spawn;
-		packet >> gameMode >> clientNumber >> size.x >> size.y >> spawn.x >> spawn.y;
+		packet >> clientNumber >> size.x >> size.y >> spawn.x >> spawn.y;
 		for (int i = 0; i < 3; ++i)
 		{
 			bool lastPlayer = false;

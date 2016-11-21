@@ -30,16 +30,10 @@
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Standard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AnimatedSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Block.cpp">
@@ -75,6 +69,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StateMachine.h">
@@ -89,13 +86,7 @@
     <ClInclude Include="Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Standard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AnimatedSprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Block.h">
@@ -129,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

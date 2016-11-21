@@ -1,6 +1,5 @@
 #include "StateMachine.h"
 #include "MainMenu.h"
-#include "Standard.h"
 
 int main()
 {

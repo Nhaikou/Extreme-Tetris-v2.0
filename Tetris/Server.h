@@ -7,23 +7,10 @@
 #include <iostream>
 #include <vector>
 
-enum Networking
-{
-	SINGLEPLAYER = false,
-	MULTIPLAYER = true,
-};
-
-enum GameMode
-{
-	MENU = 0,
-	STANDARD = 1,
-	FACTORY = 2,
-};
-
 class Server
 {
 public:
-	Server(bool multiplayer);
+	Server();
 	~Server();
 
 	sf::SocketSelector socketSelector;
@@ -34,14 +21,12 @@ public:
 	std::vector<Player*> players;
 	void findPlayers();
 	int receiveButtonPress(unsigned id);
-	void sendBoard(unsigned id);
+	void sendBoard(unsigned id, bool factory);
 	void updateLine(const float dt);
 	void moveLineLeft();
 	void moveLineRight();
 
 	std::vector<sf::TcpSocket*> clients;
-	bool networking;
-	unsigned gameMode;
 
 private:
 	bool searchPlayers = true;

@@ -1,14 +1,9 @@
 #include "Server.h"
 
 
-Server::Server(bool multiplayer)
+Server::Server()
 {
-	networking = false;
-	if (multiplayer)
-	{
-		findPlayers();
-		networking = true;
-	}
+	findPlayers();
 	lineTime.y = 2000;
 }
 
@@ -64,11 +59,6 @@ void Server::findPlayers()
 
 int Server::receiveButtonPress(unsigned id)
 {
-	if (!networking)
-	{
-		return -1;
-	}
-
 	int key;
 	clients[id]->receive(packet);
 	if (packet.getDataSize() == 0)
@@ -79,7 +69,7 @@ int Server::receiveButtonPress(unsigned id)
 	return key;
 }
 
-void Server::sendBoard(unsigned id)
+void Server::sendBoard(unsigned id, bool factory)
 {
 	packet.clear();
 	packet << 2; // secretCode
@@ -96,14 +86,14 @@ void Server::sendBoard(unsigned id)
 		}
 	}
 
-	if (gameMode == STANDARD)
+	if (!factory)
 	{
 		for (int i = 0; i < clients.size(); ++i)
 		{
 			clients[i]->send(packet);
 		}
 	}
-	else if (gameMode == FACTORY)
+	else
 	{
 		if (id > 0)
 		{
@@ -147,15 +137,19 @@ void Server::updateLine(const float dt)
 		}
 		for (int i = 0; i < players.size(); ++i)
 		{
-			if (players[i]->board->clearRow() > 0)
+			unsigned counter = 0;
+			if (counter = players[i]->board->clearRow())
 			{
-				for (int j = players[i]->currentBlock->positions.size() - 1; j >= 0; --j)
+				for (int j = 0; j < counter; ++j)
 				{
-					players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y + 1] = BlockType::EMPTY;
-					players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y] = players[i]->currentBlock->getType();
+					for (int k = players[i]->currentBlock->positions.size() - 1; k >= 0; --k)
+					{
+						players[i]->board->grid[players[i]->currentBlock->positions[k].x][players[i]->currentBlock->positions[k].y + j + 1] = BlockType::EMPTY;
+						players[i]->board->grid[players[i]->currentBlock->positions[k].x][players[i]->currentBlock->positions[k].y] = players[i]->currentBlock->getType();
+					}
 				}
 			}
-			sendBoard(i);
+			sendBoard(i, true);
 		}
 	}
 }
