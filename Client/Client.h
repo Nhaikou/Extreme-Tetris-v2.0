@@ -3,26 +3,25 @@
 
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
-
-#include "State.h"
 #include "Board.h"
 #include "Player.h"
+#include <iostream>
 
-class Client : public State
+class Client
 {
 public:
-	Client(StateMachine* sm);
+	Client();
 	~Client();
 
-	void handleInput();
-	void update(const float dt);
-	void draw(const float dt);
+	void sendInput(int key);
 
 	void connectToServer();
 
-protected:
-	void onInitialize();
-private:
+	void standardInitialize();
+	void factoryInitialize();
+	void receiveBoard();
+	bool receiveState();
+
 	sf::IpAddress ip;
 	sf::TcpSocket server;
 	sf::Packet packet;
