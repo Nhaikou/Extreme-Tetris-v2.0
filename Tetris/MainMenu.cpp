@@ -25,10 +25,12 @@ void MainMenu::update(const float dt)
 		{
 			if (clientKey == sf::Keyboard::F)
 			{
+				server->sendState(true);
 				stateMachine->pushState(new GameMode(stateMachine, server, true));
 			}
 			if (clientKey == sf::Keyboard::Space)
 			{
+				server->sendState(false);
 				stateMachine->pushState(new GameMode(stateMachine, server, false));
 			}
 			clientKey = -1;

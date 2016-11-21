@@ -18,45 +18,15 @@ void GameMode::onInitialize()
 {
 	if (factoryMode)
 	{
-		factoryInitialize();
+		server->factoryInitialize();
 	}
 	else
 	{
-		standardInitialize();
+		server->standardInitialize();
 	}
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
 		server->sendBoard(i, factoryMode);
-	}
-}
-
-void GameMode::standardInitialize()
-{
-	server->packet.clear();
-
-	server->packet << 0;
-	server->packet << server->players[0]->board->getSize().x << server->players[0]->board->getSize().y << server->players[0]->board->getSpawnPoint().x << server->players[0]->board->getSpawnPoint().y;
-
-	for (int i = 0; i < server->clients.size(); ++i)
-	{
-		server->packet << server->players[i]->board->getPosition().x << server->players[i]->board->getPosition().y;
-	}
-
-	for (int i = 0; i < server->clients.size(); ++i)
-	{
-		server->clients[i]->send(server->packet);
-	}
-}
-
-void GameMode::factoryInitialize()
-{
-	for (int i = 0; i < server->clients.size(); ++i)
-	{
-		server->packet.clear();
-		server->packet << 1;
-		server->packet << i;
-		server->packet << server->players[0]->board->getSize().x << server->players[0]->board->getSize().y << server->players[0]->board->getSpawnPoint().x << server->players[0]->board->getSpawnPoint().y;
-		server->clients[i]->send(server->packet);
 	}
 }
 

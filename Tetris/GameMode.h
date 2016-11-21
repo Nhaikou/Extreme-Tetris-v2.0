@@ -26,8 +26,6 @@ public:
 
 protected:
 	void onInitialize();
-	void standardInitialize();
-	void factoryInitialize();
 
 private:
 	Server *server = nullptr;

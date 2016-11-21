@@ -72,7 +72,6 @@ int Server::receiveButtonPress(unsigned id)
 void Server::sendBoard(unsigned id, bool factory)
 {
 	packet.clear();
-	packet << 2; // secretCode
 	packet << id;
 
 	for (int j = 0; j < players[id]->board->getSize().y; ++j)
@@ -117,6 +116,16 @@ void Server::sendBoard(unsigned id, bool factory)
 	}
 }
 
+void Server::sendState(bool factory)
+{
+	packet.clear();
+	packet << factory;
+	for (int i = 0; i < clients.size(); ++i)
+	{
+		clients[i]->send(packet);
+	}
+}
+
 void Server::updateLine(const float dt)
 {
 	lineTime.x += dt;
@@ -151,6 +160,33 @@ void Server::updateLine(const float dt)
 			}
 			sendBoard(i, true);
 		}
+	}
+}
+
+void Server::standardInitialize()
+{
+	packet.clear();
+	packet << players[0]->board->getSize().x << players[0]->board->getSize().y << players[0]->board->getSpawnPoint().x << players[0]->board->getSpawnPoint().y;
+
+	for (int i = 0; i < clients.size(); ++i)
+	{
+		packet << players[i]->board->getPosition().x << players[i]->board->getPosition().y;
+	}
+
+	for (int i = 0; i < clients.size(); ++i)
+	{
+		clients[i]->send(packet);
+	}
+}
+
+void Server::factoryInitialize()
+{
+	for (int i = 0; i < clients.size(); ++i)
+	{
+		packet.clear();
+		packet << i;
+		packet << players[0]->board->getSize().x << players[0]->board->getSize().y << players[0]->board->getSpawnPoint().x << players[0]->board->getSpawnPoint().y;
+		clients[i]->send(packet);
 	}
 }
 

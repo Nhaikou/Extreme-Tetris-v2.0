@@ -47,7 +47,6 @@ void Client::standardInitialize()
 		return;
 	}
 
-	gameMode = 1;
 	sf::Vector2u size;
 	sf::Vector2u spawn;
 	packet >> size.x >> size.y >> spawn.x >> spawn.y;
@@ -76,7 +75,6 @@ void Client::factoryInitialize()
 		return;
 	}
 
-	gameMode = 2;
 	sf::Vector2u size;
 	sf::Vector2u spawn;
 	packet >> clientNumber >> size.x >> size.y >> spawn.x >> spawn.y;
@@ -94,9 +92,16 @@ void Client::factoryInitialize()
 
 void Client::receiveBoard()
 {
+	packet.clear();
+	server.receive(packet);
+	if (packet.getDataSize() == 0)
+	{
+		return;
+	}
+
 	unsigned type, id, i, j;
 	packet >> id;
-	if (gameMode == 2)
+	if (gameMode == true)
 	{
 		if (id == clientNumber)
 		{
@@ -168,7 +173,6 @@ bool Client::receiveState()
 	server.receive(packet);
 	if (packet.getDataSize() == 0)
 	{
-		//std::cout << "\nERROR: No packets received!!" << std::endl;
 		return false;
 	}
 	packet >> gameMode;

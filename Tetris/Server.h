@@ -22,9 +22,13 @@ public:
 	void findPlayers();
 	int receiveButtonPress(unsigned id);
 	void sendBoard(unsigned id, bool factory);
+	void sendState(bool factory);
 	void updateLine(const float dt);
 	void moveLineLeft();
 	void moveLineRight();
+
+	void standardInitialize();
+	void factoryInitialize();
 
 	std::vector<sf::TcpSocket*> clients;
 
