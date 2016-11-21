@@ -22,8 +22,10 @@ public:
 	Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, bool lastPlayer);
 	~Board();
 
+	void setGlassWalls();
+
 	std::vector<std::vector<sf::Sprite>> grid;
-	std::vector<sf::Sprite> walls;
+	std::vector<sf::Sprite> gridSlice, walls, floors;
 
 	sf::Vector2u getSize();
 	sf::Vector2i getPosition();

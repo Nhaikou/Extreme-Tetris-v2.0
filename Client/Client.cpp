@@ -86,6 +86,7 @@ void Client::factoryInitialize()
 			lastPlayer = true;
 		}
 		Player *player = new Player(size, sf::Vector2i(i * (size.x + 1) * 16 + 16, -2 * 16), spawn, lastPlayer);
+		player->board->setGlassWalls();
 		players.push_back(player);
 	}
 }
@@ -101,7 +102,7 @@ void Client::receiveBoard()
 
 	unsigned type, id, i, j;
 	packet >> id;
-	if (gameMode == true)
+	if (gameMode)
 	{
 		if (id == clientNumber)
 		{
@@ -163,6 +164,27 @@ void Client::receiveBoard()
 			else if (type == BlockType::BLOCKT)
 			{
 				players[id]->board->grid[i][j].setColor(sf::Color::Magenta);
+			}
+		}
+
+		if (gameMode && playerCount == 1)
+		{
+			players[id - 1]->board->grid[i][j].setTexture(*players[id]->board->grid[i][j].getTexture());
+			players[id - 1]->board->grid[i][j].setColor(players[id]->board->grid[i][j].getColor());
+			players[id + 1]->board->grid[i][j].setTexture(*players[id]->board->grid[i][j].getTexture());
+			players[id + 1]->board->grid[i][j].setColor(players[id]->board->grid[i][j].getColor());
+		}
+		if (gameMode && playerCount == 2)
+		{
+			if (clientNumber == 0)
+			{
+				players[2]->board->grid[i][j].setTexture(*players[0]->board->grid[i][j].getTexture());
+				players[2]->board->grid[i][j].setColor(players[0]->board->grid[i][j].getColor());
+			}
+			else
+			{
+				players[0]->board->grid[i][j].setTexture(*players[2]->board->grid[i][j].getTexture());
+				players[0]->board->grid[i][j].setColor(players[2]->board->grid[i][j].getColor());
 			}
 		}
 	}

@@ -11,6 +11,7 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, 
 	block.setTexture(emptyTex);
 	wall.setTexture(wallTex);
 	floor.setTexture(floorTex);
+	glass.setTexture(glassTex);
 
 	size = boardSize;
 	position = boardPos;
@@ -44,17 +45,25 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, 
 			if (j == size.y - 1)
 			{
 				floor.setPosition(grid[i][j].getPosition() + sf::Vector2f(0, blockSize.y));
-				walls.push_back(floor);
+				floors.push_back(floor);
 			}
 		}
 	}
 
+	gridSlice.resize(boardSize.y);
+	for (int i = 0; i < size.y; ++i)
+	{
+		block = grid[size.x - 1][i];
+		block.move(blockSize.x, 0);
+		gridSlice[i] = block;
+	}
+
 	floor.setPosition(grid[0][size.y - 1].getPosition().x - blockSize.x, grid[0][size.y - 1].getPosition().y + blockSize.y);
-	walls.push_back(floor);
+	floors.push_back(floor);
 	if (lastPlayer)
 	{
 		floor.setPosition(grid[size.x - 1][size.y - 1].getPosition() + sf::Vector2f(blockSize.x, blockSize.y));
-		walls.push_back(floor);
+		floors.push_back(floor);
 	}
 }
 
@@ -76,4 +85,12 @@ sf::Vector2i Board::getPosition()
 sf::Vector2u Board::getSpawnPoint()
 {
 	return spawnPoint;
+}
+
+void Board::setGlassWalls()
+{
+	for (int i = 0; i < walls.size(); ++i)
+	{
+		walls[i].setTexture(glassTex);
+	}
 }

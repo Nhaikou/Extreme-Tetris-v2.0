@@ -20,14 +20,17 @@ void GameMode::onInitialize()
 	if (factoryMode)
 	{
 		client->factoryInitialize();
+		sf::View newView(sf::FloatRect(16, 0, client->players[client->players.size() - 1]->board->floors[client->players[client->players.size() - 1]->board->floors.size() - 1].getPosition().x - 16, client->players[client->players.size() - 1]->board->floors[client->players[client->players.size() - 1]->board->floors.size() - 1].getPosition().y + 16));
+		stateMachine->window.setView(newView);
+		stateMachine->window.setSize(sf::Vector2u(client->players[client->players.size() - 1]->board->floors[client->players[client->players.size() - 1]->board->floors.size() - 1].getPosition()) + sf::Vector2u(-16, 16));
 	}
 	else
 	{
 		client->standardInitialize();
+		sf::View newView(sf::FloatRect(0, 0, client->players[client->players.size() - 1]->board->floors[client->players[client->players.size() - 1]->board->floors.size() - 1].getPosition().x + 16, client->players[client->players.size() - 1]->board->floors[client->players[client->players.size() - 1]->board->floors.size() - 1].getPosition().y + 16));
+		stateMachine->window.setView(newView);
+		stateMachine->window.setSize(sf::Vector2u(client->players[client->players.size() - 1]->board->floors[client->players[client->players.size() - 1]->board->floors.size() - 1].getPosition()) + sf::Vector2u(16, 16));
 	}
-	sf::View newView(sf::FloatRect(0, 0, client->players[client->players.size() - 1]->board->walls[client->players[client->players.size() - 1]->board->walls.size() - 1].getPosition().x + 16, client->players[client->players.size() - 1]->board->walls[client->players[client->players.size() - 1]->board->walls.size() - 1].getPosition().y + 16));
-	stateMachine->window.setView(newView);
-	stateMachine->window.setSize(sf::Vector2u(client->players[client->players.size() - 1]->board->walls[client->players[client->players.size() - 1]->board->walls.size() - 1].getPosition()) + sf::Vector2u(16, 16));
 }
 
 void GameMode::handleInput()
@@ -54,12 +57,23 @@ void GameMode::draw(const float dt)
 				stateMachine->window.draw(client->players[k]->board->grid[i][j]);
 			}
 		}
+
+		for (int i = 0; i < client->players[k]->board->getSize().y; ++i)
+		{
+			stateMachine->window.draw(client->players[k]->board->gridSlice[i]);
+		}
 	}
+
 	for (int j = 0; j < client->players.size(); ++j)
 	{
 		for (int i = 0; i < client->players[j]->board->walls.size(); ++i)
 		{
 			stateMachine->window.draw(client->players[j]->board->walls[i]);
+		}
+
+		for (int i = 0; i < client->players[j]->board->floors.size(); ++i)
+		{
+			stateMachine->window.draw(client->players[j]->board->floors[i]);
 		}
 	}
 }
