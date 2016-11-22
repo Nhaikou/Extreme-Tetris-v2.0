@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="GameMode.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="GameMode.h" />

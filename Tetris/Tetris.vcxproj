@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Bag.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockI.cpp" />
@@ -30,7 +29,6 @@
     <ClCompile Include="StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Bag.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockI.h" />

@@ -105,6 +105,8 @@ void Client::receiveBoard()
 
 	if (packetType == GRIDSLICE)
 	{
+		updateAnimations = true;
+
 		if (id == clientNumber)
 		{
 			id = 1;

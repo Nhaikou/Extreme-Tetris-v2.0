@@ -33,7 +33,7 @@ public:
 	sf::Packet packet;
 
 	unsigned playerCount, clientNumber;
-	bool gameMode;
+	bool gameMode, updateAnimations = false;
 	std::vector<Player*> players;
 };
 #endif;

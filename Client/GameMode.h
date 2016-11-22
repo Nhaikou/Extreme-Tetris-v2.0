@@ -3,6 +3,7 @@
 
 #include "State.h"
 #include "Client.h"
+#include "AnimatedSprite.h"
 
 class GameMode : public State
 {
@@ -21,6 +22,9 @@ private:
 	sf::Vector2u size, spawn;
 	sf::Vector2i position;
 	bool factoryMode;
+	sf::Texture workerLeftTex, workerRightTex, trackTex;
+	AnimatedSprite workerLeft, workerRight, track;
+	std::vector<AnimatedSprite> tracks;
 };
 #endif;
 
