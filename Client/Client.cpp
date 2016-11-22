@@ -25,7 +25,7 @@ void Client::sendInput(int key)
 void Client::connectToServer()
 {
 	ip = sf::IpAddress::getLocalAddress();
-
+	//ip = "172.31.16.142";
 	server.connect(ip, 55001);
 
 	std::cout << "Waiting for an answer from server...";
@@ -49,7 +49,7 @@ void Client::standardInitialize()
 
 	sf::Vector2u size;
 	sf::Vector2u spawn;
-	packet >> size.x >> size.y >> spawn.x >> spawn.y;
+	packet >> clientNumber >> size.x >> size.y >> spawn.x >> spawn.y;
 
 	for (int i = 0; i < playerCount; ++i)
 	{
@@ -123,6 +123,17 @@ void Client::receiveBoard()
 		else if (id > clientNumber)
 		{
 			id = 2;
+		}
+	}
+	else
+	{
+		if (id == clientNumber)
+		{
+			id = 0;
+		}
+		else if (id < clientNumber)
+		{
+			id++;
 		}
 	}
 
