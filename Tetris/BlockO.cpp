@@ -16,22 +16,27 @@ bool BlockO::spawn()
 {
 	type = BlockType::BLOCKO;
 
-	unsigned counter = 0;
-	for (int i = 0; i < 2; ++i)
+	if (board->grid[board->getSpawnPoint().x + 1][board->getSpawnPoint().y] == BlockType::EMPTY &&
+		board->grid[board->getSpawnPoint().x + 2][board->getSpawnPoint().y] == BlockType::EMPTY &&
+		board->grid[board->getSpawnPoint().x + 1][board->getSpawnPoint().y + 1] == BlockType::EMPTY &&
+		board->grid[board->getSpawnPoint().x + 2][board->getSpawnPoint().y + 1] == BlockType::EMPTY)
 	{
-		for (int j = 1; j >= 0; --j)
-		{
-			if (board->grid[board->getSpawnPoint().x + i][board->getSpawnPoint().y + j] == BlockType::EMPTY)
-			{ 
-				positions[counter] = sf::Vector2i(board->getSpawnPoint().x + i, board->getSpawnPoint().y + j);
-				board->grid[positions[counter].x][positions[counter].y] = BlockType::BLOCKO;
-				counter++;
-			}
-			else
-			{
-				return false;
-			}
-		}
+		positions[0] = sf::Vector2i(board->getSpawnPoint().x + 1, board->getSpawnPoint().y + 1);
+		board->grid[positions[0].x][positions[0].y] = BlockType::BLOCKO;
+
+		positions[1] = sf::Vector2i(board->getSpawnPoint().x + 1, board->getSpawnPoint().y);
+		board->grid[positions[1].x][positions[1].y] = BlockType::BLOCKO;
+
+		positions[2] = sf::Vector2i(board->getSpawnPoint().x + 2, board->getSpawnPoint().y + 1);
+		board->grid[positions[2].x][positions[2].y] = BlockType::BLOCKO;
+
+		positions[3] = sf::Vector2i(board->getSpawnPoint().x + 2, board->getSpawnPoint().y);
+		board->grid[positions[3].x][positions[3].y] = BlockType::BLOCKO;
 	}
+	else
+	{
+		return false;
+	}
+
 	return true;
 }
