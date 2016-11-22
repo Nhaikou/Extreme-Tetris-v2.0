@@ -100,9 +100,10 @@ void Client::receiveBoard()
 		return;
 	}
 
-	unsigned type, id, i, j;
-	packet >> id;
-	if (gameMode)
+	unsigned type, id, i, j, packetType;
+	packet >> packetType >> id;
+
+	if (packetType == GRIDSLICE)
 	{
 		if (id == clientNumber)
 		{
@@ -124,78 +125,159 @@ void Client::receiveBoard()
 		{
 			id = 2;
 		}
-	}
-	else
-	{
-		if (id == clientNumber)
-		{
-			id = 0;
-		}
-		else if (id < clientNumber)
-		{
-			id++;
-		}
-	}
 
-	while (!packet.endOfPacket())
-	{
-		packet >> i >> j >> type;
-		if (type == BlockType::EMPTY)
+		while (!packet.endOfPacket())
 		{
-			players[id]->board->grid[i][j].setTexture(players[id]->board->emptyTex);
-			players[id]->board->grid[i][j].setColor(sf::Color::White);
-		}
-		else
-		{
-			players[id]->board->grid[i][j].setTexture(players[id]->board->blockTex);
-			if (type == BlockType::BLOCKI)
+			packet >> i >> type;
+			if (type == BlockType::EMPTY)
 			{
-				players[id]->board->grid[i][j].setColor(sf::Color::Cyan);
-			}
-			else if (type == BlockType::BLOCKO)
-			{
-				players[id]->board->grid[i][j].setColor(sf::Color::Yellow);
-			}
-			else if (type == BlockType::BLOCKZ)
-			{
-				players[id]->board->grid[i][j].setColor(sf::Color::Red);
-			}
-			else if (type == BlockType::BLOCKS)
-			{
-				players[id]->board->grid[i][j].setColor(sf::Color::Green);
-			}
-			else if (type == BlockType::BLOCKL)
-			{
-				players[id]->board->grid[i][j].setColor(sf::Color(255, 130, 0));
-			}
-			else if (type == BlockType::BLOCKJ)
-			{
-				players[id]->board->grid[i][j].setColor(sf::Color::Blue);
-			}
-			else if (type == BlockType::BLOCKT)
-			{
-				players[id]->board->grid[i][j].setColor(sf::Color::Magenta);
-			}
-		}
-
-		if (gameMode && playerCount == 1)
-		{
-			players[id - 1]->board->grid[i][j].setTexture(*players[id]->board->grid[i][j].getTexture());
-			players[id - 1]->board->grid[i][j].setColor(players[id]->board->grid[i][j].getColor());
-			players[id + 1]->board->grid[i][j].setTexture(*players[id]->board->grid[i][j].getTexture());
-			players[id + 1]->board->grid[i][j].setColor(players[id]->board->grid[i][j].getColor());
-		}
-		if (gameMode && playerCount == 2)
-		{
-			if (clientNumber == 0)
-			{
-				players[2]->board->grid[i][j].setTexture(*players[0]->board->grid[i][j].getTexture());
-				players[2]->board->grid[i][j].setColor(players[0]->board->grid[i][j].getColor());
+				players[id]->board->gridSlice[i].setTexture(players[id]->board->emptyTex);
+				players[id]->board->gridSlice[i].setColor(sf::Color::White);
 			}
 			else
 			{
-				players[0]->board->grid[i][j].setTexture(*players[2]->board->grid[i][j].getTexture());
-				players[0]->board->grid[i][j].setColor(players[2]->board->grid[i][j].getColor());
+				players[id]->board->gridSlice[i].setTexture(players[id]->board->blockTex);
+				if (type == BlockType::BLOCKI)
+				{
+					players[id]->board->gridSlice[i].setColor(sf::Color::Cyan);
+				}
+				else if (type == BlockType::BLOCKO)
+				{
+					players[id]->board->gridSlice[i].setColor(sf::Color::Yellow);
+				}
+				else if (type == BlockType::BLOCKZ)
+				{
+					players[id]->board->gridSlice[i].setColor(sf::Color::Red);
+				}
+				else if (type == BlockType::BLOCKS)
+				{
+					players[id]->board->gridSlice[i].setColor(sf::Color::Green);
+				}
+				else if (type == BlockType::BLOCKL)
+				{
+					players[id]->board->gridSlice[i].setColor(sf::Color(255, 130, 0));
+				}
+				else if (type == BlockType::BLOCKJ)
+				{
+					players[id]->board->gridSlice[i].setColor(sf::Color::Blue);
+				}
+				else if (type == BlockType::BLOCKT)
+				{
+					players[id]->board->gridSlice[i].setColor(sf::Color::Magenta);
+				}
+			}
+
+			if (gameMode && playerCount == 1)
+			{
+				players[id - 1]->board->gridSlice[i].setTexture(*players[id]->board->gridSlice[i].getTexture());
+				players[id - 1]->board->gridSlice[i].setColor(players[id]->board->gridSlice[i].getColor());
+				players[id + 1]->board->gridSlice[i].setTexture(*players[id]->board->gridSlice[i].getTexture());
+				players[id + 1]->board->gridSlice[i].setColor(players[id]->board->gridSlice[i].getColor());
+			}
+			if (gameMode && playerCount == 2 && clientNumber != 0)
+			{
+				players[0]->board->gridSlice[i].setTexture(*players[2]->board->gridSlice[i].getTexture());
+				players[0]->board->gridSlice[i].setColor(players[2]->board->gridSlice[i].getColor());
+			}
+		}
+	}
+	else
+	{
+		if (gameMode)
+		{
+			if (id == clientNumber)
+			{
+				id = 1;
+			}
+			else if (clientNumber == playerCount - 1 && id == 0)
+			{
+				id = 2;
+			}
+			else if (clientNumber == 0 && id == playerCount - 1)
+			{
+				id = 0;
+			}
+			else if (id < clientNumber)
+			{
+				id = 0;
+			}
+			else if (id > clientNumber)
+			{
+				id = 2;
+			}
+		}
+		else
+		{
+			if (id == clientNumber)
+			{
+				id = 0;
+			}
+			else if (id < clientNumber)
+			{
+				id++;
+			}
+		}
+
+		while (!packet.endOfPacket())
+		{
+			packet >> i >> j >> type;
+			if (type == BlockType::EMPTY)
+			{
+				players[id]->board->grid[i][j].setTexture(players[id]->board->emptyTex);
+				players[id]->board->grid[i][j].setColor(sf::Color::White);
+			}
+			else
+			{
+				players[id]->board->grid[i][j].setTexture(players[id]->board->blockTex);
+				if (type == BlockType::BLOCKI)
+				{
+					players[id]->board->grid[i][j].setColor(sf::Color::Cyan);
+				}
+				else if (type == BlockType::BLOCKO)
+				{
+					players[id]->board->grid[i][j].setColor(sf::Color::Yellow);
+				}
+				else if (type == BlockType::BLOCKZ)
+				{
+					players[id]->board->grid[i][j].setColor(sf::Color::Red);
+				}
+				else if (type == BlockType::BLOCKS)
+				{
+					players[id]->board->grid[i][j].setColor(sf::Color::Green);
+				}
+				else if (type == BlockType::BLOCKL)
+				{
+					players[id]->board->grid[i][j].setColor(sf::Color(255, 130, 0));
+				}
+				else if (type == BlockType::BLOCKJ)
+				{
+					players[id]->board->grid[i][j].setColor(sf::Color::Blue);
+				}
+				else if (type == BlockType::BLOCKT)
+				{
+					players[id]->board->grid[i][j].setColor(sf::Color::Magenta);
+				}
+			}
+
+			if (gameMode && playerCount == 1)
+			{
+				players[id - 1]->board->grid[i][j].setTexture(*players[id]->board->grid[i][j].getTexture());
+				players[id - 1]->board->grid[i][j].setColor(players[id]->board->grid[i][j].getColor());
+				players[id + 1]->board->grid[i][j].setTexture(*players[id]->board->grid[i][j].getTexture());
+				players[id + 1]->board->grid[i][j].setColor(players[id]->board->grid[i][j].getColor());
+			}
+			if (gameMode && playerCount == 2)
+			{
+				if (clientNumber == 0)
+				{
+					players[2]->board->grid[i][j].setTexture(*players[0]->board->grid[i][j].getTexture());
+					players[2]->board->grid[i][j].setColor(players[0]->board->grid[i][j].getColor());
+				}
+				else
+				{
+					players[0]->board->grid[i][j].setTexture(*players[2]->board->grid[i][j].getTexture());
+					players[0]->board->grid[i][j].setColor(players[2]->board->grid[i][j].getColor());
+				}
 			}
 		}
 	}

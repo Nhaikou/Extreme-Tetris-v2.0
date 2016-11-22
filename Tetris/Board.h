@@ -36,7 +36,7 @@ public:
 	void setLevel(unsigned lvl);
 
 	std::vector<std::vector<unsigned>> grid, updatedGrid;
-	std::vector<unsigned> gridSlice;
+	std::vector<unsigned> gridSlice, updatedGridSlice;
 
 	sf::Vector2f dropTime = { 0, 0 }; // Drop time for blocks
 	unsigned int counter = 0; // Counter for how many rows are cleared

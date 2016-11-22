@@ -7,6 +7,12 @@
 #include <iostream>
 #include <vector>
 
+enum PacketType
+{
+	GRID = 0,
+	GRIDSLICE = 1,
+};
+
 class Server
 {
 public:
@@ -22,6 +28,7 @@ public:
 	void findPlayers();
 	int receiveButtonPress(unsigned id);
 	void sendBoard(unsigned id, bool factory);
+	void sendBoardSlice(unsigned id);
 	void sendState(bool factory);
 	void updateLine(const float dt);
 	void moveLineLeft();

@@ -7,6 +7,12 @@
 #include "Player.h"
 #include <iostream>
 
+enum PacketType
+{
+	GRID = 0,
+	GRIDSLICE = 1,
+};
+
 class Client
 {
 public:

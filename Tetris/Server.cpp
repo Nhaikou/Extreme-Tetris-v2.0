@@ -72,7 +72,7 @@ int Server::receiveButtonPress(unsigned id)
 void Server::sendBoard(unsigned id, bool factory)
 {
 	packet.clear();
-	packet << id;
+	packet << GRID << id;
 
 	for (int j = 0; j < players[id]->board->getSize().y; ++j)
 	{
@@ -116,6 +116,31 @@ void Server::sendBoard(unsigned id, bool factory)
 	}
 }
 
+void Server::sendBoardSlice(unsigned id)
+{
+	packet.clear();
+	packet << GRIDSLICE << id;
+
+	for (int i = 0; i < players[id]->board->getSize().y; ++i)
+	{
+		if (players[id]->board->updatedGridSlice[i] != players[id]->board->gridSlice[i])
+		{
+			packet << i << players[id]->board->gridSlice[i];
+		}
+	}
+
+	clients[id]->send(packet);
+
+	if (id < clients.size() - 1)
+	{
+		clients[id + 1]->send(packet);
+	}
+	else
+	{
+		clients[0]->send(packet);
+	}
+}
+
 void Server::sendState(bool factory)
 {
 	packet.clear();
@@ -135,7 +160,9 @@ void Server::updateLine(const float dt)
 		for (int i = 0; i < players.size(); ++i)
 		{
 			players[i]->board->updatedGrid = players[i]->board->grid;
+			players[i]->board->updatedGridSlice = players[i]->board->gridSlice;
 		}
+
 		if (lineDirection == -1)
 		{
 			moveLineLeft();
@@ -159,6 +186,7 @@ void Server::updateLine(const float dt)
 				}
 			}
 			sendBoard(i, true);
+			sendBoardSlice(i);
 		}
 	}
 }
