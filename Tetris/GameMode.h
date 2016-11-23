@@ -23,6 +23,7 @@ public:
 	~GameMode();
 
 	void update(const float dt);
+	void spawnUpdate();
 
 protected:
 	void onInitialize();

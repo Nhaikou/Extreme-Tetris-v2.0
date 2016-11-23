@@ -16,6 +16,13 @@ GameMode::~GameMode()
 
 void GameMode::onInitialize()
 {
+	spawnUpdate();
+	for (int i = 0; i < server->players.size(); ++i)
+	{
+		server->players[i]->spawnBlock();
+	}
+
+
 	if (factoryMode)
 	{
 		server->factoryInitialize();
@@ -52,5 +59,41 @@ void GameMode::update(const float dt)
 	if (factoryMode)
 	{
 		server->updateLine(dt);
+	}
+
+	spawnUpdate();
+}
+
+void GameMode::spawnUpdate()
+{
+	unsigned smallestNumber = server->players[0]->currentBlockId;
+
+	for (int i = 0; i < server->clients.size(); ++i)
+	{
+		if (server->players[i]->blockSpawned)
+		{
+			server->players[i]->blockSpawned = false;
+			if (server->players[i]->currentBlockId >= server->bags.size())
+			{
+				server->newBag();
+			}
+			server->players[i]->nextBlock = server->bags[server->players[i]->currentBlockId];
+			server->players[i]->currentBlockId++;
+		}
+
+		if (server->players[i]->currentBlockId < smallestNumber)
+		{
+			smallestNumber = server->players[i]->currentBlockId;
+		}
+	}
+
+	for (int i = 0; i < smallestNumber; ++i)
+	{
+		server->bags.erase(server->bags.begin());
+	}
+
+	for (int i = 0; i < server->clients.size(); ++i)
+	{
+		server->players[i]->currentBlockId -= smallestNumber;
 	}
 }

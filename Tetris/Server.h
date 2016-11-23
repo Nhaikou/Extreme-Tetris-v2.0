@@ -33,13 +33,16 @@ public:
 	void updateLine(const float dt);
 	void moveLineLeft();
 	void moveLineRight();
+	void newBag();
 
 	void standardInitialize();
 	void factoryInitialize();
 
 	std::vector<sf::TcpSocket*> clients;
+	std::vector<unsigned> bags;
 
 private:
+	unsigned blockTypeCount = 7;
 	bool searchPlayers = true;
 	char answer;
 

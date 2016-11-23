@@ -26,6 +26,9 @@ public:
 
 	int clientKey = -1;	// Clients keys for gameplay. Must be -1 (unknown), that the server doesn't register any keys pressed from the start.
 
+	unsigned nextBlock = 0, currentBlockId = 0;
+	bool blockSpawned;
+
 	Board* board = nullptr;
 	Block* currentBlock = nullptr;
 	Bag bag;

@@ -8,7 +8,6 @@ Player::Player(unsigned id, sf::Vector2i position, sf::Vector2u size, sf::Vector
 	board->counter = 0;
 	board->maxRows;
 	board->dropTimeReduction;
-	spawnBlock();
 }
 
 Player::~Player()
@@ -62,7 +61,8 @@ bool Player::spawnBlock()
 {
 	board->clearRow();
 
-	unsigned randomBlock = bag.getNextBlock();
+	blockSpawned = true;
+	unsigned randomBlock = nextBlock;
 	if (currentBlock != nullptr)
 	{
 		delete currentBlock;

@@ -219,6 +219,23 @@ void Server::factoryInitialize()
 	}
 }
 
+void Server::newBag()
+{
+	std::vector<unsigned> blockTypes;
+	for (int i = 0; i < blockTypeCount; ++i)
+	{
+		blockTypes.push_back(i);
+	}
+
+	unsigned blockType;
+	for (int i = 0; i < blockTypeCount; ++i)
+	{
+		blockType = rand() % blockTypes.size();
+		bags.push_back(blockTypes[blockType]);
+		blockTypes.erase(blockTypes.begin() + blockType);
+	}
+}
+
 void Server::moveLineLeft()
 {
 
