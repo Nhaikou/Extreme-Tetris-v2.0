@@ -11,6 +11,7 @@ enum PacketType
 {
 	GRID = 0,
 	GRIDSLICE = 1,
+	NEXTBLOCK = 2,
 };
 
 class Server
@@ -27,8 +28,9 @@ public:
 	std::vector<Player*> players;
 	void findPlayers();
 	int receiveButtonPress(unsigned id);
-	void sendBoard(unsigned id, bool factory);
+	void sendBoard(unsigned id);
 	void sendBoardSlice(unsigned id);
+	void sendNextBlock(unsigned id);
 	void sendState(bool factory);
 	void updateLine(const float dt);
 	void moveLineLeft();
@@ -43,7 +45,7 @@ public:
 
 private:
 	unsigned blockTypeCount = 7;
-	bool searchPlayers = true;
+	bool searchPlayers = true, factoryMode = false;
 	char answer;
 
 	sf::Vector2f lineTime = { 0, 0 };

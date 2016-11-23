@@ -72,7 +72,7 @@ void GameMode::handleInput()
 
 void GameMode::update(const float dt)
 {
-	client->receiveBoard();
+	client->receive();
 
 	if (client->updateAnimations)
 	{

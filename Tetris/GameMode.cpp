@@ -33,7 +33,7 @@ void GameMode::onInitialize()
 	}
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
-		server->sendBoard(i, factoryMode);
+		server->sendBoard(i);
 	}
 }
 
@@ -46,13 +46,13 @@ void GameMode::update(const float dt)
 		if (server->players[i]->clientKey != -1)
 		{
 			server->players[i]->updateClient();
-			server->sendBoard(i, factoryMode);
+			server->sendBoard(i);
 			server->players[i]->clientKey = -1;
 		}
 
 		if (server->players[i]->dropUpdate(dt))
 		{
-			server->sendBoard(i, factoryMode);
+			server->sendBoard(i);
 		}
 	}
 
@@ -79,6 +79,7 @@ void GameMode::spawnUpdate()
 			}
 			server->players[i]->nextBlock = server->bags[server->players[i]->currentBlockId];
 			server->players[i]->currentBlockId++;
+			//server->sendNextBlock(i);
 		}
 
 		if (server->players[i]->currentBlockId < smallestNumber)

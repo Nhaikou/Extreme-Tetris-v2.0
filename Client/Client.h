@@ -9,8 +9,9 @@
 
 enum PacketType
 {
-	GRID = 0,
-	GRIDSLICE = 1,
+	BOARD = 0,
+	BOARDSLICE = 1,
+	NEXTBLOCK = 2,
 };
 
 class Client
@@ -25,7 +26,10 @@ public:
 
 	void standardInitialize();
 	void factoryInitialize();
+	void receive();
 	void receiveBoard();
+	void receiveBoardSlice();
+	void receiveNextBlock();
 	bool receiveState();
 
 	sf::IpAddress ip;

@@ -69,7 +69,7 @@ int Server::receiveButtonPress(unsigned id)
 	return key;
 }
 
-void Server::sendBoard(unsigned id, bool factory)
+void Server::sendBoard(unsigned id)
 {
 	packet.clear();
 	packet << GRID << id;
@@ -85,7 +85,7 @@ void Server::sendBoard(unsigned id, bool factory)
 		}
 	}
 
-	if (!factory)
+	if (!factoryMode)
 	{
 		for (int i = 0; i < clients.size(); ++i)
 		{
@@ -141,6 +141,42 @@ void Server::sendBoardSlice(unsigned id)
 	}
 }
 
+void Server::sendNextBlock(unsigned id)
+{
+	packet.clear();
+	packet << NEXTBLOCK << id << players[id]->nextBlock;
+
+	if (!factoryMode)
+	{
+		for (int i = 0; i < clients.size(); ++i)
+		{
+			clients[i]->send(packet);
+		}
+	}
+	else
+	{
+		if (id > 0)
+		{
+			clients[id - 1]->send(packet);
+		}
+		else
+		{
+			clients[clients.size() - 1]->send(packet);
+		}
+
+		clients[id]->send(packet);
+
+		if (id < clients.size() - 1)
+		{
+			clients[id + 1]->send(packet);
+		}
+		else
+		{
+			clients[0]->send(packet);
+		}
+	}
+}
+
 void Server::sendState(bool factory)
 {
 	packet.clear();
@@ -153,6 +189,7 @@ void Server::sendState(bool factory)
 
 void Server::standardInitialize()
 {
+	factoryMode = false;
 	for (int i = 0; i < clients.size(); ++i)
 	{
 		packet.clear();
@@ -170,6 +207,7 @@ void Server::standardInitialize()
 
 void Server::factoryInitialize()
 {
+	factoryMode = true;
 	for (int i = 0; i < clients.size(); ++i)
 	{
 		packet.clear();
@@ -227,7 +265,7 @@ void Server::updateLine(const float dt)
 			{
 				players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y] = players[i]->currentBlock->getType();
 			}
-			sendBoard(i, true);
+			sendBoard(i);
 			sendBoardSlice(i);
 		}
 	}
