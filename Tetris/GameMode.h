@@ -12,7 +12,6 @@
 #include "BlockL.h"
 #include "BlockJ.h"
 #include "BlockT.h"
-#include "Bag.h"
 
 #include <sstream>
 

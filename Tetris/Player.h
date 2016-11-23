@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include "Board.h"
-#include "Bag.h"
 #include "Block.h"
 #include "BlockI.h"
 #include "BlockO.h"
@@ -31,7 +30,6 @@ public:
 
 	Board* board = nullptr;
 	Block* currentBlock = nullptr;
-	Bag bag;
 };
 #endif;
 

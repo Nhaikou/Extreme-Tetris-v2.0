@@ -151,46 +151,6 @@ void Server::sendState(bool factory)
 	}
 }
 
-void Server::updateLine(const float dt)
-{
-	lineTime.x += dt;
-	if (lineTime.x >= lineTime.y)
-	{
-		lineTime.x = 0;
-		for (int i = 0; i < players.size(); ++i)
-		{
-			players[i]->board->updatedGrid = players[i]->board->grid;
-			players[i]->board->updatedGridSlice = players[i]->board->gridSlice;
-		}
-
-		if (lineDirection == -1)
-		{
-			moveLineLeft();
-		}
-		else
-		{
-			moveLineRight();
-		}
-		for (int i = 0; i < players.size(); ++i)
-		{
-			unsigned counter = 0;
-			if (counter = players[i]->board->clearRow())
-			{
-				for (int j = 0; j < counter; ++j)
-				{
-					for (int k = players[i]->currentBlock->positions.size() - 1; k >= 0; --k)
-					{
-						players[i]->board->grid[players[i]->currentBlock->positions[k].x][players[i]->currentBlock->positions[k].y + j + 1] = BlockType::EMPTY;
-						players[i]->board->grid[players[i]->currentBlock->positions[k].x][players[i]->currentBlock->positions[k].y] = players[i]->currentBlock->getType();
-					}
-				}
-			}
-			sendBoard(i, true);
-			sendBoardSlice(i);
-		}
-	}
-}
-
 void Server::standardInitialize()
 {
 	for (int i = 0; i < clients.size(); ++i)
@@ -235,6 +195,44 @@ void Server::newBag()
 		blockTypes.erase(blockTypes.begin() + blockType);
 	}
 }
+
+void Server::updateLine(const float dt)
+{
+	lineTime.x += dt;
+	if (lineTime.x >= lineTime.y)
+	{
+		lineTime.x = 0;
+		for (int i = 0; i < players.size(); ++i)
+		{
+			players[i]->board->updatedGrid = players[i]->board->grid;
+			players[i]->board->updatedGridSlice = players[i]->board->gridSlice;
+		}
+
+		if (lineDirection == -1)
+		{
+			moveLineLeft();
+		}
+		else
+		{
+			moveLineRight();
+		}
+		for (int i = 0; i < players.size(); ++i)
+		{
+			for (int j = 0; j < players[i]->currentBlock->positions.size(); ++j)
+			{
+				players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y] = BlockType::EMPTY;
+			}
+			players[i]->board->clearRow();
+			for (int j = 0; j < players[i]->currentBlock->positions.size(); ++j)
+			{
+				players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y] = players[i]->currentBlock->getType();
+			}
+			sendBoard(i, true);
+			sendBoardSlice(i);
+		}
+	}
+}
+
 
 void Server::moveLineLeft()
 {
