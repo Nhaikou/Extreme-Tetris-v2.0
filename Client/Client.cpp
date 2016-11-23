@@ -30,11 +30,10 @@ void Client::connectToServer()
 
 	std::cout << "Waiting for an answer from server...";
 	server.receive(packet);
-
-	std::cout << "Continue";
-	server.setBlocking(false);
-
 	packet >> playerCount;
+
+	std::cout << "\nVote for gamemode! S (=Standard) or F (=Factory)" << std::endl;
+	server.setBlocking(false);
 }
 
 void Client::standardInitialize()

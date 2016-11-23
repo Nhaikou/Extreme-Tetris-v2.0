@@ -17,5 +17,6 @@ protected:
 private:
 	Server *server = nullptr;
 	int clientKey = -1;
+	std::vector<int> keys;
 };
 #endif;
