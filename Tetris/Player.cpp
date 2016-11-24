@@ -64,7 +64,6 @@ bool Player::spawnBlock()
 {
 	score.y += score.x;
 	score.x = 0;
-
 	score.y += board->clearRow();
 
 	blockSpawned = true;

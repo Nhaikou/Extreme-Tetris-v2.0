@@ -12,12 +12,13 @@ Server::~Server()
 	for (int i = 0; i < clients.size(); ++i)
 	{
 		delete clients[i];
+		delete players[i];
 	}
 }
 
 void Server::findPlayers()
 {
-	tcpListener.listen(55001);
+	tcpListener.listen(55002);
 	socketSelector.add(tcpListener);
 
 	while (searchPlayers)
@@ -85,35 +86,7 @@ void Server::sendBoard(unsigned id)
 		}
 	}
 
-	if (!factoryMode)
-	{
-		for (int i = 0; i < clients.size(); ++i)
-		{
-			clients[i]->send(packet);
-		}
-	}
-	else
-	{
-		if (id > 0)
-		{
-			clients[id - 1]->send(packet);
-		}
-		else
-		{
-			clients[clients.size() - 1]->send(packet);
-		}
-
-		clients[id]->send(packet);
-
-		if (id < clients.size() - 1)
-		{
-			clients[id + 1]->send(packet);
-		}
-		else
-		{
-			clients[0]->send(packet);
-		}
-	}
+	sendToGameMode(id);
 }
 
 void Server::sendBoardSlice(unsigned id)
@@ -146,6 +119,30 @@ void Server::sendNextBlock(unsigned id)
 	packet.clear();
 	packet << NEXTBLOCK << id << players[id]->nextBlock;
 
+	sendToGameMode(id);
+}
+
+void Server::sendScore(unsigned id)
+{
+	packet.clear();
+	packet << SCORE << id << players[id]->score.y;
+	
+	sendToGameMode(id);
+}
+
+void Server::sendState(bool factory)
+{
+	packet.clear();
+	packet << factory;
+	for (int i = 0; i < clients.size(); ++i)
+	{
+		clients[i]->send(packet);
+	}
+}
+
+void Server::sendToGameMode(unsigned id)
+{
+	// If the game mode is Standard, send the packet to everyone
 	if (!factoryMode)
 	{
 		for (int i = 0; i < clients.size(); ++i)
@@ -153,6 +150,7 @@ void Server::sendNextBlock(unsigned id)
 			clients[i]->send(packet);
 		}
 	}
+	// If the game mode is Factory, send the packet to the player with the id and the players on both sides
 	else
 	{
 		if (id > 0)
@@ -174,16 +172,6 @@ void Server::sendNextBlock(unsigned id)
 		{
 			clients[0]->send(packet);
 		}
-	}
-}
-
-void Server::sendState(bool factory)
-{
-	packet.clear();
-	packet << factory;
-	for (int i = 0; i < clients.size(); ++i)
-	{
-		clients[i]->send(packet);
 	}
 }
 

@@ -12,6 +12,7 @@ enum PacketType
 	BOARD = 0,
 	BOARDSLICE = 1,
 	NEXTBLOCK = 2,
+	SCORE = 3,
 };
 
 class Client
@@ -30,6 +31,7 @@ public:
 	void receiveBoard();
 	void receiveBoardSlice();
 	void receiveNextBlock();
+	void receiveScore();
 	bool receiveState();
 
 	sf::IpAddress ip;

@@ -47,9 +47,6 @@ void GameMode::update(const float dt)
 		{
 			server->sendBoard(i);
 		}
-
-		system("cls");
-		std::cout << "Player " << i << "'s score: " << server->players[i]->score.y << std::endl;
 	}
 
 	if (factoryMode)
@@ -76,6 +73,7 @@ void GameMode::spawnUpdate()
 			server->players[i]->nextBlock = server->bags[server->players[i]->currentBlockId];
 			server->players[i]->currentBlockId++;
 			server->sendNextBlock(i);
+			server->sendScore(i);
 		}
 
 		if (server->players[i]->currentBlockId < smallestNumber)

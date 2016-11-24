@@ -84,6 +84,9 @@ void GameMode::update(const float dt)
 		}
 		client->updateAnimations = false;
 	}
+
+	system("cls");
+	std::cout << "Score: " << client->players[client->clientNumber]->score << std::endl;
 }
 
 void GameMode::draw(const float dt)

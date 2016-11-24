@@ -14,6 +14,7 @@ public:
 
 	Board* board = nullptr;
 
+	unsigned score = 0;
 	sf::Texture emptyTex;
 	std::vector<std::vector<sf::Sprite>> nextBlockSprites;
 	sf::Vector2u nextBlockSize = { 4, 2 }; // The amount of space we need to show our next block

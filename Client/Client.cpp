@@ -26,7 +26,7 @@ void Client::connectToServer()
 {
 	ip = sf::IpAddress::getLocalAddress();
 	//ip = "172.31.16.142";
-	server.connect(ip, 55001);
+	server.connect(ip, 55002);
 
 	std::cout << "Waiting for an answer from server...";
 	server.receive(packet);
@@ -112,6 +112,10 @@ void Client::receive()
 	else if (packetType == NEXTBLOCK)
 	{
 		receiveNextBlock();
+	}
+	else if(packetType == SCORE)
+	{
+		receiveScore();
 	}
 }
 
@@ -309,6 +313,14 @@ void Client::receiveNextBlock()
 	packet >> id >> type;
 
 	players[id]->updateNextBlock(type);
+}
+
+void Client::receiveScore()
+{
+	unsigned id, score;
+	packet >> id >> score;
+
+	players[id]->score = score;
 }
 
 bool Client::receiveState()

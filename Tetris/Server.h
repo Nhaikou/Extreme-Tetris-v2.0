@@ -12,6 +12,7 @@ enum PacketType
 	GRID = 0,
 	GRIDSLICE = 1,
 	NEXTBLOCK = 2,
+	SCORE = 3,
 };
 
 class Server
@@ -31,7 +32,11 @@ public:
 	void sendBoard(unsigned id);
 	void sendBoardSlice(unsigned id);
 	void sendNextBlock(unsigned id);
+	void sendScore(unsigned id);
 	void sendState(bool factory);
+
+	void sendToGameMode(unsigned id);
+
 	void updateLine(const float dt);
 	void moveLineLeft();
 	void moveLineRight();
