@@ -21,19 +21,14 @@ enum BlockType
 class Board
 {
 public:
-	Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn);
+	Board(sf::Vector2u boardSize, sf::Vector2u spawn);
 	~Board();
 
 	sf::Vector2u getSize();
-	sf::Vector2i getPosition();
 	sf::Vector2u getSpawnPoint();
-	unsigned getScore();
-	unsigned getLevel();
 
 	unsigned clearRow();
 	void dropRow(int y);
-	void setScore(unsigned scr);
-	void setLevel(unsigned lvl);
 
 	std::vector<std::vector<unsigned>> grid, updatedGrid;
 	std::vector<unsigned> gridSlice, updatedGridSlice;
@@ -45,8 +40,7 @@ public:
 
 private:
 	sf::Vector2u size, spawnPoint, blockSize = { 16, 16 };
-	sf::Vector2i position;
-	unsigned level = 0, score = 0;
+	unsigned level = 0, clearedRows = 0;
 	std::vector<unsigned> pointsPerRow;
 };
 

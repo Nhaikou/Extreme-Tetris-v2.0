@@ -187,27 +187,9 @@ void Server::sendState(bool factory)
 	}
 }
 
-void Server::standardInitialize()
+void Server::gameModeInitialize(bool factory)
 {
-	factoryMode = false;
-	for (int i = 0; i < clients.size(); ++i)
-	{
-		packet.clear();
-		packet << i;
-		packet << players[0]->board->getSize().x << players[0]->board->getSize().y << players[0]->board->getSpawnPoint().x << players[0]->board->getSpawnPoint().y;
-		
-		for (int j = 0; j < clients.size(); ++j)
-		{
-			packet << players[j]->board->getPosition().x << players[j]->board->getPosition().y;
-		}
-		
-		clients[i]->send(packet);
-	}
-}
-
-void Server::factoryInitialize()
-{
-	factoryMode = true;
+	factoryMode = factory;
 	for (int i = 0; i < clients.size(); ++i)
 	{
 		packet.clear();
@@ -260,7 +242,7 @@ void Server::updateLine(const float dt)
 			{
 				players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y] = BlockType::EMPTY;
 			}
-			players[i]->board->clearRow();
+			players[i]->score.y += players[i]->board->clearRow();
 			for (int j = 0; j < players[i]->currentBlock->positions.size(); ++j)
 			{
 				players[i]->board->grid[players[i]->currentBlock->positions[j].x][players[i]->currentBlock->positions[j].y] = players[i]->currentBlock->getType();

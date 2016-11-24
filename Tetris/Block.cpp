@@ -91,9 +91,14 @@ void Block::moveRight()
 	}
 }
 
-void Block::dropDown()
+unsigned Block::hardDrop()
 {
-	while (moveDown());
+	unsigned dropCounter = 0;
+	while (moveDown())
+	{
+		dropCounter++;
+	}
+	return dropCounter;
 }
 
 bool Block::moveDown()

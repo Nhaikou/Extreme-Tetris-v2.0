@@ -16,14 +16,7 @@ GameMode::~GameMode()
 
 void GameMode::onInitialize()
 {
-	if (factoryMode)
-	{
-		server->factoryInitialize();
-	}
-	else
-	{
-		server->standardInitialize();
-	}
+	server->gameModeInitialize(factoryMode);
 
 	spawnUpdate();
 	for (int i = 0; i < server->players.size(); ++i)
@@ -54,6 +47,9 @@ void GameMode::update(const float dt)
 		{
 			server->sendBoard(i);
 		}
+
+		system("cls");
+		std::cout << "Player " << i << "'s score: " << server->players[i]->score.y << std::endl;
 	}
 
 	if (factoryMode)

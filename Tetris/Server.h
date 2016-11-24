@@ -37,8 +37,7 @@ public:
 	void moveLineRight();
 	void newBag();
 
-	void standardInitialize();
-	void factoryInitialize();
+	void gameModeInitialize(bool factory);
 
 	std::vector<sf::TcpSocket*> clients;
 	std::vector<unsigned> bags;

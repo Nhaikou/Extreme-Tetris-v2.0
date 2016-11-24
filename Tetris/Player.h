@@ -30,6 +30,10 @@ public:
 
 	Board* board = nullptr;
 	Block* currentBlock = nullptr;
+
+	// score.x = tempScore which consists of player pushing the block down, resets to zero when block moves in other ways
+	// score.y = current score which is sent to clients when it changes
+	sf::Vector2i score = { 0, 0 };
 };
 #endif;
 

@@ -1,9 +1,8 @@
 #include "Board.h"
 
-Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
+Board::Board(sf::Vector2u boardSize, sf::Vector2u spawn)
 {
 	size = boardSize;
-	position = sf::Vector2i(boardPos.x * blockSize.x, boardPos.y * blockSize.y); // The position varies according to the texture's size
 	spawnPoint = spawn;
 
 	// Resizing the grid to fit all the blocks
@@ -51,40 +50,14 @@ sf::Vector2u Board::getSize()
 	return size;
 }
 
-sf::Vector2i Board::getPosition()
-{
-	return position;
-}
-
 sf::Vector2u Board::getSpawnPoint()
 {
 	return spawnPoint;
 }
 
-unsigned Board::getScore()
-{
-	return score;
-}
-
-unsigned Board::getLevel()
-{
-	return level;
-}
-
-void Board::setScore(unsigned scr)
-{
-	score = scr;
-}
-
-void Board::setLevel(unsigned lvl)
-{
-	level = lvl;
-}
-
 unsigned Board::clearRow()
 {
-	unsigned counter = 0;
-	unsigned clearedRows = 0;
+	unsigned blocksOnRow = 0, tempClearedRows = 0, score = 0;
 
 	for (int j = 0; j < size.y; ++j)
 	{
@@ -92,34 +65,36 @@ unsigned Board::clearRow()
 		{
 			if (grid[i][j] != BlockType::EMPTY)
 			{
-				++counter;
-				if (counter == size.x)
+				++blocksOnRow;
+				if (blocksOnRow == size.x)
 				{
 					for (int k = 0; k < size.x; ++k)
 					{
 						grid[k][j] = BlockType::EMPTY;
 					}
 					dropRow(j);
-					clearedRows++;
+					tempClearedRows++;
 				}
 			}
 		}
-		counter = 0;
+		blocksOnRow = 0;
 	}
 
-	if (clearedRows > 0)
+	if (tempClearedRows > 0)
 	{
-		score += pointsPerRow[clearedRows - 1] * (level + 1);
+		score += pointsPerRow[tempClearedRows - 1] * (level + 1);
 		dropTime.x = 0;
 	}
 
-	if (counter >= maxRows)
+	clearedRows += tempClearedRows;
+	if (clearedRows >= maxRows)
 	{
 		dropTime.y -= dropTimeReduction;
-		counter -= maxRows;
+		clearedRows -= maxRows;
+		level++;
 	}
 
-	return clearedRows;
+	return score;
 }
 
 void Board::dropRow(int y)

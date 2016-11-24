@@ -57,9 +57,8 @@ void Client::standardInitialize()
 		{
 			lastPlayer = true;
 		}
-		sf::Vector2i position;
-		packet >> position.x >> position.y;
-		Player *player = new Player(size, position, spawn, lastPlayer);
+
+		Player *player = new Player(size, sf::Vector2i(i * (size.x + 1) * 16 + 16, -2 * 16), spawn, lastPlayer);
 		players.push_back(player);
 	}
 }

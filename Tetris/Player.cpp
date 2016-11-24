@@ -3,7 +3,7 @@
 
 Player::Player(unsigned id, sf::Vector2i position, sf::Vector2u size, sf::Vector2u spawn)
 {
-	board = new Board(size, sf::Vector2i(position.x + (id + 1) + id * size.x, position.y), spawn);
+	board = new Board(size, spawn);
 	board->dropTime.y = 1000;
 	board->counter = 0;
 	board->maxRows;
@@ -28,19 +28,22 @@ bool Player::updateClient()
 
 	if (clientKey == sf::Keyboard::Left)
 	{
+		score.x = 0;
 		currentBlock->moveLeft();
 	}
 	if (clientKey == sf::Keyboard::Right)
 	{
+		score.x = 0;
 		currentBlock->moveRight();
 	}
 	if (clientKey == sf::Keyboard::Up)
 	{
-		currentBlock->dropDown();
+		score.x = currentBlock->hardDrop();
 		spawnBlock();
 	}
 	if (clientKey == sf::Keyboard::Down)
 	{
+		score.x++;
 		if (!currentBlock->moveDown())
 		{
 			spawnBlock();
@@ -59,7 +62,10 @@ bool Player::updateClient()
 
 bool Player::spawnBlock()
 {
-	board->clearRow();
+	score.y += score.x;
+	score.x = 0;
+
+	score.y += board->clearRow();
 
 	blockSpawned = true;
 	unsigned randomBlock = nextBlock;
@@ -110,6 +116,7 @@ bool Player::dropUpdate(const float dt)
 	{
 		board->updatedGrid = board->grid;
 		board->dropTime.x = 0;
+		score.x = 0;
 		if (!currentBlock->moveDown())
 		{
 			spawnBlock();
