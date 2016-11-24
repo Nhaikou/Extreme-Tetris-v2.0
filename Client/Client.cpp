@@ -307,12 +307,9 @@ void Client::receiveBoardSlice()
 void Client::receiveNextBlock()
 {
 	unsigned id, type;
-	packet >> id;
+	packet >> id >> type;
 
-	while (!packet.endOfPacket())
-	{
-		packet >> type;
-	}
+	players[id]->updateNextBlock(type);
 }
 
 bool Client::receiveState()

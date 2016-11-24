@@ -67,31 +67,31 @@ bool Player::spawnBlock()
 	{
 		delete currentBlock;
 	}
-	if (randomBlock == 0)
+	if (randomBlock == BlockType::BLOCKI)
 	{
 		currentBlock = new BlockI(board);
 	}
-	if (randomBlock == 1)
+	if (randomBlock == BlockType::BLOCKO)
 	{
 		currentBlock = new BlockO(board);
 	}
-	if (randomBlock == 2)
+	if (randomBlock == BlockType::BLOCKZ)
 	{
 		currentBlock = new BlockZ(board);
 	}
-	if (randomBlock == 3)
+	if (randomBlock == BlockType::BLOCKS)
 	{
 		currentBlock = new BlockS(board);
 	}
-	if (randomBlock == 4)
+	if (randomBlock == BlockType::BLOCKL)
 	{
 		currentBlock = new BlockL(board);
 	}
-	if (randomBlock == 5)
+	if (randomBlock == BlockType::BLOCKJ)
 	{
 		currentBlock = new BlockJ(board);
 	}
-	if (randomBlock == 6)
+	if (randomBlock == BlockType::BLOCKT)
 	{
 		currentBlock = new BlockT(board);
 	}

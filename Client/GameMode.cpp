@@ -118,6 +118,19 @@ void GameMode::draw(const float dt)
 	}
 
 	/*
+	for (int k = 0; k < client->players.size(); ++k)
+	{
+		for (int j = 0; j < client->players[k]->nextBlockSize.y; ++j)
+		{
+			for (int i = 0; i < client->players[k]->nextBlockSize.x; ++i)
+			{
+				stateMachine->window.draw(client->players[k]->nextBlockSprites[i][j]);
+			}
+		}
+	}
+	*/
+
+	/*
 	if (factoryMode)
 	{
 		stateMachine->window.draw(workerLeft);

@@ -220,7 +220,7 @@ void Server::factoryInitialize()
 void Server::newBag()
 {
 	std::vector<unsigned> blockTypes;
-	for (int i = 0; i < blockTypeCount; ++i)
+	for (int i = 1; i < blockTypeCount + 1; ++i)
 	{
 		blockTypes.push_back(i);
 	}

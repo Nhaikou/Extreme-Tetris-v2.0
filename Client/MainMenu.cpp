@@ -23,6 +23,16 @@ void MainMenu::handleInput()
 	if (stateMachine->event.type == sf::Event::KeyPressed)
 	{
 		client->sendInput(stateMachine->event.key.code);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			std::cout << "You voted for Standard." << std::endl;
+			std::cout << "Wait until everyone has voted. You can still change your vote." << std::endl;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+		{
+			std::cout << "You voted for Factory." << std::endl;
+			std::cout << "Wait until everyone has voted. You can still change your vote." << std::endl;
+		}
 	}
 }
 

@@ -16,13 +16,6 @@ GameMode::~GameMode()
 
 void GameMode::onInitialize()
 {
-	spawnUpdate();
-	for (int i = 0; i < server->players.size(); ++i)
-	{
-		server->players[i]->spawnBlock();
-	}
-
-
 	if (factoryMode)
 	{
 		server->factoryInitialize();
@@ -31,6 +24,13 @@ void GameMode::onInitialize()
 	{
 		server->standardInitialize();
 	}
+
+	spawnUpdate();
+	for (int i = 0; i < server->players.size(); ++i)
+	{
+		server->players[i]->spawnBlock();
+	}
+
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
 		server->sendBoard(i);
@@ -79,7 +79,7 @@ void GameMode::spawnUpdate()
 			}
 			server->players[i]->nextBlock = server->bags[server->players[i]->currentBlockId];
 			server->players[i]->currentBlockId++;
-			//server->sendNextBlock(i);
+			server->sendNextBlock(i);
 		}
 
 		if (server->players[i]->currentBlockId < smallestNumber)
