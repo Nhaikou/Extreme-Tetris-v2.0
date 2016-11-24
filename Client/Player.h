@@ -7,7 +7,7 @@
 class Player
 {
 public:
-	Player(sf::Vector2u size, sf::Vector2i position, sf::Vector2u spawn, bool lastPlayer);
+	Player(sf::Vector2u size, sf::Vector2u spawn, unsigned clientNumber);
 	~Player();
 	
 	void updateNextBlock(unsigned blockType);

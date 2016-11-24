@@ -21,9 +21,9 @@ public:
 	Client();
 	~Client();
 
-	void sendInput(int key);
-
 	void connectToServer();
+
+	void sendInput(int key);
 
 	void standardInitialize();
 	void factoryInitialize();

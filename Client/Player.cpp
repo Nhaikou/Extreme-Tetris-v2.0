@@ -1,9 +1,9 @@
 #include "Player.h"
 
 
-Player::Player(sf::Vector2u size, sf::Vector2i position, sf::Vector2u spawn, bool lastPlayer)
+Player::Player(sf::Vector2u size, sf::Vector2u spawn, unsigned clientNumber)
 {
-	board = new Board(size, position, spawn, lastPlayer);
+	board = new Board(size, sf::Vector2i(clientNumber * (size.x + 1) * 16 + 16, -2 * 16), spawn);
 
 	emptyTex.create(16, 16);
 	nextBlockSprites.resize(nextBlockSize.x);

@@ -19,24 +19,24 @@ enum BlockType
 class Board
 {
 public:
-	Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, bool lastPlayer);
+	Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn);
 	~Board();
 
 	void setGlassWalls();
 
 	std::vector<std::vector<sf::Sprite>> grid;
-	std::vector<sf::Sprite> gridSlice, walls, floors;
+	std::vector<sf::Sprite> gridSlice;
 
 	sf::Vector2u getSize();
 	sf::Vector2i getPosition();
 	sf::Vector2u getSpawnPoint();
 
-	sf::Texture blockTex, emptyTex, wallTex, floorTex, glassTex;
+	sf::Texture blockTex, emptyTex;
 
 private:
 	sf::Vector2u size, spawnPoint, blockSize = { 16, 16 };
 	sf::Vector2i position;
-	sf::Sprite block, wall, floor, glass;
+	sf::Sprite block;
 };
 
 #endif

@@ -15,6 +15,9 @@ public:
 	void update(const float dt);
 	void draw(const float dt);
 
+	void createAnimations();
+	void createWalls();
+
 protected:
 	void onInitialize();
 private:
@@ -22,9 +25,11 @@ private:
 	sf::Vector2u size, spawn;
 	sf::Vector2i position;
 	bool factoryMode;
-	sf::Texture workerLeftTex, workerRightTex, trackTex;
+	sf::Texture workerLeftTex, workerRightTex, trackTex, wallTex, floorTex, glassTex;
 	AnimatedSprite workerLeft, workerRight, track;
 	std::vector<AnimatedSprite> tracks;
+	std::vector<sf::Sprite> walls;
+	sf::Sprite wall, floor, glass;
 };
 #endif;
 

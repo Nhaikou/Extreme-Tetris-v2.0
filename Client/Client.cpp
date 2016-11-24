@@ -38,12 +38,14 @@ void Client::connectToServer()
 
 void Client::standardInitialize()
 {
-	packet.clear();
-	server.receive(packet);
-	if (packet.getDataSize() == 0)
+	while (true)
 	{
-		std::cout << "\nERROR: No packets received!!" << std::endl;
-		return;
+		packet.clear();
+		server.receive(packet);
+		if (!packet.getDataSize() == 0)
+		{
+			break;
+		}
 	}
 
 	sf::Vector2u size;
@@ -58,19 +60,21 @@ void Client::standardInitialize()
 			lastPlayer = true;
 		}
 
-		Player *player = new Player(size, sf::Vector2i(i * (size.x + 1) * 16 + 16, -2 * 16), spawn, lastPlayer);
+		Player *player = new Player(size, spawn, i);
 		players.push_back(player);
 	}
 }
 
 void Client::factoryInitialize()
 {
-	packet.clear();
-	server.receive(packet);
-	if (packet.getDataSize() == 0)
+	while (true)
 	{
-		std::cout << "\nERROR: No packets received!!" << std::endl;
-		return;
+		packet.clear();
+		server.receive(packet);
+		if (!packet.getDataSize() == 0)
+		{
+			break;
+		}
 	}
 
 	sf::Vector2u size;
@@ -83,8 +87,7 @@ void Client::factoryInitialize()
 		{
 			lastPlayer = true;
 		}
-		Player *player = new Player(size, sf::Vector2i(i * (size.x + 1) * 16 + 16, -2 * 16), spawn, lastPlayer);
-		player->board->setGlassWalls();
+		Player *player = new Player(size, spawn, i);
 		players.push_back(player);
 	}
 }

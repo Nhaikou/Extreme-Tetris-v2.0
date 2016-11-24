@@ -1,17 +1,11 @@
 #include "Board.h"
 
 
-Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, bool lastPlayer)
+Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn)
 {
 	blockTex.loadFromFile("../Assets/Block.png");
 	emptyTex.loadFromFile("../Assets/Brick2.png");
-	wallTex.loadFromFile("../Assets/Brick.png");
-	floorTex.loadFromFile("../Assets/Brick3.png");
-	glassTex.loadFromFile("../Assets/Glass.png");
 	block.setTexture(emptyTex);
-	wall.setTexture(wallTex);
-	floor.setTexture(floorTex);
-	glass.setTexture(glassTex);
 
 	size = boardSize;
 	position = boardPos;
@@ -31,22 +25,6 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, 
 		{
 			grid[i][j] = block;
 			grid[i][j].setPosition(position.x + block.getGlobalBounds().width * i, position.y + block.getGlobalBounds().height * j);
-
-			if (i == 0)
-			{
-				wall.setPosition(grid[i][j].getPosition() - sf::Vector2f(blockSize.x, 0));
-				walls.push_back(wall);
-			}
-			if (i == size.x - 1 && lastPlayer)
-			{
-				wall.setPosition(grid[i][j].getPosition() + sf::Vector2f(blockSize.x, 0));
-				walls.push_back(wall);
-			}
-			if (j == size.y - 1)
-			{
-				floor.setPosition(grid[i][j].getPosition() + sf::Vector2f(0, blockSize.y));
-				floors.push_back(floor);
-			}
 		}
 	}
 
@@ -56,14 +34,6 @@ Board::Board(sf::Vector2u boardSize, sf::Vector2i boardPos, sf::Vector2u spawn, 
 		block = grid[size.x - 1][i];
 		block.move(blockSize.x, 0);
 		gridSlice[i] = block;
-	}
-
-	floor.setPosition(grid[0][size.y - 1].getPosition().x - blockSize.x, grid[0][size.y - 1].getPosition().y + blockSize.y);
-	floors.push_back(floor);
-	if (lastPlayer)
-	{
-		floor.setPosition(grid[size.x - 1][size.y - 1].getPosition() + sf::Vector2f(blockSize.x, blockSize.y));
-		floors.push_back(floor);
 	}
 }
 
@@ -85,12 +55,4 @@ sf::Vector2i Board::getPosition()
 sf::Vector2u Board::getSpawnPoint()
 {
 	return spawnPoint;
-}
-
-void Board::setGlassWalls()
-{
-	for (int i = 0; i < walls.size(); ++i)
-	{
-		walls[i].setTexture(glassTex);
-	}
 }
