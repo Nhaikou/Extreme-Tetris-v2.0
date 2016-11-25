@@ -67,6 +67,10 @@ bool Player::spawnBlock()
 	score.y += board->clearRow();
 
 	blockSpawned = true;
+	if (nextBlock == 0)
+	{
+		std::cout << "!";
+	}
 	unsigned randomBlock = nextBlock;
 	if (currentBlock != nullptr)
 	{
