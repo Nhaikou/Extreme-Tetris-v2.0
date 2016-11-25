@@ -23,7 +23,7 @@ void AnimatedSprite::update(float dt)
 	timer += dt;
 	if (timer >= frequenzy)
 	{
-		timer = 0;
+		timer -= frequenzy;
 
 		if (direction == -1) // Backward loop (right->left, down->up)
 		{

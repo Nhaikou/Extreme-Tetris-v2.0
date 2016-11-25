@@ -60,7 +60,7 @@ void Client::standardInitialize()
 			lastPlayer = true;
 		}
 
-		Player *player = new Player(size, spawn, i);
+		Player *player = new Player(size, spawn, i, gameMode);
 		players.push_back(player);
 	}
 }
@@ -87,7 +87,7 @@ void Client::factoryInitialize()
 		{
 			lastPlayer = true;
 		}
-		Player *player = new Player(size, spawn, i);
+		Player *player = new Player(size, spawn, i, gameMode);
 		players.push_back(player);
 	}
 }
@@ -127,40 +127,7 @@ void Client::receiveBoard()
 	unsigned type, id, i, j, packetType;
 	packet >> id;
 
-	if (gameMode)
-	{
-		if (id == clientNumber)
-		{
-			id = 1;
-		}
-		else if (clientNumber == playerCount - 1 && id == 0)
-		{
-			id = 2;
-		}
-		else if (clientNumber == 0 && id == playerCount - 1)
-		{
-			id = 0;
-		}
-		else if (id < clientNumber)
-		{
-			id = 0;
-		}
-		else if (id > clientNumber)
-		{
-			id = 2;
-		}
-	}
-	else
-	{
-		if (id == clientNumber)
-		{
-			id = 0;
-		}
-		else if (id < clientNumber)
-		{
-			id++;
-		}
-	}
+	id = idFix(id);
 
 	while (!packet.endOfPacket())
 	{
@@ -230,8 +197,6 @@ void Client::receiveBoardSlice()
 {
 	unsigned type, id, i;
 	packet >> id;
-
-	updateAnimations = true;
 
 	if (id == clientNumber)
 	{
@@ -315,6 +280,8 @@ void Client::receiveNextBlock()
 	unsigned id, type;
 	packet >> id >> type;
 
+	id = idFix(id);
+
 	players[id]->updateNextBlock(type);
 }
 
@@ -322,6 +289,8 @@ void Client::receiveScore()
 {
 	unsigned id, score;
 	packet >> id >> score;
+
+	id = idFix(id);
 
 	players[id]->score = score;
 }
@@ -336,4 +305,44 @@ bool Client::receiveState()
 	packet >> gameMode;
 
 	return true;
+}
+
+unsigned Client::idFix(unsigned id)
+{
+	if (gameMode)
+	{
+		if (id == clientNumber)
+		{
+			id = 1;
+		}
+		else if (clientNumber == playerCount - 1 && id == 0)
+		{
+			id = 2;
+		}
+		else if (clientNumber == 0 && id == playerCount - 1)
+		{
+			id = 0;
+		}
+		else if (id < clientNumber)
+		{
+			id = 0;
+		}
+		else if (id > clientNumber)
+		{
+			id = 2;
+		}
+	}
+	else
+	{
+		if (id == clientNumber)
+		{
+			id = 0;
+		}
+		else if (id < clientNumber)
+		{
+			id++;
+		}
+	}
+
+	return id;
 }

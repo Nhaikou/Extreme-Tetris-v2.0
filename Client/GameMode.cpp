@@ -20,11 +20,12 @@ void GameMode::onInitialize()
 	if (factoryMode)
 	{
 		client->factoryInitialize();
-		createAnimations();
 
-		sf::View newView(sf::FloatRect(0, 0, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().x + 32, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().y + 60));
+		sf::View newView(sf::FloatRect(0, 0, 64 + client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().x + 32, client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().y + 60));
 		stateMachine->window.setView(newView);
-		stateMachine->window.setSize(sf::Vector2u(client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().x + 32, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().y + 60));
+		stateMachine->window.setSize(sf::Vector2u(64 + client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().x + 32, client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().y + 60));
+	
+		createAnimations();
 	}
 	else
 	{
@@ -50,26 +51,27 @@ void GameMode::update(const float dt)
 {
 	client->receive();
 
-	if (client->updateAnimations)
+	if (factoryMode)
 	{
-		workerLeft.update(1);
-		workerRight.update(1);
+		workerLeft.update(dt);
+		workerRight.update(dt);
 		for (int i = 0; i < tracks.size(); ++i)
 		{
-			tracks[i].update(1);
+			tracks[i].update(dt);
 		}
-		client->updateAnimations = false;
 	}
 
-	system("cls");
-	std::cout << "Score: " << client->players[client->clientNumber]->score << std::endl;
+	for (int i = 0; i < client->players.size(); ++i)
+	{
+		client->players[i]->updateScoreText();
+	}
 }
 
 void GameMode::draw(const float dt)
 {
 	for (int k = 0; k < client->players.size(); ++k)
 	{
-		for (int j = 0; j < client->players[k]->board->getSize().y; ++j)
+		for (int j = 2; j < client->players[k]->board->getSize().y; ++j)
 		{
 			for (int i = 0; i < client->players[k]->board->getSize().x; ++i)
 			{
@@ -77,9 +79,22 @@ void GameMode::draw(const float dt)
 			}
 		}
 
-		for (int i = 0; i < client->players[k]->board->getSize().y; ++i)
+		for (int i = 2; i < client->players[k]->board->getSize().y; ++i)
 		{
 			stateMachine->window.draw(client->players[k]->board->gridSlice[i]);
+		}
+
+		stateMachine->window.draw(client->players[k]->playerInfoBox);
+		stateMachine->window.draw(client->players[k]->scoreText);
+	}
+
+	if (factoryMode)
+	{
+		stateMachine->window.draw(workerLeft);
+		stateMachine->window.draw(workerRight);
+		for (int i = 0; i < tracks.size(); ++i)
+		{
+			stateMachine->window.draw(tracks[i]);
 		}
 	}
 
@@ -88,7 +103,6 @@ void GameMode::draw(const float dt)
 		stateMachine->window.draw(walls[i]);
 	}
 
-	/*
 	for (int k = 0; k < client->players.size(); ++k)
 	{
 		for (int j = 0; j < client->players[k]->nextBlockSize.y; ++j)
@@ -99,19 +113,6 @@ void GameMode::draw(const float dt)
 			}
 		}
 	}
-	*/
-
-	/*
-	if (factoryMode)
-	{
-		stateMachine->window.draw(workerLeft);
-		stateMachine->window.draw(workerRight);
-		for (int i = 0; i < tracks.size(); ++i)
-		{
-			stateMachine->window.draw(tracks[i]);
-		}
-	}
-	*/
 }
 
 void GameMode::createAnimations()
@@ -122,17 +123,21 @@ void GameMode::createAnimations()
 
 	workerLeft.setTexture(workerLeftTex);
 	workerLeft.setFrameSize(sf::Vector2u(16 * 4, 16 * 5));
-	workerLeft.setPosition(0, 0);
+	workerLeft.setPosition(0, stateMachine->window.getSize().y - 16 * 5);
+	workerLeft.setFrequenzy(100);
 	workerRight.setTexture(workerRightTex);
 	workerRight.setFrameSize(sf::Vector2u(16 * 4, 16 * 5));
 	workerRight.setCurrentFrame(sf::Vector2i(6, 0));
-	workerRight.setPosition(0, 0);
+	workerRight.setPosition(stateMachine->window.getSize().x - 16 * 4, stateMachine->window.getSize().y - 16 * 5);
+	workerRight.setFrequenzy(100);
 	track.setTexture(trackTex);
 	track.setFrameSize(sf::Vector2u(16 * 2, 16 * 2));
-	track.setPosition(workerLeft.getPosition() + sf::Vector2f(0, workerLeft.getGlobalBounds().height));
-	for (int i = workerLeft.getPosition().x; i < workerRight.getPosition().x + workerRight.getGlobalBounds().width; i += track.getGlobalBounds().width)
+	track.setFrequenzy(100);
+	track.setPosition(client->players[0]->board->grid[0][client->players[0]->board->getSize().y - 1].getPosition() + sf::Vector2f(0, 16));
+	tracks.push_back(track);
+	while (track.getPosition().x + 16 < client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][0].getPosition().x)
 	{
-		track.move(sf::Vector2f(track.getGlobalBounds().width, 0));
+		track.move(32, 0);
 		tracks.push_back(track);
 	}
 }
@@ -156,6 +161,11 @@ void GameMode::createWalls()
 	{
 		for (int j = 0; j < client->players[0]->board->getSize().y; ++j)
 		{
+			if (factoryMode && i > 0 && j <= 1)
+			{
+				wall.setPosition(client->players[i]->board->grid[0][j].getPosition() - sf::Vector2f(16, 0));
+				walls.push_back(wall);
+			}
 			if (factoryMode && i > 0)
 			{
 				glass.setPosition(client->players[i]->board->grid[0][j].getPosition() - sf::Vector2f(16, 0));
@@ -166,6 +176,15 @@ void GameMode::createWalls()
 				wall.setPosition(client->players[i]->board->grid[0][j].getPosition() - sf::Vector2f(16, 0));
 				walls.push_back(wall);
 			}
+
+			if (factoryMode && j == client->players[0]->board->getSize().y - 1)
+			{
+				glass.setPosition(client->players[i]->board->grid[client->players[i]->board->getSize().x - 1][j].getPosition() + sf::Vector2f(16, 16));
+				walls.push_back(glass);
+				glass.setPosition(client->players[i]->board->grid[client->players[i]->board->getSize().x - 1][j].getPosition() + sf::Vector2f(16, 32));
+				walls.push_back(glass);
+			}
+
 			if (i == boardCount - 1)
 			{
 				wall.setPosition(client->players[i]->board->grid[client->players[i]->board->getSize().x - 1][j].getPosition() + sf::Vector2f(16, 0));
@@ -189,6 +208,19 @@ void GameMode::createWalls()
 		}
 		walls.push_back(floor);
 	}
+
+	if (factoryMode)
+	{
+		wall.setPosition(client->players[0]->board->grid[0][client->players[0]->board->getSize().y - 1].getPosition() + sf::Vector2f(-16, 16));
+		walls.push_back(wall);
+		wall.setPosition(client->players[0]->board->grid[0][client->players[0]->board->getSize().y - 1].getPosition() + sf::Vector2f(-16, 32));
+		walls.push_back(wall);
+		wall.setPosition(client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition() + sf::Vector2f(16, 16));
+		walls.push_back(wall);
+		wall.setPosition(client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition() + sf::Vector2f(16, 32));
+		walls.push_back(wall);
+	}
+
 	floor.setPosition(client->players[boardCount - 1]->board->grid[client->players[boardCount - 1]->board->getSize().x - 1][client->players[boardCount - 1]->board->getSize().y - 1].getPosition() + sf::Vector2f(16, 16));
 	if (factoryMode)
 	{

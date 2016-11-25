@@ -114,7 +114,7 @@ bool Player::dropUpdate(const float dt)
 	if (board->dropTime.x >= board->dropTime.y)
 	{
 		board->updatedGrid = board->grid;
-		board->dropTime.x = 0;
+		board->dropTime.x -= board->dropTime.y;
 		score.x = 0;
 		if (!currentBlock->moveDown())
 		{

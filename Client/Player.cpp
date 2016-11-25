@@ -1,9 +1,16 @@
 #include "Player.h"
 
 
-Player::Player(sf::Vector2u size, sf::Vector2u spawn, unsigned clientNumber)
+Player::Player(sf::Vector2u size, sf::Vector2u spawn, unsigned clientNumber, bool factory)
 {
-	board = new Board(size, sf::Vector2i(clientNumber * (size.x + 1) * 16 + 16, -2 * 16), spawn);
+	if (factory)
+	{
+		board = new Board(size, sf::Vector2i(64 + clientNumber * (size.x + 1) * 16 + 16, 0), spawn);
+	}
+	else
+	{
+		board = new Board(size, sf::Vector2i(clientNumber * (size.x + 1) * 16 + 16, 0), spawn);
+	}
 
 	emptyTex.create(16, 16);
 	nextBlockSprites.resize(nextBlockSize.x);
@@ -17,13 +24,32 @@ Player::Player(sf::Vector2u size, sf::Vector2u spawn, unsigned clientNumber)
 		for (int i = 0; i < nextBlockSize.x; ++i)
 		{
 			nextBlockSprites[i][j].setTexture(emptyTex);
-			nextBlockSprites[i][j].setPosition(i * 16, j * 16);
+			nextBlockSprites[i][j].setPosition(board->getPosition().x + (board->getSize().x - 4) * 16 + i * 16, j * 16);
 		}
 	}
+
+	playerInfoBox.setPosition(sf::Vector2f(board->getPosition()) + sf::Vector2f(2, 2));
+	playerInfoBox.setSize(sf::Vector2f(board->getSize().x * 16 - 4, 32 - 4));
+	playerInfoBox.setFillColor(sf::Color(185, 122, 87, 255));
+	playerInfoBox.setOutlineThickness(2);
+	playerInfoBox.setOutlineColor(sf::Color::Black);
+
+	font.loadFromFile("../Assets/8bitOperatorPlus8-Regular.ttf");
+	scoreText.setFont(font);
+	scoreText.setCharacterSize(24);
+	scoreText.setPosition(board->getPosition().x + 16, 0);
+	scoreText.setColor(sf::Color::Black);
 }
 
 Player::~Player()
 {
+}
+
+void Player::updateScoreText()
+{
+	ss.str("");
+	ss << score;
+	scoreText.setString(ss.str());
 }
 
 void Player::updateNextBlock(unsigned blockType)

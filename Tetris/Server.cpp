@@ -209,7 +209,7 @@ void Server::updateLine(const float dt)
 	lineTime.x += dt;
 	if (lineTime.x >= lineTime.y)
 	{
-		lineTime.x = 0;
+		lineTime.x -= lineTime.y;
 		for (int i = 0; i < players.size(); ++i)
 		{
 			players[i]->board->updatedGrid = players[i]->board->grid;

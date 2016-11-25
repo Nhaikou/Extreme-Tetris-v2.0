@@ -34,12 +34,14 @@ public:
 	void receiveScore();
 	bool receiveState();
 
+	unsigned idFix(unsigned id);
+
 	sf::IpAddress ip;
 	sf::TcpSocket server;
 	sf::Packet packet;
 
 	unsigned playerCount, clientNumber;
-	bool gameMode, updateAnimations = false;
+	bool gameMode;
 	std::vector<Player*> players;
 };
 #endif;
