@@ -1,7 +1,7 @@
 #include "Player.h"
 
 
-Player::Player(unsigned id, sf::Vector2i position, sf::Vector2u size, sf::Vector2u spawn)
+Player::Player(unsigned id, sf::Vector2u size, sf::Vector2u spawn)
 {
 	board = new Board(size, spawn);
 	board->dropTime.y = 1000;
@@ -107,6 +107,7 @@ bool Player::spawnBlock()
 
 	if (!currentBlock->spawn())
 	{
+		fullBoard = true;
 		return false;
 	}
 	return true;

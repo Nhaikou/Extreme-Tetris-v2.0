@@ -15,6 +15,13 @@ enum PacketType
 	SCORE = 3,
 };
 
+enum WinningCondition
+{
+	ELIMINATION = 0,
+	SCOREATTACK = 1,
+	TIMELIMIT = 2,
+};
+
 class Server
 {
 public:
@@ -31,6 +38,7 @@ public:
 	int receiveButtonPress(unsigned id);
 	void sendBoard(unsigned id);
 	void sendBoardSlice(unsigned id);
+	void sendWholeBoard(unsigned id);
 	void sendNextBlock(unsigned id);
 	void sendScore(unsigned id);
 	void sendState(bool factory);
@@ -42,13 +50,16 @@ public:
 	void moveLineRight();
 	void newBag();
 
+	void boardFull(unsigned id);
+	void endGame();
+
 	void gameModeInitialize(bool factory);
 
 	std::vector<sf::TcpSocket*> clients;
 	std::vector<unsigned> bags;
 
 private:
-	unsigned blockTypeCount = 7;
+	unsigned blockTypeCount = 7, winningCondition = SCOREATTACK;
 	bool searchPlayers = true, factoryMode = false;
 	char answer;
 

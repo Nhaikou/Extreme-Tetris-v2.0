@@ -21,7 +21,10 @@ void GameMode::onInitialize()
 	spawnUpdate();
 	for (int i = 0; i < server->players.size(); ++i)
 	{
-		server->players[i]->spawnBlock();
+		if (!server->players[i]->spawnBlock())
+		{
+			server->boardFull(i);
+		}
 	}
 
 	for (int i = 0; i < server->clients.size(); ++i)
@@ -34,24 +37,36 @@ void GameMode::update(const float dt)
 {
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
-		server->players[i]->clientKey = server->receiveButtonPress(i);
-
-		if (server->players[i]->clientKey != -1)
+		if (!server->players[i]->playerOut)
 		{
-			server->players[i]->updateClient();
-			server->sendBoard(i);
-			server->players[i]->clientKey = -1;
-		}
+			server->players[i]->clientKey = server->receiveButtonPress(i);
 
-		if (server->players[i]->dropUpdate(dt))
-		{
-			server->sendBoard(i);
+			if (server->players[i]->clientKey != -1)
+			{
+				server->players[i]->updateClient();
+				server->sendBoard(i);
+				server->players[i]->clientKey = -1;
+			}
+
+			if (server->players[i]->dropUpdate(dt))
+			{
+				server->sendBoard(i);
+			}
 		}
 	}
 
 	if (factoryMode)
 	{
 		server->updateLine(dt);
+	}
+
+	for (int i = 0; i < server->clients.size(); ++i)
+	{
+		if (server->players[i]->fullBoard)
+		{
+			server->players[i]->fullBoard = false;
+			server->boardFull(i);
+		}
 	}
 
 	spawnUpdate();

@@ -105,25 +105,25 @@ void Player::updateNextBlock(unsigned blockType)
 	}
 	else if (blockType == BlockType::BLOCKL)
 	{
+		nextBlockSprites[1][1].setTexture(board->blockTex);
+		nextBlockSprites[1][1].setColor(sf::Color(255, 130, 0));
 		nextBlockSprites[1][0].setTexture(board->blockTex);
 		nextBlockSprites[1][0].setColor(sf::Color(255, 130, 0));
 		nextBlockSprites[2][0].setTexture(board->blockTex);
 		nextBlockSprites[2][0].setColor(sf::Color(255, 130, 0));
 		nextBlockSprites[3][0].setTexture(board->blockTex);
 		nextBlockSprites[3][0].setColor(sf::Color(255, 130, 0));
-		nextBlockSprites[3][1].setTexture(board->blockTex);
-		nextBlockSprites[3][1].setColor(sf::Color(255, 130, 0));
 	}
 	else if (blockType == BlockType::BLOCKJ)
 	{
-		nextBlockSprites[1][1].setTexture(board->blockTex);
-		nextBlockSprites[1][1].setColor(sf::Color::Blue);
 		nextBlockSprites[1][0].setTexture(board->blockTex);
 		nextBlockSprites[1][0].setColor(sf::Color::Blue);
 		nextBlockSprites[2][0].setTexture(board->blockTex);
 		nextBlockSprites[2][0].setColor(sf::Color::Blue);
 		nextBlockSprites[3][0].setTexture(board->blockTex);
 		nextBlockSprites[3][0].setColor(sf::Color::Blue);
+		nextBlockSprites[3][1].setTexture(board->blockTex);
+		nextBlockSprites[3][1].setColor(sf::Color::Blue);
 	}
 	else if (blockType == BlockType::BLOCKT)
 	{

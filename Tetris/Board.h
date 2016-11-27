@@ -29,6 +29,7 @@ public:
 
 	unsigned clearRow();
 	void dropRow(int y);
+	void clearBoard();
 
 	std::vector<std::vector<unsigned>> grid, updatedGrid;
 	std::vector<unsigned> gridSlice, updatedGridSlice;

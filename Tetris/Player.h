@@ -15,7 +15,7 @@
 class Player
 {
 public:
-	Player(unsigned id, sf::Vector2i position, sf::Vector2u size, sf::Vector2u spawn);
+	Player(unsigned id, sf::Vector2u size, sf::Vector2u spawn);
 	~Player();
 
 	bool updateClient();
@@ -26,7 +26,7 @@ public:
 	int clientKey = -1;	// Clients keys for gameplay. Must be -1 (unknown), that the server doesn't register any keys pressed from the start.
 
 	unsigned nextBlock = 0, currentBlockId = 0;
-	bool blockSpawned = true;
+	bool blockSpawned = true, playerOut = false, fullBoard = false;
 
 	Board* board = nullptr;
 	Block* currentBlock = nullptr;

@@ -34,7 +34,7 @@ void Server::findPlayers()
 					clients.push_back(client);
 					clients[clients.size() - 1]->setBlocking(false);
 					socketSelector.add(*client);
-					Player *player = new Player(clients.size() - 1, sf::Vector2i(0, -2), sf::Vector2u(10, 20), sf::Vector2u(3, 3));
+					Player *player = new Player(clients.size() - 1, sf::Vector2u(10, 20), sf::Vector2u(3, 3));
 					players.push_back(player);
 				}
 				else
@@ -112,6 +112,25 @@ void Server::sendBoardSlice(unsigned id)
 	{
 		clients[0]->send(packet);
 	}
+}
+
+void Server::sendWholeBoard(unsigned id)
+{
+	packet.clear();
+	packet << GRID << id;
+
+	for (int j = 0; j < players[id]->board->getSize().y; ++j)
+	{
+		for (int i = 0; i < players[id]->board->getSize().x; ++i)
+		{
+			if (players[id]->board->updatedGrid[i][j] != players[id]->board->grid[i][j])
+			{
+				packet << i << j << players[id]->board->grid[i][j];
+			}
+		}
+	}
+
+	sendToGameMode(id);
 }
 
 void Server::sendNextBlock(unsigned id)
@@ -202,6 +221,40 @@ void Server::newBag()
 		bags.push_back(blockTypes[blockType]);
 		blockTypes.erase(blockTypes.begin() + blockType);
 	}
+}
+
+void Server::boardFull(unsigned id)
+{
+	if (winningCondition == ELIMINATION)
+	{
+		players[id]->playerOut = true;
+		for (int i = 0; i < players.size(); ++i)
+		{
+			if (!players[id]->playerOut)
+			{
+				return;
+			}
+		}
+		endGame();
+	}
+	else
+	{
+		players[id]->board->updatedGrid = players[id]->board->grid;
+		players[id]->board->clearBoard();
+		players[id]->spawnBlock();
+		players[id]->score.y -= 100;
+		if (players[id]->score.y < 0)
+		{
+			players[id]->score.y = 0;
+		}
+		sendBoard(id);
+		sendScore(id);
+	}
+}
+
+void Server::endGame()
+{
+
 }
 
 void Server::updateLine(const float dt)
