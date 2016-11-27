@@ -8,7 +8,7 @@
 class MainMenu : public State
 {
 public:
-	MainMenu(StateMachine* sm);
+	MainMenu(StateMachine* sm, std::string name);
 	~MainMenu();
 
 	void handleInput();
@@ -20,5 +20,6 @@ protected:
 
 private:
 	Client* client;
+	std::string playerName;
 };
 #endif;

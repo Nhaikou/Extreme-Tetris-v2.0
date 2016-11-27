@@ -36,8 +36,8 @@ Player::Player(sf::Vector2u size, sf::Vector2u spawn, unsigned clientNumber, boo
 
 	font.loadFromFile("../Assets/8bitOperatorPlus8-Regular.ttf");
 	scoreText.setFont(font);
-	scoreText.setCharacterSize(24);
-	scoreText.setPosition(board->getPosition().x + 16, 0);
+	scoreText.setCharacterSize(16);
+	scoreText.setPosition(board->getPosition().x + 2, 12);
 	scoreText.setColor(sf::Color::Black);
 }
 

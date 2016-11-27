@@ -36,7 +36,9 @@ void GameMode::onInitialize()
 		stateMachine->window.setSize(sf::Vector2u(client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().x + 32, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().y + 32));
 	}
 
+	client->receive();
 	createWalls();
+	createNames();
 }
 
 void GameMode::handleInput()
@@ -86,6 +88,11 @@ void GameMode::draw(const float dt)
 
 		stateMachine->window.draw(client->players[k]->playerInfoBox);
 		stateMachine->window.draw(client->players[k]->scoreText);
+	}
+
+	for (int i = 0; i < playerNameTexts.size(); ++i)
+	{
+		stateMachine->window.draw(playerNameTexts[i]);
 	}
 
 	if (factoryMode)
@@ -227,4 +234,63 @@ void GameMode::createWalls()
 		floor.move(0, 32);
 	}
 	walls.push_back(floor);
+}
+
+void GameMode::createNames()
+{
+	font.loadFromFile("../Assets/8bitOperatorPlus8-Regular.ttf");
+	playerNameText.setFont(font);
+	playerNameText.setCharacterSize(16);
+	playerNameText.setColor(sf::Color::Black);
+
+	if (factoryMode)
+	{
+		playerNameText.setPosition(client->players[0]->board->getPosition().x + 2, -2);
+		if (client->clientNumber == 0)
+		{
+			playerNameText.setString(client->playerNames[client->playerCount - 1]);
+		}
+		else
+		{
+			playerNameText.setString(client->playerNames[client->clientNumber - 1]);
+		}
+		playerNameTexts.push_back(playerNameText);
+
+		playerNameText.setPosition(client->players[1]->board->getPosition().x + 2, -2);
+		playerNameText.setString(client->playerNames[client->clientNumber]);
+		playerNameTexts.push_back(playerNameText);
+
+		playerNameText.setPosition(client->players[2]->board->getPosition().x + 2, -2);
+		if (client->clientNumber == client->playerCount - 1)
+		{
+			playerNameText.setString(client->playerNames[0]);
+		}
+		else
+		{
+			playerNameText.setString(client->playerNames[client->clientNumber + 1]);
+		}
+		playerNameTexts.push_back(playerNameText);
+	}
+	else
+	{
+		playerNameText.setPosition(client->players[0]->board->getPosition().x + 2, -2);
+		playerNameText.setString(client->playerNames[client->clientNumber]);
+		playerNameTexts.push_back(playerNameText);
+
+		for (int i = 0; i < client->playerCount; ++i)
+		{
+			if (i < client->clientNumber && i + 1 < client->playerCount)
+			{
+				playerNameText.setPosition(client->players[i + 1]->board->getPosition().x + 2, -2);
+				playerNameText.setString(client->playerNames[i]);
+				playerNameTexts.push_back(playerNameText);
+			}
+			else if (i > client->clientNumber)
+			{
+				playerNameText.setPosition(client->players[i]->board->getPosition().x + 2, -2);
+				playerNameText.setString(client->playerNames[i]);
+				playerNameTexts.push_back(playerNameText);
+			}
+		}
+	}	
 }

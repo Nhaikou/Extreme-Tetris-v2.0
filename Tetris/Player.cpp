@@ -1,13 +1,14 @@
 #include "Player.h"
 
 
-Player::Player(unsigned id, sf::Vector2u size, sf::Vector2u spawn)
+Player::Player(unsigned id, sf::Vector2u size, sf::Vector2u spawn, std::string name)
 {
 	board = new Board(size, spawn);
 	board->dropTime.y = 1000;
 	board->counter = 0;
 	board->maxRows;
 	board->dropTimeReduction;
+	playerName = name;
 }
 
 Player::~Player()

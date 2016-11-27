@@ -15,7 +15,7 @@
 class Player
 {
 public:
-	Player(unsigned id, sf::Vector2u size, sf::Vector2u spawn);
+	Player(unsigned id, sf::Vector2u size, sf::Vector2u spawn, std::string name);
 	~Player();
 
 	bool updateClient();
@@ -30,6 +30,8 @@ public:
 
 	Board* board = nullptr;
 	Block* currentBlock = nullptr;
+
+	std::string playerName;
 
 	// score.x = tempScore which consists of player pushing the block down, resets to zero when block moves in other ways
 	// score.y = current score which is sent to clients when it changes

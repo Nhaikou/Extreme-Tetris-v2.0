@@ -18,7 +18,7 @@ enum PacketType
 class Client
 {
 public:
-	Client();
+	Client(std::string name);
 	~Client();
 
 	void connectToServer();
@@ -32,6 +32,7 @@ public:
 	void receiveBoardSlice();
 	void receiveNextBlock();
 	void receiveScore();
+	void receiveNames();
 	bool receiveState();
 
 	unsigned idFix(unsigned id);
@@ -43,5 +44,7 @@ public:
 	unsigned playerCount, clientNumber;
 	bool gameMode;
 	std::vector<Player*> players;
+	std::string playerName;
+	std::vector<std::string> playerNames;
 };
 #endif;

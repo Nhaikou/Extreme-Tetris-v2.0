@@ -1,8 +1,9 @@
 #include "Client.h"
 
 
-Client::Client()
+Client::Client(std::string name)
 {
+	playerName = name;
 	connectToServer();
 }
 
@@ -28,9 +29,20 @@ void Client::connectToServer()
 	//ip = "172.31.16.142";
 	server.connect(ip, 55002);
 
+	packet.clear();
+	packet << playerName;
+	server.send(packet);
+
 	std::cout << "Waiting for an answer from server...";
+	packet.clear();
 	server.receive(packet);
 	packet >> playerCount;
+	std::string name;
+	for (int i = 0; i < playerCount; ++i)
+	{
+		packet >> name;
+		playerNames.push_back(name);
+	}
 
 	std::cout << "\nVote for gamemode! S (=Standard) or F (=Factory)" << std::endl;
 	server.setBlocking(false);
@@ -63,6 +75,7 @@ void Client::standardInitialize()
 		Player *player = new Player(size, spawn, i, gameMode);
 		players.push_back(player);
 	}
+	//receiveNames();
 }
 
 void Client::factoryInitialize()
@@ -90,6 +103,7 @@ void Client::factoryInitialize()
 		Player *player = new Player(size, spawn, i, gameMode);
 		players.push_back(player);
 	}
+	//receiveNames();
 }
 
 void Client::receive()
@@ -116,7 +130,7 @@ void Client::receive()
 	{
 		receiveNextBlock();
 	}
-	else if(packetType == SCORE)
+	else if (packetType == SCORE)
 	{
 		receiveScore();
 	}
@@ -293,6 +307,32 @@ void Client::receiveScore()
 	id = idFix(id);
 
 	players[id]->score = score;
+}
+
+void Client::receiveNames()
+{
+	server.receive(packet);
+	std::string name;
+	if (gameMode)
+	{
+		for (int i = 0; i < playerCount; ++i)
+		{
+			packet >> name;
+			playerNames.push_back(name);
+		}
+	}
+	else
+	{
+		playerNames.push_back(playerName);
+		for (int i = 0; i < playerCount; ++i)
+		{
+			packet >> name;
+			if (i != clientNumber)
+			{
+				playerNames.push_back(name);
+			}
+		}
+	}
 }
 
 bool Client::receiveState()

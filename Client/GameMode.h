@@ -17,6 +17,7 @@ public:
 
 	void createAnimations();
 	void createWalls();
+	void createNames();
 
 protected:
 	void onInitialize();
@@ -30,6 +31,9 @@ private:
 	std::vector<AnimatedSprite> tracks;
 	std::vector<sf::Sprite> walls;
 	sf::Sprite wall, floor, glass;
+	sf::Font font;
+	sf::Text playerNameText;
+	std::vector<sf::Text> playerNameTexts;
 };
 #endif;
 

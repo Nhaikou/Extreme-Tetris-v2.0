@@ -13,6 +13,7 @@ enum PacketType
 	GRIDSLICE = 1,
 	NEXTBLOCK = 2,
 	SCORE = 3,
+	NAMES = 4,
 };
 
 enum WinningCondition
@@ -38,9 +39,9 @@ public:
 	int receiveButtonPress(unsigned id);
 	void sendBoard(unsigned id);
 	void sendBoardSlice(unsigned id);
-	void sendWholeBoard(unsigned id);
 	void sendNextBlock(unsigned id);
 	void sendScore(unsigned id);
+	void sendPlayerNames();
 	void sendState(bool factory);
 
 	void sendToGameMode(unsigned id);

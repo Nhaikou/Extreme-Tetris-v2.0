@@ -1,11 +1,10 @@
 #include "StateMachine.h"
-#include "GameMode.h"
-#include "MainMenu.h"
+#include "NameInput.h"
 
 int main()
 {
 	StateMachine sm;
-	sm.pushState(new MainMenu(&sm));
+	sm.pushState(new NameInput(&sm));
 	sm.gameLoop();
 	return 0;
 }

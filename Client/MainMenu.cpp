@@ -1,9 +1,10 @@
 #include "MainMenu.h"
 
 
-MainMenu::MainMenu(StateMachine* sm)
+MainMenu::MainMenu(StateMachine* sm, std::string name)
 {
 	stateMachine = sm;
+	playerName = name;
 }
 
 
@@ -15,7 +16,7 @@ MainMenu::~MainMenu()
 
 void MainMenu::onInitialize()
 {
-	client = new Client();
+	client = new Client(playerName);
 }
 
 void MainMenu::handleInput()

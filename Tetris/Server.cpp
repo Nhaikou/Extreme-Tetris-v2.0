@@ -31,10 +31,14 @@ void Server::findPlayers()
 				sf::TcpSocket* client = new sf::TcpSocket;
 				if (tcpListener.accept(*client) == sf::Socket::Done)
 				{
+					std::string name;
+					packet.clear();
+					client->receive(packet);
+					packet >> name;
 					clients.push_back(client);
 					clients[clients.size() - 1]->setBlocking(false);
 					socketSelector.add(*client);
-					Player *player = new Player(clients.size() - 1, sf::Vector2u(10, 20), sf::Vector2u(3, 3));
+					Player *player = new Player(clients.size() - 1, sf::Vector2u(10, 20), sf::Vector2u(3, 3), name);
 					players.push_back(player);
 				}
 				else
@@ -46,7 +50,12 @@ void Server::findPlayers()
 				std::cin >> answer;
 				if (answer == 'n')
 				{
+					packet.clear();
 					packet << players.size();
+					for (int i = 0; i < clients.size(); ++i)
+					{
+						packet << players[i]->playerName;
+					}
 					for (int i = 0; i < clients.size(); ++i)
 					{
 						clients[i]->send(packet);
@@ -114,25 +123,6 @@ void Server::sendBoardSlice(unsigned id)
 	}
 }
 
-void Server::sendWholeBoard(unsigned id)
-{
-	packet.clear();
-	packet << GRID << id;
-
-	for (int j = 0; j < players[id]->board->getSize().y; ++j)
-	{
-		for (int i = 0; i < players[id]->board->getSize().x; ++i)
-		{
-			if (players[id]->board->updatedGrid[i][j] != players[id]->board->grid[i][j])
-			{
-				packet << i << j << players[id]->board->grid[i][j];
-			}
-		}
-	}
-
-	sendToGameMode(id);
-}
-
 void Server::sendNextBlock(unsigned id)
 {
 	packet.clear();
@@ -147,6 +137,49 @@ void Server::sendScore(unsigned id)
 	packet << SCORE << id << players[id]->score.y;
 	
 	sendToGameMode(id);
+}
+
+void Server::sendPlayerNames()
+{
+	packet.clear();
+
+	if (factoryMode)
+	{
+		for (int i = 0; i < players.size(); ++i)
+		{
+			if (i - 1 < 0)
+			{
+				packet << players[players.size() - 1]->playerName;
+			}
+			else
+			{
+				packet << players[i - 1]->playerName;
+			}
+			packet << players[i]->playerName;
+			if (i + 1 >= players.size())
+			{
+				packet << players[0]->playerName;
+			}
+			else
+			{
+				packet << players[i + 1]->playerName;
+			}
+
+			clients[i]->send(packet);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < players.size(); ++i)
+		{
+			packet << players[i]->playerName;
+		}
+
+		for (int i = 0; i < players.size(); ++i)
+		{
+			clients[i]->send(packet);
+		}
+	}
 }
 
 void Server::sendState(bool factory)
