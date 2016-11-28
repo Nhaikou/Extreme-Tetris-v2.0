@@ -21,9 +21,9 @@ void GameMode::onInitialize()
 	{
 		client->factoryInitialize();
 
-		sf::View newView(sf::FloatRect(0, 0, 200 + 64 + client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().x + 32, client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().y + 60));
+		sf::View newView(sf::FloatRect(0, 0, 64 + client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().x + 32, client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().y + 60));
 		stateMachine->window.setView(newView);
-		stateMachine->window.setSize(sf::Vector2u(200 + 64 + client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().x + 32, client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().y + 60));
+		stateMachine->window.setSize(sf::Vector2u(64 + client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().x + 32, client->players[2]->board->grid[client->players[2]->board->getSize().x - 1][client->players[2]->board->getSize().y - 1].getPosition().y + 60));
 	
 		createAnimations();
 	}
@@ -31,9 +31,9 @@ void GameMode::onInitialize()
 	{
 		client->standardInitialize();
 
-		sf::View newView(sf::FloatRect(0, 0, 200 + client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().x + 32, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().y + 32));
+		sf::View newView(sf::FloatRect(0, 0, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().x + 32, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().y + 32));
 		stateMachine->window.setView(newView);
-		stateMachine->window.setSize(sf::Vector2u(200 + client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().x + 32, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().y + 32));
+		stateMachine->window.setSize(sf::Vector2u(client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().x + 32, client->players[client->playerCount - 1]->board->grid[client->players[client->playerCount - 1]->board->getSize().x - 1][client->players[client->playerCount - 1]->board->getSize().y - 1].getPosition().y + 32));
 	}
 
 	client->receive();
@@ -122,11 +122,13 @@ void GameMode::draw(const float dt)
 		}
 	}
 
+	/*
 	stateMachine->window.draw(scoreBoard);
 	for (int i = 0; i < client->playerCount; ++i)
 	{
 		stateMachine->window.draw(scoreBoardTexts[i]);
 	}
+	*/
 }
 
 void GameMode::createAnimations()
@@ -142,7 +144,7 @@ void GameMode::createAnimations()
 	workerRight.setTexture(workerRightTex);
 	workerRight.setFrameSize(sf::Vector2u(16 * 4, 16 * 5));
 	workerRight.setCurrentFrame(sf::Vector2i(6, 0));
-	workerRight.setPosition(stateMachine->window.getSize().x - 16 * 4 - 200, stateMachine->window.getSize().y - 16 * 5);
+	workerRight.setPosition(stateMachine->window.getSize().x - 16 * 4, stateMachine->window.getSize().y - 16 * 5);
 	workerRight.setFrequenzy(100);
 	track.setTexture(trackTex);
 	track.setFrameSize(sf::Vector2u(16 * 2, 16 * 2));

@@ -31,10 +31,21 @@ void GameMode::onInitialize()
 	{
 		server->sendBoard(i);
 	}
+
+	endTimer = sf::Vector2f(0, 300000);
 }
 
 void GameMode::update(const float dt)
 {
+	endTimer.x += dt;
+	/*
+	if (endTimer.x >= endTimer.y)
+	{
+		server->endGame();
+		stateMachine->popState();
+	}
+	*/
+
 	for (int i = 0; i < server->clients.size(); ++i)
 	{
 		if (!server->players[i]->playerOut)

@@ -30,6 +30,7 @@ protected:
 private:
 	Server *server = nullptr;
 	bool factoryMode;
+	sf::Vector2f endTimer;
 };
 
 #endif
