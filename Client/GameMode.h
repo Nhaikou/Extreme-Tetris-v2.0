@@ -18,6 +18,7 @@ public:
 	void createAnimations();
 	void createWalls();
 	void createNames();
+	void createScoreBoard();
 
 protected:
 	void onInitialize();
@@ -34,6 +35,8 @@ private:
 	sf::Font font;
 	sf::Text playerNameText;
 	std::vector<sf::Text> playerNameTexts;
+	std::vector<sf::Text> scoreBoardTexts;
+	sf::RectangleShape scoreBoard;
 };
 #endif;
 
