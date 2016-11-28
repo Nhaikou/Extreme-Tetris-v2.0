@@ -1,10 +1,11 @@
 #include "MainMenu.h"
 
 
-MainMenu::MainMenu(StateMachine* sm, std::string name)
+MainMenu::MainMenu(StateMachine* sm, std::string name, std::string ip)
 {
 	stateMachine = sm;
 	playerName = name;
+	ipAddress = ip;
 }
 
 
@@ -16,7 +17,11 @@ MainMenu::~MainMenu()
 
 void MainMenu::onInitialize()
 {
-	client = new Client(playerName);
+	client = new Client(playerName, ipAddress);
+	if (client->connectionFail)
+	{
+		stateMachine->window.close();
+	}
 }
 
 void MainMenu::handleInput()

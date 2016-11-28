@@ -1,9 +1,10 @@
 #include "Client.h"
 
 
-Client::Client(std::string name)
+Client::Client(std::string name, std::string ipAddress)
 {
 	playerName = name;
+	ip = ipAddress;
 	connectToServer();
 }
 
@@ -25,9 +26,12 @@ void Client::sendInput(int key)
 
 void Client::connectToServer()
 {
-	ip = sf::IpAddress::getLocalAddress();
-	//ip = "172.31.16.142";
-	server.connect(ip, 55002);
+	sf::Time timeOut = sf::seconds(1);
+	if (server.connect(ip, 55002, timeOut))
+	{
+		connectionFail = true;
+		return;
+	}
 
 	packet.clear();
 	packet << playerName;
@@ -75,7 +79,6 @@ void Client::standardInitialize()
 		Player *player = new Player(size, spawn, i, gameMode);
 		players.push_back(player);
 	}
-	//receiveNames();
 }
 
 void Client::factoryInitialize()
@@ -103,7 +106,6 @@ void Client::factoryInitialize()
 		Player *player = new Player(size, spawn, i, gameMode);
 		players.push_back(player);
 	}
-	//receiveNames();
 }
 
 void Client::receive()

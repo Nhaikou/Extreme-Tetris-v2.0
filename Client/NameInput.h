@@ -18,9 +18,11 @@ protected:
 	void onInitialize();
 
 private:
+	bool nameSet = false;
 	sf::Font font;
-	sf::Text nameText;
-	std::string nameString;
+	sf::Text answer, question;
+	std::string answerString, nameString;
+	unsigned maxSize = 10;
 };
 
 #endif

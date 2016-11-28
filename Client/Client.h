@@ -7,6 +7,8 @@
 #include "Player.h"
 #include <iostream>
 
+#include <sstream>
+
 enum PacketType
 {
 	BOARD = 0,
@@ -18,7 +20,7 @@ enum PacketType
 class Client
 {
 public:
-	Client(std::string name);
+	Client(std::string name, std::string ipAddress);
 	~Client();
 
 	void connectToServer();
@@ -42,7 +44,7 @@ public:
 	sf::Packet packet;
 
 	unsigned playerCount, clientNumber;
-	bool gameMode;
+	bool gameMode, connectionFail = false;
 	std::vector<Player*> players;
 	std::string playerName;
 	std::vector<std::string> playerNames;

@@ -4,7 +4,7 @@
 StateMachine::StateMachine()
 {
 	windowWidth = 500;
-	windowHeight = 500;
+	windowHeight = 50;
 	window.create(sf::VideoMode(windowWidth, windowHeight), "Tetris");	/* Needs better name.. */
 	window.setFramerateLimit(60);
 }
