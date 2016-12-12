@@ -287,7 +287,11 @@ void Server::boardFull(unsigned id)
 
 void Server::endGame()
 {
+	DataBase db;
 
+	db.openDataBase();
+	db.insertToDataBase(&players);
+	db.closeDataBase();
 }
 
 void Server::updateLine(const float dt)

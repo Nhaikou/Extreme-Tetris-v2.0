@@ -6,6 +6,7 @@
 #include "Player.h"
 #include <iostream>
 #include <vector>
+#include "DataBase.h"
 
 enum PacketType
 {
@@ -60,7 +61,7 @@ public:
 	std::vector<unsigned> bags;
 
 private:
-	unsigned blockTypeCount = 7, winningCondition = SCOREATTACK;
+	unsigned blockTypeCount = 7, winningCondition = ELIMINATION;
 	bool searchPlayers = true, factoryMode = false;
 	char answer;
 
