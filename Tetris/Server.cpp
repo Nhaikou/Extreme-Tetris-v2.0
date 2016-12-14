@@ -263,7 +263,7 @@ void Server::boardFull(unsigned id)
 		players[id]->playerOut = true;
 		for (int i = 0; i < players.size(); ++i)
 		{
-			if (!players[id]->playerOut)
+			if (!players[i]->playerOut)
 			{
 				return;
 			}
