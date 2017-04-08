@@ -1,4 +1,4 @@
-# Tetris (not the final name..)
+# Extreme Tetris v2.0
 
 Old "Extreme Tetris" game revived for new school project.
 
